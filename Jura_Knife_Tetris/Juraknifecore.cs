@@ -91,7 +91,7 @@ namespace Jura_Knife_Tetris
 
             foreach (tree Chird in node.treenode)
             {
-                evalresult nodeval = eval.evalnode(node);
+                evalresult nodeval = eval.evalnode(node); // sort value
                 if (nodeval.value)
                 {
                     //nodeval 

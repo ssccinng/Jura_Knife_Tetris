@@ -222,13 +222,36 @@ namespace Jura_Knife_Tetris
             );
             return m;
         }
+        //public mino get_mino_O()
+        //{
+        //    mino m = new mino(new int[,] {
+        //    { 0, 0, 0, 0},
+        //    { 0, 1, 1, 0},
+        //    { 0, 1, 1, 0},
+        //    { 0, 0, 0, 0},
+        //    },
+
+        //    new pos[,] {
+        //    { new pos(0, 0)},
+        //    { new pos(0, 0)},
+        //    { new pos(0, 0)},
+        //    { new pos(0, 0)},
+        //    },
+
+        //    0,
+
+        //    new pos(),
+
+        //    "O"
+        //    );
+        //    return m;
+        //}
+
         public mino get_mino_O()
         {
             mino m = new mino(new int[,] {
-            { 0, 0, 0, 0},
-            { 0, 1, 1, 0},
-            { 0, 1, 1, 0},
-            { 0, 0, 0, 0},
+            { 1, 1},
+            { 1, 1},
             },
 
             new pos[,] {

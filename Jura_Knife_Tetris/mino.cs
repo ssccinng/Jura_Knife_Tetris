@@ -385,7 +385,195 @@ namespace Jura_Knife_Tetris
             //if (minopos.x >= 20) return false;
             return true;
 
+        }  // 不锁定判断tspin
+
+
+        public mino clone()
+        {
+            mino cp = new mino(minofield, kicktable,  stat, minopos, name);
+            cp.locked = this.locked;
+            cp.spinlast = this.spinlast;
+            cp.height = this.height;
+            cp.weight = this.weight;
+            return cp;
         }
+
+
+        public bool left_move(ref simpboard field)
+        {
+            if (check_mino_ok(ref field, minopos.x, minopos.y - 1))
+            {
+                minopos.y -= 1;
+                spinlast = false;
+                return true;
+            }
+            return false;
+        }
+
+        public bool right_move(ref simpboard field)
+        {
+            if (check_mino_ok(ref field, minopos.x, minopos.y + 1))
+            {
+                minopos.y += 1;
+                spinlast = false;
+                return true;
+            }
+            return false;
+        }
+
+        public bool soft_drop(ref simpboard field)
+        {
+            if (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            {
+                minopos.x -= 1;
+                spinlast = false;
+                return true;
+            }
+            return false;
+        }
+
+        public int soft_drop_floor(ref simpboard field)
+        {
+            int dist = 0;
+            while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            {
+                minopos.x -= 1;
+                dist += 1;
+            }
+            return dist;
+        }
+
+        public bool isTspin(ref simpboard field)
+        {
+            if (name != "T") return false;
+            if (!spinlast) return false;
+            int cnt = (field.checkfield(minopos.x, minopos.y) ? 1 : 0) +
+                (field.checkfield(minopos.x + 2, minopos.y) ? 1 : 0) +
+                (field.checkfield(minopos.x, minopos.y + 2) ? 1 : 0) +
+                (field.checkfield(minopos.x + 2, minopos.y + 2) ? 1 : 0);
+            return cnt >= 3;
+        }
+        public bool ismin(ref simpboard field)
+        {
+            if (name != "T") return false;
+            if (stat == 1) return field.checkfield(minopos.x, minopos.y) &&
+                    field.checkfield(minopos.x + 1, minopos.y) &&
+                    field.checkfield(minopos.x + 2, minopos.y);
+            if (stat == 2) return field.checkfield(minopos.x + 2, minopos.y) &&
+                   field.checkfield(minopos.x + 2, minopos.y + 1) &&
+                   field.checkfield(minopos.x + 2, minopos.y + 2);
+            if (stat == 3) return field.checkfield(minopos.x, minopos.y + 2) &&
+                   field.checkfield(minopos.x + 1, minopos.y + 2) &&
+                   field.checkfield(minopos.x + 2, minopos.y + 2);
+            if (stat == 0) return field.checkfield(minopos.x, minopos.y) &&
+                   field.checkfield(minopos.x, minopos.y + 1) &&
+                   field.checkfield(minopos.x, minopos.y + 2);
+            return false;
+        }
+
+
+        public int right_rotation(ref simpboard field)
+        {
+            int a = height, b = weight;
+            int kick_try = -1;
+
+            int[,] newfield = new int[a, b];
+
+            right_roll(ref newfield);
+
+            for (int kick = 0; kick < kicktable.GetLength(1); ++kick)
+            {
+                if (!check_mino_ok(ref field, minopos.x + kicktable[stat, kick].y, minopos.y + kicktable[stat, kick].x, newfield))
+                {
+                    kick_try += 1;
+                }
+                else
+                {
+                    minopos.x += kicktable[stat, kick].y;
+                    minopos.y += kicktable[stat, kick].x;
+                    break;
+                }
+            }
+            if (kick_try >= 4) return -1;
+
+            stat += 1;
+            stat %= 4;
+            for (int i = 0; i < a; ++i)
+            {
+                for (int j = 0; j < b; ++j)
+                {
+                    minofield[i, j] = newfield[i, j];
+                }
+            }
+            spinlast = true;
+            return kick_try;
+
+        }
+        public int left_rotation(ref simpboard field)
+        {
+            int kick_try = -1;
+            int a = height, b = weight;
+            int[,] newfield = new int[a, b];
+            left_roll(ref newfield);
+            for (int kick = 0; kick < kicktable.GetLength(1); ++kick)
+            {
+                if (!check_mino_ok(ref field, minopos.x - kicktable[(stat + 3) % 4, kick].y, minopos.y - kicktable[(stat + 3) % 4, kick].x, newfield))
+                {
+                    kick_try += 1;
+                }
+                else
+                {
+                    minopos.x -= kicktable[(stat + 3) % 4, kick].y;
+                    minopos.y -= kicktable[(stat + 3) % 4, kick].x;
+                    break;
+                }
+            }
+            if (kick_try >= 4) return -1;
+            stat += 3;
+            stat %= 4;
+            for (int i = 0; i < a; ++i)
+            {
+                for (int j = 0; j < b; ++j)
+                {
+                    minofield[i, j] = newfield[i, j];
+                }
+            }
+            spinlast = true;
+            return kick_try;
+        }
+
+        private bool check_mino_ok(ref simpboard field, int x, int y)
+        {
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (field.checkfield(i + x, j + y)
+                        && minofield[i, j] != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private bool check_mino_ok(ref simpboard field, pos p)
+        {
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (field.checkfield(i + p.x, j + p.y)
+                        && minofield[i, j] != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+
         public void console_print()
         {
             Console.WriteLine("\n+--------+");
