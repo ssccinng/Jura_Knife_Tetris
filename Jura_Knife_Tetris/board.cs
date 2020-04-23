@@ -328,9 +328,12 @@ namespace Jura_Knife_Tetris
             simpboard sBoard = new simpboard();
             sBoard.isb2b = isb2b;
             sBoard.combo = combo;
-            sBoard.isb2b = isb2b;
-            sBoard.isb2b = isb2b;
-
+            if (piece != null)
+                sBoard.piece = piece.clone();
+            if (holdpiece != null)
+                sBoard.holdpiece = holdpiece.clone();
+            sBoard.isdead = isdead;
+            sBoard.garbage_cnt = garbage_cnt;
             for (int i = 0; i < 40; ++i)
             {
                 for (int j = 0; j < 10; ++j)
@@ -351,6 +354,8 @@ namespace Jura_Knife_Tetris
         public bool isdead = false;
         public int combo = 0;
         public mino piece = null;
+        public mino holdpiece = null;
+
         public int garbage_cnt = 0;
         public bool isperfectclear
         {
@@ -496,6 +501,23 @@ namespace Jura_Knife_Tetris
                     field[i, j] = false;
                 }
             }
+        }
+
+
+        public simpboard clone()
+        {
+            simpboard cp = new simpboard();
+
+            cp.field = (bool[,]) field.Clone();
+            cp.isb2b = isb2b;
+            cp.combo = combo;
+            if (piece != null)
+                cp.piece = piece.clone();
+            if (holdpiece != null)
+                cp.holdpiece = holdpiece.clone();
+            cp.isdead = isdead;
+            cp.garbage_cnt = garbage_cnt;
+            return cp;
         }
 
 

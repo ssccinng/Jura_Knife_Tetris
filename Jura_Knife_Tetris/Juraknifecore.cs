@@ -95,7 +95,7 @@ namespace Jura_Knife_Tetris
                 if (nodeval.value)
                 {
                     //nodeval 
-                    Chird.findnextsol();
+                    Chird.findalladd();
                     // 更新父节点分数
                 }
             }

@@ -6,7 +6,7 @@ namespace Jura_Knife_Tetris
 {
     static class seacher
     {
-        static public List<pos> findallplace(simpboard Board)
+        static public List<mino> findallplace(simpboard Board)
         {
             List<mino> allpos = new List<mino>();
             bool[,,] visit = new bool[40, 10, 4];
@@ -67,7 +67,7 @@ namespace Jura_Knife_Tetris
                 temp.setpos(node.minoopos);
                 temp.setstat(node.stat);
 
-                temp.soft_drop_floor(ref field);
+                temp.soft_drop_floor(ref Board);
                 //{
                     if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
                     {
@@ -82,6 +82,8 @@ namespace Jura_Knife_Tetris
 
                 //source.setpos
             }
+
+            return allpos;
         }
 
     }
