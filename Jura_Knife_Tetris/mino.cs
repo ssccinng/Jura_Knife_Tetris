@@ -89,7 +89,8 @@ namespace Jura_Knife_Tetris
 
         public void setpos(pos p)
         {
-            this.minopos = p;
+            this.minopos.x = p.x;
+            this.minopos.y = p.y;
 
         }
 
@@ -110,10 +111,10 @@ namespace Jura_Knife_Tetris
 
         public mino(int[,] minofield, pos[,] kicktable, int stat, pos minopos, string name)
         {
-            this.minofield = minofield;
+            this.minofield =(int[,]) minofield.Clone();
             this.kicktable = kicktable;
             this.stat = stat;
-            this.minopos = minopos;
+            this.minopos = minopos.clone();
             this.name = name;
             this.locked = false;
             this.spinlast = false;
@@ -291,7 +292,7 @@ namespace Jura_Knife_Tetris
         public int right_rotation(ref board field)
         {
             int a = height, b = weight;
-            int kick_try = -1;
+            int kick_try = 0;
 
             int[,] newfield = new int[a,b];
 
@@ -310,7 +311,7 @@ namespace Jura_Knife_Tetris
                     break;
                 }
             }
-            if (kick_try >= 4) return -1;
+            if (kick_try > 4) return -1;
             
             stat += 1;
             stat %= 4;
@@ -327,7 +328,7 @@ namespace Jura_Knife_Tetris
         }
         public int left_rotation(ref board field)
         {
-            int kick_try = -1;
+            int kick_try = 0;
             int a = height, b = weight;
             int[,] newfield = new int[a, b];
             left_roll(ref newfield);
@@ -344,7 +345,7 @@ namespace Jura_Knife_Tetris
                     break;
                 }
             }
-            if (kick_try >= 4) return -1;
+            if (kick_try > 4) return -1;
             stat += 3;
             stat %= 4;
             for (int i = 0; i < a; ++i)
@@ -475,7 +476,7 @@ namespace Jura_Knife_Tetris
         public int right_rotation(ref simpboard field)
         {
             int a = height, b = weight;
-            int kick_try = -1;
+            int kick_try = 0;
 
             int[,] newfield = new int[a, b];
 
@@ -494,7 +495,7 @@ namespace Jura_Knife_Tetris
                     break;
                 }
             }
-            if (kick_try >= 4) return -1;
+            if (kick_try > 4) return -1;
 
             stat += 1;
             stat %= 4;
@@ -511,7 +512,7 @@ namespace Jura_Knife_Tetris
         }
         public int left_rotation(ref simpboard field)
         {
-            int kick_try = -1;
+            int kick_try = 0;
             int a = height, b = weight;
             int[,] newfield = new int[a, b];
             left_roll(ref newfield);
@@ -528,7 +529,7 @@ namespace Jura_Knife_Tetris
                     break;
                 }
             }
-            if (kick_try >= 4) return -1;
+            if (kick_try > 4) return -1;
             stat += 3;
             stat %= 4;
             for (int i = 0; i < a; ++i)
@@ -572,8 +573,64 @@ namespace Jura_Knife_Tetris
             }
             return true;
         }
+        private bool check_mino_ok(ref simpboard field, int x, int y, int[,] minofield)
+        {
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (field.checkfield(i + x, j + y)
+                        && minofield[i, j] != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
+        private bool check_mino_ok(ref simpboard field, pos p, int[,] minofield)
+        {
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (field.checkfield(i + p.x, j + p.y)
+                        && minofield[i, j] != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        public bool mino_lock(ref simpboard field)
+        {
+            if (!check_mino_ok(ref field, minopos)) return false;
+            soft_drop_floor(ref field);
+            if (isTspin(ref field))
+            {
+                Tspin = true;
+                if (ismin(ref field))
+                {
+                    mini = true;
+                }
+            }
 
+            for (int i = 0; i < height; ++i)
+            {
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (minofield[i, j] != 0)
+                        field.field[i + minopos.x, j + minopos.y] = true;
+                }
+            }
+            locked = true;
+
+            //if (minopos.x >= 20) return false;
+            return true;
+
+        }  // 不锁定判断tspin
         public void console_print()
         {
             Console.WriteLine("\n+--------+");

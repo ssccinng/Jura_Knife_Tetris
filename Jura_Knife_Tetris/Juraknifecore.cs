@@ -10,12 +10,12 @@ namespace Jura_Knife_Tetris
         public int engine;
 
 
-        public simpboard Board;
+        public simpboard Board = new board(null, null, 0).tosimple();
         public mino_gene minorule;
 
 
-        tree boardtree;
-        public Queue<int> nextquene;
+        public tree boardtree;
+        public Queue<int> nextquene = new Queue<int>();
 
         public int hold;
 
@@ -77,28 +77,28 @@ namespace Jura_Knife_Tetris
 
         }
 
-        void init()
+        public void init()
         {
             boardtree = new tree();
-
+            boardtree.Board = Board.clone();
 
         }
 
-        void extend_node(tree node)
+        public void extend_node(tree node)
         {
 
-            if (!node.isextend) node.findalladd();
+            if (!node.isextend) node.findalladd(nextquene.Dequeue());
 
-            foreach (tree Chird in node.treenode)
-            {
-                evalresult nodeval = eval.evalnode(node); // sort value
-                if (nodeval.value)
-                {
-                    //nodeval 
-                    Chird.findalladd();
-                    // 更新父节点分数
-                }
-            }
+            //foreach (tree Chird in node.treenode)
+            //{
+            //    evalresult nodeval = eval.evalnode(node); // sort value
+            //    if (nodeval.value)
+            //    {
+            //        //nodeval 
+            //        Chird.findalladd();
+            //        // 更新父节点分数
+            //    }
+            //}
         }
 
     }

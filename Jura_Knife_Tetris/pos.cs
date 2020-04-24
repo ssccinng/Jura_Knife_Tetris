@@ -22,5 +22,10 @@ namespace Jura_Knife_Tetris
         {
             this.y += delta;
         }
+
+        public pos clone()
+        {
+            return new pos(x, y);
+        }
     }
 }

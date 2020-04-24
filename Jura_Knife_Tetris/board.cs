@@ -520,6 +520,49 @@ namespace Jura_Knife_Tetris
             return cp;
         }
 
+        public void console_print(bool printmino = true, mino m = null)
+        {
+            Console.WriteLine("\n+--------------------+");
+            if (printmino && !m.locked)
+            {
+                for (int i = 0; i < m.height; ++i)
+                {
+                    for (int j = 0; j < m.weight; ++j)
+                    {
+                        if (m.minofield[i, j] != 0)
+                            field[i + m.minopos.x, j + m.minopos.y] = true;
+                    }
+                }
+            }
+            for (int i = 20; i >= 0; --i)
+            {
+                Console.Write("|");
+                for (int j = 0; j < 10; ++j)
+                {
+                    if (field[i, j])
+                    {
+                        Console.Write("[]");
+                    }
+                    else
+                    {
+                        Console.Write(" +");
+                    }
+                }
+                Console.WriteLine("|");
+            }
+            if (printmino && !m.locked)
+            {
+                for (int i = 0; i < m.height; ++i)
+                {
+                    for (int j = 0; j < m.weight; ++j)
+                    {
+                        if (m.minofield[i, j] != 0)
+                            field[i + m.minopos.x, j + m.minopos.y] = false;
+                    }
+                }
+            }
 
+            Console.WriteLine("+--------------------+\n");
+        }
     }
 }

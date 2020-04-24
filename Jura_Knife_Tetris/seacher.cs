@@ -9,10 +9,11 @@ namespace Jura_Knife_Tetris
         static public List<mino> findallplace(simpboard Board)
         {
             List<mino> allpos = new List<mino>();
-            bool[,,] visit = new bool[40, 10, 4];
+            bool[,,] visit = new bool[42, 12, 4];
+            bool[,,] visit1 = new bool[42, 12, 4];
             Queue<mino_stat> minoque = new Queue<mino_stat>();
             minoque.Enqueue(new mino_stat(Board.piece.minopos, Board.piece.stat));
-            visit[Board.piece.minopos.x, Board.piece.minopos.y, Board.piece.stat] = true;
+            visit[Board.piece.minopos.x + 2, Board.piece.minopos.y + 2, Board.piece.stat] = true;
             mino_gene minogen = new mino_gene();
             mino temp = Board.piece.clone();
             while (minoque.Count != 0)
@@ -24,9 +25,9 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.left_rotation(ref Board) != -1)
                 {
-                    if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x, temp.minopos.y, temp.stat] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 2));
                     }
                 }
@@ -35,9 +36,9 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.right_rotation(ref Board) != -1)
                 {
-                    if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x, temp.minopos.y, temp.stat] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 3));
                     }
                 }
@@ -47,9 +48,9 @@ namespace Jura_Knife_Tetris
 
                 if (temp.left_move(ref Board))
                 {
-                    if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x, temp.minopos.y, temp.stat] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 0));
                     }
                 }
@@ -57,9 +58,9 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.right_move(ref Board))
                 {
-                    if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x, temp.minopos.y, temp.stat] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 1));
                     }
                 }
@@ -69,14 +70,16 @@ namespace Jura_Knife_Tetris
 
                 temp.soft_drop_floor(ref Board);
                 //{
-                    if (!visit[temp.minopos.x, temp.minopos.y, temp.stat])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x, temp.minopos.y, temp.stat] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4));
                     }
                 //}
-
-                allpos.Add(temp.clone());
+                if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat]) {
+                    visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
+                    allpos.Add(temp.clone());
+                }
 
 
 

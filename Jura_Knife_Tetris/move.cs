@@ -30,7 +30,7 @@ namespace Jura_Knife_Tetris
         }
         public mino_stat(pos minoopos, int stat, int idx, int[] path_old, int move)
         {
-            this.minoopos = minoopos;
+            this.minoopos = minoopos.clone();
             this.stat = stat;
             path = new int[32];
             path[idx] = move;

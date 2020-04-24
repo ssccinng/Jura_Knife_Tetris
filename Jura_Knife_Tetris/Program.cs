@@ -7,8 +7,13 @@ namespace Jura_Knife_Tetris
         static void Main(string[] args)
         {
 
-            game defaultgame = new game();
-            defaultgame.Gamestart();
+            //game defaultgame = new game();
+            //defaultgame.Gamestart();
+
+            test t = new test();
+            t.run();
+
+
             //Random rand = new Random();
             ////Console.WriteLine("Hello World!");
             //board F = new board(new mino_gene(), new TopGarbage(), 5);
