@@ -6,6 +6,8 @@ namespace Jura_Knife_Tetris
 {
     class tree
     {
+
+        // 加入一个指向父节点的指针
         public int score = 0;
         // 如果能保持连击 分数就使用叶子节点最高的评价
         // 如果不行 需要根据场地高度判断适不适合
@@ -14,8 +16,7 @@ namespace Jura_Knife_Tetris
         public bool isextend = false;
         public int nowpiece = -1;
         public int holdpiece = -1;
-
-        
+        public bool useless = false;
 
         // 重判dead
 
@@ -118,10 +119,10 @@ namespace Jura_Knife_Tetris
             return new Tuple<int, int>(atk, row);
         }
 
-        public int searchtslot()
-        {
+        //public int searchtslot() // 去找可能的t坑
+        //{
 
-        }
+        //}
 
 
         public void findalladd(int nowpiece)
@@ -137,6 +138,7 @@ namespace Jura_Knife_Tetris
                 chird.Board.piece = m;
                 lock_piece_calc(ref chird.Board);
                 chird.finmino = m;
+                chird.score = eval.evalfield(chird);
                 treenode.Add(chird);
             }
 
@@ -161,6 +163,7 @@ namespace Jura_Knife_Tetris
                     chird.Board.piece = m;
                     lock_piece_calc(ref chird.Board);
                     chird.finmino = m;
+                    chird.score = eval.evalfield(chird);
                     chird.ishold = true;
                     chird.holdpiece = temp; // oops
                     treenode.Add(chird);

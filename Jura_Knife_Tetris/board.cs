@@ -359,6 +359,14 @@ namespace Jura_Knife_Tetris
         public mino holdpiece = null;
         public int[] column_height = new int[10];
         public int garbage_cnt = 0;
+
+        //public bool oddeven
+        //{
+        //    get
+        //    {
+
+        //    }
+        //}
         public bool isperfectclear
         {
             get

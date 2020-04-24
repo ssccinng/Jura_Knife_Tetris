@@ -22,9 +22,10 @@ namespace Jura_Knife_Tetris
 
 
     class weights {
-        public int height;
+        public int height = - 20;
         public int[] clear = new int[4]; // 1 2 3 4
         public int[] tspin = new int[4]; // mini 1 2 3
+        public int wide = 30;
         public int b2b;
         public int b2b_clear;
         public int wastedT;
@@ -51,7 +52,7 @@ namespace Jura_Knife_Tetris
             return new evalresult(); // pass
             // 评判场地 以及其他的各种状态
         }
-        public static void evalfield(tree node)
+        public static int evalfield(tree node)
         {
             // height
             // hole
@@ -61,10 +62,50 @@ namespace Jura_Knife_Tetris
             int[] colhight = node.Board.updatecol();
             int height = Math.Max(Math.Max(colhight[3], colhight[4]), Math.Max(colhight[5], colhight[6]));
             score += height * W.height;
+            int minhigh = 41;
+            int flag = 1;
+            int notrule = 0;
+            for (int i = 0; i < colhight.Length; ++i)
+            {
+                if (minhigh * flag >= colhight[i] * flag + flag)
+                {
+
+                    score += W.wide;
+                    //if (flag == -1)
+                    //{
+                    //    score += W.wide;
+                    //}
+                    if (minhigh * flag > colhight[i] * flag)
+                    {
+                        if (notrule < 3)
+                        {
+                            notrule += 1;
+                            minhigh = colhight[i];
+                        }
+                        else
+                        {
+                            score -= W.wide;
+                        }
+                    }
+                    else
+                    {
+                        minhigh = colhight[i];
+                    }
+                }
+                else
+                {
+                    if (flag == 1) flag = -1;
+                    else
+                    {
+                        score += W.wide * (minhigh * flag - colhight[i] * flag); ;
+                    }
+                }
+
+            }  // 凹形地形加分 同时也注重了平衡性 场地平横要更注重
 
 
 
-
+            return score;
         }
 
 
