@@ -7,22 +7,23 @@ namespace Jura_Knife_Tetris
     class tree
     {
         public int score = 0;
+        // 如果能保持连击 分数就使用叶子节点最高的评价
+        // 如果不行 需要根据场地高度判断适不适合
+
         public List<tree> treenode = new List<tree>();
         public bool isextend = false;
         public int nowpiece = -1;
         public int holdpiece = -1;
-        public int garbage = 0;
-        public int garbageadd = 0;
+
+        
 
         // 重判dead
 
-        //public bool clearing = false;
-
-        public int attack = 0;
-        public mino finmino = null;
-        public simpboard Board; // maybe simple
-        public int Tspinslot = 0;
-        public bool holdT {
+        public int garbage = 0;
+        public int garbageadd = 0;
+        public int clearrow = 0;
+        public bool holdT
+        {
             get
             {
                 return holdpiece == 2;
@@ -35,9 +36,39 @@ namespace Jura_Knife_Tetris
                 return holdpiece == 0;
             }
         }
+
+        public int tspintype;
+
+        public int tslotnum;
+
+        public int maxren; 
+        // 分为能立刻ren和后续才能ren
+        // tspin后的场地分数
+        // 是否有holdt 无holdt最多允许一个tslot存在
+
+        public bool wastedT
+        {
+            get
+            {
+                return !Board.piece.Tspin && finmino.name == "T";
+            }
+        }
+        public int attack = 0;
+        public int maxattack = 0;
+        public int maxdef = 0; // 最大缩减高度+垃圾行值
+        public simpboard Board; // maybe simple
+        // 内有b2b combo (b2bclear考虑
+
+        //public bool clearing = false;
+
+
+        public mino finmino = null;
+        
+        public int Tspinslot = 0;
+        
         public bool ishold = false;
-        public int bestnodeindex;
-        public int maxdef; // 最大缩减高度+垃圾行值
+        public int bestnodeindex; // 估计不用
+        
 
 
         public bool findnextsol()
@@ -55,7 +86,7 @@ namespace Jura_Knife_Tetris
             // attack 可能继承
             return cp;
         }
-        public int lock_piece_calc(ref simpboard Board)
+        public Tuple<int, int> lock_piece_calc(ref simpboard Board)
         {
             rule gamerule = defaultop.defrule;
             Board.piece.mino_lock(ref Board);
@@ -84,7 +115,12 @@ namespace Jura_Knife_Tetris
             //Board.cl
             //int clear
 
-            return atk;
+            return new Tuple<int, int>(atk, row);
+        }
+
+        public int searchtslot()
+        {
+
         }
 
 
@@ -118,7 +154,7 @@ namespace Jura_Knife_Tetris
                 Board.piece = defaultop.demino.getmino(nowpiece);
                 Board.piece.setpos(19, 3);
                 List<mino> allpos1 = seacher.findallplace(Board);
-
+                // 先对相对有用的节点更新 
                 foreach (mino m in allpos1)
                 {
                     tree chird = clone();

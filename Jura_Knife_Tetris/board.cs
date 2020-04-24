@@ -93,7 +93,7 @@ namespace Jura_Knife_Tetris
 
         //public Queue<int> garbage_sent;
 
-        private void updatecol()
+        private int[] updatecol()
         {
             for (int i = 0; i < 10; ++i)
             {
@@ -105,6 +105,7 @@ namespace Jura_Knife_Tetris
                     } 
                 }
             }
+            return column_height;
         }
 
         public int clear_full()
@@ -333,6 +334,7 @@ namespace Jura_Knife_Tetris
             if (holdpiece != null)
                 sBoard.holdpiece = holdpiece.clone();
             sBoard.isdead = isdead;
+            sBoard.column_height = (int[])column_height.Clone();
             sBoard.garbage_cnt = garbage_cnt;
             for (int i = 0; i < 40; ++i)
             {
@@ -355,7 +357,7 @@ namespace Jura_Knife_Tetris
         public int combo = 0;
         public mino piece = null;
         public mino holdpiece = null;
-
+        public int[] column_height = new int[10];
         public int garbage_cnt = 0;
         public bool isperfectclear
         {
@@ -511,6 +513,7 @@ namespace Jura_Knife_Tetris
             cp.field = (bool[,]) field.Clone();
             cp.isb2b = isb2b;
             cp.combo = combo;
+            cp.column_height = (int[])column_height.Clone();
             if (piece != null)
                 cp.piece = piece.clone();
             if (holdpiece != null)
@@ -520,6 +523,20 @@ namespace Jura_Knife_Tetris
             return cp;
         }
 
+        public int[] updatecol()
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                for (int h = 39; h > 0; --h)
+                {
+                    if (field[h, i])
+                    {
+                        column_height[i] = h;
+                    }
+                }
+            }
+            return column_height;
+        }
         public void console_print(bool printmino = true, mino m = null)
         {
             Console.WriteLine("\n+--------------------+");

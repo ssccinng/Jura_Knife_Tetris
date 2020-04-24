@@ -14,6 +14,8 @@ namespace Jura_Knife_Tetris
             t.run();
 
 
+            
+
             //Random rand = new Random();
             ////Console.WriteLine("Hello World!");
             //board F = new board(new mino_gene(), new TopGarbage(), 5);

@@ -87,7 +87,7 @@ namespace Jura_Knife_Tetris
         public void extend_node(tree node)
         {
 
-            if (!node.isextend) node.findalladd(nextquene.Dequeue());
+            if (!node.isextend) node.findalladd(nextquene.Peek());
 
             //foreach (tree Chird in node.treenode)
             //{

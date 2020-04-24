@@ -440,6 +440,7 @@ namespace Jura_Knife_Tetris
             {
                 minopos.x -= 1;
                 dist += 1;
+                spinlast = false;
             }
             return dist;
         }
