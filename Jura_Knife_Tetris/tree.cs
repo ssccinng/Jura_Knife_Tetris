@@ -17,7 +17,7 @@ namespace Jura_Knife_Tetris
         public int nowpiece = -1;
         public int holdpiece = -1;
         public bool useless = false;
-
+        public tree father; // 指向父亲节点
         // 重判dead
 
         public int garbage = 0;
@@ -147,7 +147,9 @@ namespace Jura_Knife_Tetris
                 tree chird = clone();
                 chird.holdpiece = nowpiece;
                 chird.ishold = true;
+                chird.score = eval.evalfield(chird);
                 treenode.Add(chird);
+
             }
             else
             {

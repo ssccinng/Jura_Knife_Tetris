@@ -38,7 +38,7 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-
+        public int downstack = 1000;
 
 
 
@@ -52,6 +52,62 @@ namespace Jura_Knife_Tetris
             return new evalresult(); // pass
             // 评判场地 以及其他的各种状态
         }
+
+
+        private static int evalhole(tree node, int[] colhight, int h, ref int score)
+        {
+            if (h >= 20) return 0;
+            bool canclear = true;
+            int holecnt = 0;
+            for (int i = 0; i < 10; ++i)
+            {
+                if (!node.Board.field[h, i]) // colh
+                {
+                    
+                    if (colhight[i] == h + 1)
+                    {
+                        // 露天
+                        holecnt++;
+                    }
+                    else if (colhight[i] >= h)
+                    {
+                        canclear = false;
+                        holecnt++;
+                        // 依托于顶部
+                    }
+                }
+            }
+            // 空格数目
+            // 如果顶上也是洞 再减
+            int downcnt = evalhole(node, colhight, h + 1, ref score);
+            int safedis = 0;
+            if (canclear)
+            {
+                safedis = 0;
+            }
+            else
+            {
+                safedis = (downcnt + 1);
+            }
+            for (int i = 0; i < 10; ++i)
+            {
+                if (!node.Board.field[h, i]) // colh
+                {
+                    if (!node.Board.field[h + 1, i]) safedis -= 1;
+                    if (colhight[i] >= h)
+                    {
+                        if (colhight[i] - h > (int)(1.5 * safedis))
+                        {
+                            score -= W.downstack * (colhight[i] - h - (int)(1.5 * safedis));
+                        }
+                    }
+                    if (!node.Board.field[h + 1, i]) safedis += 1; // 如果顶上也是洞 再减
+                }
+            }
+            return safedis;
+
+        }
+
         public static int evalfield(tree node)
         {
             // height
@@ -103,7 +159,9 @@ namespace Jura_Knife_Tetris
 
             }  // 凹形地形加分 同时也注重了平衡性 场地平横要更注重
 
+            // 底层的洞依托于上一层的洞  的最大挖掘
 
+            evalhole(node, colhight, 0, ref score);
 
             return score;
         }

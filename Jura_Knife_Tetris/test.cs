@@ -26,6 +26,7 @@ namespace Jura_Knife_Tetris
                 tree root = bot.requset_next_move();
 
                 root.Board.console_print(false);
+                Console.WriteLine(root.score);
                 char a2 = Console.ReadKey().KeyChar;
                 //foreach (tree a in bot.boardtree.treenode)
                 //{

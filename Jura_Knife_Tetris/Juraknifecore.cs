@@ -44,8 +44,9 @@ namespace Jura_Knife_Tetris
             {
                 freenode(boardtree.treenode[i]);
             }
+            
             boardtree = boardtree.treenode[0];
-
+            eval.evalfield(boardtree);
 
             return boardtree;
 
@@ -106,7 +107,7 @@ namespace Jura_Knife_Tetris
             nodequeue.Add(boardtree);
 
         }
-        public void extend_node()
+        public void extend_node() // 前两层可能可以放宽要求
         {
             while (nextquene.Count > 0)
             {
@@ -121,7 +122,7 @@ namespace Jura_Knife_Tetris
                 int limit = 5; 
                 limit = Math.Min(nodequeue.Count, 6);
                 
-                for (int j = 0, cnt = 0; cnt < Math.Max( nodequeue.Count / 10 + 1, limit) && j < nodequeue.Count; ++j)
+                for (int j = 0, cnt = 0; cnt < Math.Max( nodequeue.Count / 5 + 1, limit) && j < nodequeue.Count; ++j)
                 {
                     tree node = nodequeue[j];
                     if (node == null || node.useless) {

@@ -535,11 +535,13 @@ namespace Jura_Knife_Tetris
         {
             for (int i = 0; i < 10; ++i)
             {
-                for (int h = 39; h > 0; --h)
+                column_height[i] = -1;
+                for (int h = 20; h >= 0; --h)
                 {
                     if (field[h, i])
                     {
                         column_height[i] = h;
+                        break;
                     }
                 }
             }
