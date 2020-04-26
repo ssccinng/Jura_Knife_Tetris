@@ -13,21 +13,42 @@ namespace Jura_Knife_Tetris
             bot.init();
 
             Random rand = new Random();
-            for (int i = 0; i < 5; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 bot.add_next(rand.Next() % 7);
             }
 
+            //bot.add_next(3);
+            //bot.add_next(2);
+
+            int t = 7;
             while (true)
             {
                 bot.add_next(rand.Next() % 7);
+                //bot.add_next(t % 7);
                 bot.extend_node();
+                
 
                 tree root = bot.requset_next_move();
 
+
+                eval.evalfield(root);
                 root.Board.console_print(false);
                 Console.WriteLine(root.score);
-                char a2 = Console.ReadKey().KeyChar;
+                Console.WriteLine(root.Board.piece.name);
+                Console.WriteLine("-----------------------------------------------");
+                //foreach (tree chird in root.treenode)
+                //{
+                //    chird.Board.console_print(false);
+                //    Console.WriteLine(chird.score);
+                //    //Console.WriteLine(chird.finmino.minopos.x);
+                //    //Console.WriteLine(chird.finmino.minopos.y);
+                //    //Console.WriteLine(chird.finmino.stat);
+                //    //Console.WriteLine(chird.finmino.name);
+                //    //char a1 = Console.ReadKey().KeyChar;
+                //}
+
+                //char a2 = Console.ReadKey().KeyChar;
                 //foreach (tree a in bot.boardtree.treenode)
                 //{
                 //    //a.Board.console_print(false);

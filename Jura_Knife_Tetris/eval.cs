@@ -39,6 +39,7 @@ namespace Jura_Knife_Tetris
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
         public int downstack = 1000;
+        public int deephole;
 
 
 
@@ -113,6 +114,8 @@ namespace Jura_Knife_Tetris
             // height
             // hole
             // 洞的优先
+
+            // 出现长洞扣分
             int score = 0;
 
             int[] colhight = node.Board.updatecol();
@@ -121,43 +124,94 @@ namespace Jura_Knife_Tetris
             int minhigh = 41;
             int flag = 1;
             int notrule = 0;
+            int idx = 0;
             for (int i = 0; i < colhight.Length; ++i)
             {
-                if (minhigh * flag >= colhight[i] * flag + flag)
+                if (minhigh > colhight[i])
                 {
+                    idx = i;
+                    minhigh = colhight[i];
+                }
+            }
+            int lefs =idx - 1, rigs= idx + 1;
+            int lefhigh = minhigh, righigh = minhigh;
+            while (lefs >= 0 || rigs < colhight.Length) // 考虑不合规重置minhigh
+            {
 
-                    score += W.wide;
-                    //if (flag == -1)
-                    //{
-                    //    score += W.wide;
-                    //}
-                    if (minhigh * flag > colhight[i] * flag)
+                if (lefs >= 0)
+                {
+                    if (colhight[lefs] >= lefhigh)
                     {
-                        if (notrule < 3)
-                        {
-                            notrule += 1;
-                            minhigh = colhight[i];
-                        }
-                        else
-                        {
-                            score -= W.wide;
-                        }
+                        score += W.wide;
+                        lefhigh = colhight[lefs];
                     }
                     else
                     {
-                        minhigh = colhight[i];
+                        score -= (lefhigh - colhight[lefs]) * W.wide;
                     }
-                }
-                else
-                {
-                    if (flag == 1) flag = -1;
-                    else
-                    {
-                        score += W.wide * (minhigh * flag - colhight[i] * flag); ;
-                    }
+                    lefs--;
+
+
                 }
 
-            }  // 凹形地形加分 同时也注重了平衡性 场地平横要更注重
+                if (rigs < colhight.Length)
+                {
+                    if (colhight[rigs] >= righigh)
+                    {
+                        score += W.wide;
+                        righigh = colhight[rigs];
+                    }
+                    else
+                    {
+                        score -= (righigh - colhight[rigs]) * W.wide;
+                    }
+                    rigs++;
+                }
+
+            }
+
+
+            //for (int i = 0; i < colhight.Length; ++i) //
+            //{
+            //    if (minhigh * flag >= colhight[i] * flag + flag)
+            //    {
+            //        score += W.wide;
+            //        //if (flag == -1)
+            //        //{
+            //        //    score += W.wide;
+            //        //}
+            //        if (minhigh * flag == colhight[i] * flag + 1)
+            //        {
+            //            if (notrule < 3)
+            //            {
+            //                notrule += 1;
+            //                minhigh = colhight[i];
+            //            }
+            //            else
+            //            {
+            //                score -= W.wide;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            minhigh = colhight[i];
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (flag == 1) flag = -1;
+            //        else
+            //        {
+            //            score += W.wide * (minhigh * flag - colhight[i] * flag); 
+            //        }
+            //    }
+
+            //}  // 凹形地形加分 同时也注重了平衡性 场地平横要更注重 反着来一遍
+
+            for (int i = 0; i< colhight.Length; ++i)
+            {
+
+            }
 
             // 底层的洞依托于上一层的洞  的最大挖掘
 

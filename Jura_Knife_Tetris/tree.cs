@@ -4,9 +4,40 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class tree
+    class tree//: IDisposable
     {
 
+        private bool disposed = false;
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    //通知垃圾回收机制不再调用终结器（析构器）
+        //    GC.SuppressFinalize(this);
+        //}
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (disposed)
+        //    {
+        //        return;
+        //    }
+        //    if (disposing)
+        //    {
+        //        // 清理托管资源
+        //        if (treenode != null)
+        //        {
+        //            treenode.Dispose();
+        //            treenode = null;
+        //        }
+        //    }
+        //    // 清理非托管资源
+        //    if (nativeResource != IntPtr.Zero)
+        //    {
+        //        Marshal.FreeHGlobal(nativeResource);
+        //        nativeResource = IntPtr.Zero;
+        //    }
+        //    //让类型知道自己已经被释放
+        //    disposed = true;
+        //}
         // 加入一个指向父节点的指针
         public int score = 0;
         // 如果能保持连击 分数就使用叶子节点最高的评价
@@ -19,10 +50,12 @@ namespace Jura_Knife_Tetris
         public bool useless = false;
         public tree father; // 指向父亲节点
         // 重判dead
-
+        public int keepcombobestchird;
+        public int bestchird;
         public int garbage = 0;
         public int garbageadd = 0;
         public int clearrow = 0;
+        public int pieceidx = 0;
         public bool holdT
         {
             get
@@ -125,30 +158,64 @@ namespace Jura_Knife_Tetris
         //}
 
 
-        public void findalladd(int nowpiece)
+        public void updatefather ()
         {
-            this.nowpiece = nowpiece;
+
+        }
+
+        public void findalladd(Juraknifecore bot)
+        {
+            if (pieceidx >= bot.nextquene.Count)
+                return;
+            this.nowpiece = bot.nextquene[pieceidx];
             isextend = true;
             Board.piece = defaultop.demino.getmino(nowpiece);
             Board.piece.setpos(19, 3);
             List<mino> allpos = seacher.findallplace(Board);
+            int chirdidx = pieceidx + 1;
             foreach (mino m in allpos)
             {
                 tree chird = clone();
                 chird.Board.piece = m;
                 lock_piece_calc(ref chird.Board);
                 chird.finmino = m;
+                chird.father = this;
+                chird.pieceidx = chirdidx;
+                // 回传父节点
                 chird.score = eval.evalfield(chird);
                 treenode.Add(chird);
             }
 
             if (holdpiece == -1)
             {
-                tree chird = clone();
-                chird.holdpiece = nowpiece;
-                chird.ishold = true;
-                chird.score = eval.evalfield(chird);
-                treenode.Add(chird);
+                
+                int holdidx = pieceidx + 1, nextnext = pieceidx + 2;
+
+                if (holdidx < bot.nextquene.Count)
+                {
+                    
+
+                    Board.piece = defaultop.demino.getmino(bot.nextquene[holdidx]);
+                    Board.piece.setpos(19, 3);
+                    List<mino> allpos2 = seacher.findallplace(Board);
+                    foreach (mino m in allpos2)
+                    {
+                        tree chird = clone();
+                        chird.Board.piece = m;
+                        lock_piece_calc(ref chird.Board);
+                        chird.finmino = m;
+                        chird.score = eval.evalfield(chird);
+                        chird.ishold = true;
+                        chird.holdpiece = nowpiece;
+                        chird.father = this;
+                        chird.pieceidx = nextnext;
+
+                        // 回传父节点
+                        treenode.Add(chird);
+                    }
+                    // 回传父节点
+                }
+
 
             }
             else
@@ -168,6 +235,10 @@ namespace Jura_Knife_Tetris
                     chird.score = eval.evalfield(chird);
                     chird.ishold = true;
                     chird.holdpiece = temp; // oops
+                    chird.pieceidx = chirdidx;
+                    chird.father = this;
+
+                    // 回传父节点
                     treenode.Add(chird);
                 }
             }
@@ -175,7 +246,10 @@ namespace Jura_Knife_Tetris
 
         }
 
+        public void console_print()
+        {
 
+        }
         public bool checkdead()
         {
             return false; // pass 
