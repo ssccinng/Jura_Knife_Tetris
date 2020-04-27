@@ -180,6 +180,7 @@ namespace Jura_Knife_Tetris
                 lock_piece_calc(ref chird.Board);
                 chird.finmino = m;
                 chird.father = this;
+                chird.holdpiece = holdpiece;
                 chird.pieceidx = chirdidx;
                 // 回传父节点
                 chird.score = eval.evalfield(chird);

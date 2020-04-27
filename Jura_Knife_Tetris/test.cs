@@ -11,20 +11,23 @@ namespace Jura_Knife_Tetris
         {
 
             bot.init();
-
+            mino_gene mino_Gene = new mino_gene();
             Random rand = new Random();
             for (int i = 0; i < 2; ++i)
             {
-                bot.add_next(rand.Next() % 7);
+                //bot.add_next(rand.Next() % 7);
+                bot.add_next(mino_Gene.genebag7int());
             }
 
             //bot.add_next(3);
             //bot.add_next(2);
 
             int t = 7;
+            
             while (true)
             {
-                bot.add_next(rand.Next() % 7);
+                //bot.add_next(rand.Next() % 7);
+                bot.add_next(mino_Gene.genebag7int());
                 //bot.add_next(t % 7);
                 bot.extend_node();
                 
@@ -33,10 +36,13 @@ namespace Jura_Knife_Tetris
 
 
                 eval.evalfield(root);
+                Console.Clear();
                 root.Board.console_print(false);
+                
                 Console.WriteLine(root.score);
                 Console.WriteLine(root.Board.piece.name);
                 Console.WriteLine("-----------------------------------------------");
+                
                 //foreach (tree chird in root.treenode)
                 //{
                 //    chird.Board.console_print(false);
@@ -44,7 +50,7 @@ namespace Jura_Knife_Tetris
                 //    //Console.WriteLine(chird.finmino.minopos.x);
                 //    //Console.WriteLine(chird.finmino.minopos.y);
                 //    //Console.WriteLine(chird.finmino.stat);
-                //    //Console.WriteLine(chird.finmino.name);
+                //    Console.WriteLine(chird.finmino.name);
                 //    //char a1 = Console.ReadKey().KeyChar;
                 //}
 

@@ -138,7 +138,7 @@ namespace Jura_Knife_Tetris
                 int limit = 5;
                 limit = Math.Min(nodequeue.Count, 6);
 
-                for (int j = 0, cnt = 0; cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && j < nodequeue.Count; ++j)
+                for (int j = 0, cnt = 0; cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && j < nodequeue.Count; ++j) // 剪枝思考
                 {
                     tree node = nodequeue[j];
                     if (node == null || node.useless)

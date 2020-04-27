@@ -161,6 +161,16 @@ namespace Jura_Knife_Tetris
                     0, 1, 2, 3, 4, 5, 6
                 };
 
+        public int genebag7int()
+        {
+            int a = bag7.Next() % (7 - piececnt % 7);
+            int temp = tabidx[a];
+            tabidx[a] = tabidx[6 - piececnt % 7];
+            tabidx[6 - piececnt % 7] = temp;
+            piececnt++;
+            return tabidx[6 - (piececnt - 1) % 7];
+        }
+
         public mino genebag7mino()
         {
 
