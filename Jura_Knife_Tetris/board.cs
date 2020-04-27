@@ -32,7 +32,7 @@ namespace Jura_Knife_Tetris
             }
         }
 
-        public void reset(int[,]field, bool isb2b, int combo)
+        public void reset(int[,] field, bool isb2b, int combo)
         {
             this.field = field;
             this.isb2b = isb2b;
@@ -102,7 +102,7 @@ namespace Jura_Knife_Tetris
                     if (field[h, i] != 0)
                     {
                         column_height[i] = h;
-                    } 
+                    }
                 }
             }
             return column_height;
@@ -146,11 +146,11 @@ namespace Jura_Knife_Tetris
 
             for (int i = 0; i < 40; ++i)
             {
-                while (index2 <40 && clearflag[index2]) index2++;
+                while (index2 < 40 && clearflag[index2]) index2++;
                 copy_line(index2, i);
                 index2++;
             }
-            
+
             return cntclear;
         }
         public void clear_row(int row)
@@ -284,14 +284,14 @@ namespace Jura_Knife_Tetris
             if (addgarbage_cnt >= 20)
             {
                 isdead = true;
-            } 
+            }
             for (int i = 39; i >= addgarbage_cnt; --i)
             {
                 copy_line(i - addgarbage_cnt, i);
             }
             for (int i = 0; i < addgarbage_cnt; ++i)
             {
-                for(int j = 0; j < 10; ++j)
+                for (int j = 0; j < 10; ++j)
                 {
                     field[i, j] = garbage[i, j];
                 }
@@ -302,7 +302,7 @@ namespace Jura_Knife_Tetris
         public bool add_garbage(int addgarbage_cnt)
         {
             int[,] garbage = garbagerule.Gene(addgarbage_cnt);
-            
+
             if (addgarbage_cnt == 0) return false;
             addgarbage_cnt = garbage.GetLength(0);
             if (addgarbage_cnt >= 20)
@@ -518,7 +518,7 @@ namespace Jura_Knife_Tetris
         {
             simpboard cp = new simpboard();
 
-            cp.field = (bool[,]) field.Clone();
+            cp.field = (bool[,])field.Clone();
             cp.isb2b = isb2b;
             cp.combo = combo;
             cp.column_height = (int[])column_height.Clone();
@@ -550,23 +550,29 @@ namespace Jura_Knife_Tetris
         public void console_print(bool printmino = true, mino m = null)
         {
             Console.WriteLine("\n+--------------------+");
-            if (printmino && !m.locked)
+            bool[,] minopp = new bool[40, 10];
+            //if (printmino && !m.locked)
             {
                 for (int i = 0; i < m.height; ++i)
                 {
                     for (int j = 0; j < m.weight; ++j)
                     {
                         if (m.minofield[i, j] != 0)
-                            field[i + m.minopos.x, j + m.minopos.y] = true;
+                            minopp[i + m.minopos.x, j + m.minopos.y] = true;
                     }
                 }
             }
+
             for (int i = 20; i >= 0; --i)
             {
                 Console.Write("|");
                 for (int j = 0; j < 10; ++j)
                 {
-                    if (field[i, j])
+                    if (minopp[i,j])
+                    {
+                        Console.Write("**");
+                    }
+                    else if (field[i, j])
                     {
                         Console.Write("[]");
                     }

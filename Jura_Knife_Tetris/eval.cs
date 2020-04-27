@@ -137,7 +137,8 @@ namespace Jura_Knife_Tetris
             // 洞的优先
 
             // 出现长洞扣分 (
-
+            // 2宽长洞扣分
+            // 堵洞 长列的平衡
 
             int score = 0;
 
@@ -232,7 +233,7 @@ namespace Jura_Knife_Tetris
 
                     }
                 }
-            }
+            }  // hold或next有i才可出第二个
 
 
             int lefs =idx - 1, rigs= idx + 1;
@@ -244,7 +245,12 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[lefs] >= lefhigh)
                     {
-                        score += W.wide;
+                        if (colhight[lefs] - lefhigh <= 4)
+                            score += W.wide;
+                        else
+                        {
+                            score -= (colhight[lefs] - lefhigh - 4) * W.wide;
+                        }
                         lefhigh = colhight[lefs];
                     }
                     else
@@ -260,7 +266,12 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[rigs] >= righigh)
                     {
-                        score += W.wide;
+                        if (colhight[rigs] - righigh <= 4)  // 不能超过2个
+                            score += W.wide;
+                        else
+                        {
+                            score -= (colhight[rigs] - righigh - 4) * W.wide;
+                        }
                         righigh = colhight[rigs];
                     }
                     else
