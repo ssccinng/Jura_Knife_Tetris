@@ -38,9 +38,10 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack = 500;
-        public int deephole = 200;
-
+        public int downstack = 700;
+        public int deephole = 400;
+        public int deephole2 = 200;
+        public int deltcol = 200;
 
 
     }
@@ -57,7 +58,7 @@ namespace Jura_Knife_Tetris
 
         private static int evalhole(tree node, int[] colhight, int h, ref int score)
         {
-            if (h >= 27) return 0;
+            if (h >= 27) return 0; // 或直接对堵洞判断
             bool canclear = true;
             int holecnt = 0;
             
@@ -115,7 +116,7 @@ namespace Jura_Knife_Tetris
 
             for (int i = 0; i < 10; ++i)
             {
-                if (!node.Board.field[h, i]) // colh
+                if (!node.Board.field[h, i]) // colh 检查！！
                 {
                     if (colhight[i] >= h)
                     {
@@ -179,6 +180,87 @@ namespace Jura_Knife_Tetris
 
             int deepholecnt = 0;
 
+            int hightower = 0;  // 高塔扣分
+
+            //for (int i = 2; i < 9; ++i)
+            //{
+
+            //        if ((colhight[i - 1] - colhight[i - 2] >= 4) && colhight[i] - colhight[i + 1] >= 4)
+            //        {
+
+            //             score -= Math.Min((colhight[i - 1] - colhight[i]), colhight[i + 1] - colhight[i]) * W.deephole2;
+
+            //        }
+            //} // 2宽塔
+
+            //for (int i = 1; i < 9; ++i)
+            //{
+
+            //    if (colhight[i] - colhight[i + 1] >= 2 && colhight[i] - colhight[i - 1] >= 2)
+            //    {
+
+            //        score -= (colhight[i + 1] - colhight[i]) * W.deephole;
+
+            //    }
+            //} // 2宽塔
+
+            for (int i = 1; i < 10; ++i)
+            {
+                if (i == 1)
+                {
+                    if (colhight[i + 1] - colhight[i] >= 4)
+                    {
+
+                        deepholecnt++;
+
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+
+                        }
+                        else
+                        {
+                            score -= (colhight[i + 1] - colhight[i]) * W.deephole2;
+                        }
+                    }
+                }
+                else if (i == 9)
+                {
+                    if (colhight[i - 2] - colhight[i - 1] >= 4)
+                    {
+
+                        deepholecnt++;
+
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+
+                        }
+                        else
+                        {
+                            score -= (colhight[i - 2] - colhight[i - 1]) * W.deephole2;
+                        }
+                    }
+
+                }
+                else
+                {
+                    if ((colhight[i - 2] - colhight[i - 1] >= 4) && colhight[i + 1] - colhight[i] >= 4)
+                    {
+
+                        deepholecnt++;
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+
+                        }
+                        else
+                        {
+                            score -= Math.Min((colhight[i - 2] - colhight[i - 1]), colhight[i + 1] - colhight[i]) * W.deephole2;
+                        }
+
+                    }
+                }
+            } // 2宽洞判定
+            deepholecnt = 0;
+
             for (int i = 0; i < 10; ++i) 
             {
                 if (i == 0)
@@ -200,7 +282,7 @@ namespace Jura_Knife_Tetris
                 }
                 else if (i == 9)
                 {
-                    if (colhight[i - 1] - colhight[i] >= 2)
+                    if (colhight[i - 1] - colhight[i] >= 2 )
                     {
                         
                         deepholecnt++;
@@ -218,7 +300,7 @@ namespace Jura_Knife_Tetris
                 }
                 else
                 {
-                    if (colhight[i - 1] - colhight[i] >= 2 && colhight[i + 1] - colhight[i] >= 2)
+                    if ((colhight[i - 1] - colhight[i] >= 2)  && colhight[i + 1] - colhight[i] >= 2)
                     {
                         
                         deepholecnt++;
@@ -233,7 +315,7 @@ namespace Jura_Knife_Tetris
 
                     }
                 }
-            }  // hold或next有i才可出第二个
+            }  // hold或next有i才可出第二个 1宽洞判定
 
 
             int lefs =idx - 1, rigs= idx + 1;
@@ -245,11 +327,11 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[lefs] >= lefhigh)
                     {
-                        if (colhight[lefs] - lefhigh <= 4)
+                        if (colhight[lefs] - lefhigh <= 3)
                             score += W.wide;
                         else
                         {
-                            score -= (colhight[lefs] - lefhigh - 4) * W.wide;
+                            score -= (colhight[lefs] - lefhigh - 3) * W.deltcol;
                         }
                         lefhigh = colhight[lefs];
                     }
@@ -266,11 +348,11 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[rigs] >= righigh)
                     {
-                        if (colhight[rigs] - righigh <= 4)  // 不能超过2个
+                        if (colhight[rigs] - righigh <= 3)  // 不能超过2个
                             score += W.wide;
                         else
                         {
-                            score -= (colhight[rigs] - righigh - 4) * W.wide;
+                            score -= (colhight[rigs] - righigh - 3) * W.deltcol;
                         }
                         righigh = colhight[rigs];
                     }

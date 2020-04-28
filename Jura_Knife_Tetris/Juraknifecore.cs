@@ -13,7 +13,7 @@ namespace Jura_Knife_Tetris
         public simpboard Board = new board(null, null, 0).tosimple();
         public mino_gene minorule;
 
-        List<tree> nodequeue = new List<tree>();
+        public List<tree> nodequeue = new List<tree>();
 
         public tree boardtree;
         //public Queue<int> nextquenesour = new Queue<int>();
@@ -121,7 +121,7 @@ namespace Jura_Knife_Tetris
             boardtree = new tree();
             board F = new board(new mino_gene(), new TopGarbage(), 5);
             boardtree.Board = Board.clone();
-            //for (int i = 0; i < 10; ++i) F.add_garbage(1);
+            //for (int i = 0; i < 5; ++i) F.add_garbage(1);
             //boardtree.Board = F.tosimple();
             //boardtree.ad
             nodequeue.Add(boardtree);
@@ -142,7 +142,7 @@ namespace Jura_Knife_Tetris
                 int limit = 5;
                 limit = Math.Min(nodequeue.Count, 6);
 
-                for (int j = 0, cnt = 0; cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && j < nodequeue.Count; ++j) // 剪枝思考
+                for (int j = 0, cnt = 0; cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && j <  nodequeue.Count && cnt <= 10; ++j) // 剪枝思考
                 {
                     tree node = nodequeue[j];
                     if (node == null || node.useless)

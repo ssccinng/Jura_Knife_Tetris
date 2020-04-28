@@ -551,7 +551,7 @@ namespace Jura_Knife_Tetris
         {
             Console.WriteLine("\n+--------------------+");
             bool[,] minopp = new bool[40, 10];
-            //if (printmino && !m.locked)
+            if (printmino/* && !m.locked)*/)
             {
                 for (int i = 0; i < m.height; ++i)
                 {
