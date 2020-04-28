@@ -35,24 +35,24 @@ namespace Jura_Knife_Tetris
                 //bot.add_next(q);
                 bot.extend_node();
 
-                foreach (tree chird in bot.boardtree.treenode)
-                {
-                    chird.Board.console_print(false);
-                    Console.WriteLine(chird.score);
-                    //Console.WriteLine(chird.finmino.minopos.x);
-                    //Console.WriteLine(chird.finmino.minopos.y);
-                    //Console.WriteLine(chird.finmino.stat);
-                    Console.WriteLine(chird.finmino.name);
-                    int kk = 0;
-                    eval.evalhole(chird, chird.Board.updatecol(), 0, ref kk);
-                    Console.WriteLine(kk);
-                    //char a1 = Console.ReadKey().KeyChar;
-                }
+                //foreach (tree chird in bot.boardtree.treenode)
+                //{
+                //    chird.Board.console_print(false);
+                //    Console.WriteLine(chird.score);
+                //    //Console.WriteLine(chird.finmino.minopos.x);
+                //    //Console.WriteLine(chird.finmino.minopos.y);
+                //    //Console.WriteLine(chird.finmino.stat);
+                //    Console.WriteLine(chird.finmino.name);
+                //    int kk = 0;
+                //    eval.evalhole(chird, chird.Board.updatecol(), 0, ref kk);
+                //    Console.WriteLine(kk);
+                //    //char a1 = Console.ReadKey().KeyChar;
+                //}
                 tree root = bot.requset_next_move();
                 
 
-                eval.evalfield(root);
-                //Console.Clear();
+                //eval.evalfield(root);
+                Console.Clear();
                 //root.Board.console_print(true, root.finmino);
                 root.Board.console_print(false);
                 Console.WriteLine(root.score);

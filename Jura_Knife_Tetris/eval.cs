@@ -38,12 +38,12 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack = 200;
-        public int deephole = 1700;
+        public int downstack =700;
+        public int deephole = 200;
         public int deephole2 = 200;
         public int deephole3 = 100;
         public int deltcol = 200;
-        public int safecost = 700;
+        public int safecost = 1000;
 
 
     }
