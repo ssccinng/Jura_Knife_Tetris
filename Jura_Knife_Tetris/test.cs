@@ -49,7 +49,7 @@ namespace Jura_Knife_Tetris
                 
 
                 eval.evalfield(root);
-                Console.Clear();
+                //Console.Clear();
                 //root.Board.console_print(true, root.finmino);
                 root.Board.console_print(false);
                 Console.WriteLine(root.score);

@@ -22,10 +22,10 @@ namespace Jura_Knife_Tetris
 
 
     class weights {
-        public int height = - 120;
+        public int[] height = { -120, -500, -2000 };
         public int[] clear = new int[4]; // 1 2 3 4
         public int[] tspin = new int[4]; // mini 1 2 3
-        public int wide = 30;
+        public int wide = 100;
         public int b2b;
         public int b2b_clear;
         public int wastedT;
@@ -41,6 +41,7 @@ namespace Jura_Knife_Tetris
         public int downstack = 700;
         public int deephole = 400;
         public int deephole2 = 200;
+        public int deephole3 = 100;
         public int deltcol = 200;
 
 
@@ -131,6 +132,17 @@ namespace Jura_Knife_Tetris
 
         }
 
+
+
+        //private static int evaldeephole(int width)
+        //{
+        //    for (int i = width - 1; i < 10; ++i)
+        //    {
+
+        //    }
+        //}
+
+
         public static int evalfield(tree node)
         {
             // height
@@ -141,6 +153,8 @@ namespace Jura_Knife_Tetris
             // 2宽长洞扣分
             // 堵洞 长列的平衡
 
+            //minhigh 位置
+            //// 每列给权重
             int score = 0;
 
             int[] colhight = node.Board.updatecol();
@@ -149,15 +163,15 @@ namespace Jura_Knife_Tetris
 
             if (height > 5)
             {
-                score += height * W.height;
+                score += height * W.height[0];
 
                 if (height > 10)
                 {
-                    score += height * W.height * 3;
+                    score += height * W.height[1] * 3;
                 }
                 if (height > 15)
                 {
-                    score += height * W.height * 10;
+                    score += height * W.height[2] * 10;
                 }
             } // 需要细化
 
@@ -203,119 +217,161 @@ namespace Jura_Knife_Tetris
 
             //    }
             //} // 2宽塔
+            //for (int i = 2; i < 10; ++i)
+            //{
 
-            for (int i = 1; i < 10; ++i)
-            {
-                if (i == 1)
-                {
-                    if (colhight[i + 1] - colhight[i] >= 4)
-                    {
+            //    if (i == 2)
+            //    {
 
-                        deepholecnt++;
+            //        if (colhight[i + 1] - colhight[i] >= 4 && colhight[i + 1] - colhight[i - 1] >= 4 && colhight[i + 1] - colhight[i - 2] >= 4)
+            //        {
 
-                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
-                        {
+            //            deepholecnt++;
 
-                        }
-                        else
-                        {
-                            score -= (colhight[i + 1] - colhight[i]) * W.deephole2;
-                        }
-                    }
-                }
-                else if (i == 9)
-                {
-                    if (colhight[i - 2] - colhight[i - 1] >= 4)
-                    {
+            //            if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+            //            {
 
-                        deepholecnt++;
+            //            }
+            //            else
+            //            {
+            //                score -= (colhight[i + 1] - colhight[i]) * W.deephole3;
+            //            }
+            //        }
+            //    }
+            //    else if (i == 9)
+            //    {
+            //        if (colhight[i - 2] - colhight[i - 1] >= 4)
+            //        {
 
-                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
-                        {
+            //            deepholecnt++;
 
-                        }
-                        else
-                        {
-                            score -= (colhight[i - 2] - colhight[i - 1]) * W.deephole2;
-                        }
-                    }
+            //            if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+            //            {
 
-                }
-                else
-                {
-                    if ((colhight[i - 2] - colhight[i - 1] >= 4) && colhight[i + 1] - colhight[i] >= 4)
-                    {
+            //            }
+            //            else
+            //            {
+            //                score -= (colhight[i - 2] - colhight[i - 1]) * W.deephole2;
+            //            }
+            //        }
 
-                        deepholecnt++;
-                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
-                        {
+            //    }
+            //    else
+            //    {
+            //        if ((colhight[i - 2] - colhight[i - 1] >= 4) && colhight[i + 1] - colhight[i] >= 4)
+            //        {
 
-                        }
-                        else
-                        {
-                            score -= Math.Min((colhight[i - 2] - colhight[i - 1]), colhight[i + 1] - colhight[i]) * W.deephole2;
-                        }
+            //            deepholecnt++;
+            //            if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+            //            {
 
-                    }
-                }
-            } // 2宽洞判定
-            deepholecnt = 0;
+            //            }
+            //            else
+            //            {
+            //                score -= Math.Min((colhight[i - 2] - colhight[i - 1]), colhight[i + 1] - colhight[i]) * W.deephole2;
+            //            }
 
-            for (int i = 0; i < 10; ++i) 
+            //        }
+            //    }
+            //} // 3宽洞判定
+
+            bool cleartag = false;
+            for (int i = 0; i < 10; ++i)
             {
                 if (i == 0)
                 {
                     if (colhight[i + 1] - colhight[i] >= 2)
                     {
-                        
-                        deepholecnt++;
 
+                        deepholecnt++;
+                        score -= (colhight[i + 1] - colhight[i]) * W.deephole;
                         if (deepholecnt == 1 && colhight[i] == minhigh)
                         {
+                            cleartag = true;
+                        }
 
-                        }
-                        else
-                        {
-                            score -= (colhight[i + 1] - colhight[i]) * W.deephole;
-                        }
                     }
                 }
                 else if (i == 9)
                 {
-                    if (colhight[i - 1] - colhight[i] >= 2 )
+                    if (colhight[i - 1] - colhight[i] >= 2)
                     {
-                        
-                        deepholecnt++;
 
+                        deepholecnt++;
+                        score -= (colhight[i - 1] - colhight[i]) * W.deephole;
                         if (deepholecnt == 1 && colhight[i] == minhigh)
                         {
-
-                        }
-                        else
-                        {
-                            score -= (colhight[i - 1] - colhight[i]) * W.deephole;
+                            cleartag = true;
                         }
                     }
 
                 }
                 else
                 {
-                    if ((colhight[i - 1] - colhight[i] >= 2)  && colhight[i + 1] - colhight[i] >= 2)
+                    if ((colhight[i - 1] - colhight[i] >= 1) && colhight[i + 1] - colhight[i] >= 2)
                     {
-                        
+                        score -= Math.Min((colhight[i - 1] - colhight[i]), colhight[i + 1] - colhight[i]) * W.deephole;
                         deepholecnt++;
                         if (deepholecnt == 1 && colhight[i] == minhigh)
                         {
-
-                        }
-                        else
-                        {
-                            score -= Math.Min((colhight[i - 1] - colhight[i]), colhight[i + 1] - colhight[i]) * W.deephole;
+                            cleartag = true;
                         }
 
                     }
                 }
             }  // hold或next有i才可出第二个 1宽洞判定
+            //deepholecnt = 0;
+
+            int tempsc = score;
+            for (int i = 1; i < 10; ++i)  // 单列识别两次bug
+            {
+                if (i == 1)
+                {
+                    if (colhight[i + 1] - colhight[i] >= 3)
+                    {
+
+                        deepholecnt++;
+                        score -= (colhight[i + 1] - colhight[i]) * W.deephole2;
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+                            cleartag = true;
+                        }
+
+                    }
+                }
+                else if (i == 9)
+                {
+                    if (colhight[i - 2] - colhight[i - 1] >= 3)
+                    {
+
+                        deepholecnt++;
+                        score -= (colhight[i - 2] - colhight[i - 1]) * W.deephole2;
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+                            cleartag = true;
+                        }
+                    }
+
+                }
+                else
+                {
+                    if ((colhight[i - 2] - colhight[i - 1] >= 3) && colhight[i + 1] - colhight[i] >= 3)
+                    {
+
+                        deepholecnt++;
+                        score -= Math.Min((colhight[i - 2] - colhight[i - 1]), colhight[i + 1] - colhight[i]) * W.deephole2;
+                        if (deepholecnt == 1 && (colhight[i] == minhigh || colhight[i - 1] == minhigh))
+                        {
+                            cleartag = true;
+                        }
+                    }
+                }
+            } // 2宽洞判定
+
+            
+            
+
+            if (cleartag && deepholecnt == 1) score = tempsc;
 
 
             int lefs =idx - 1, rigs= idx + 1;
@@ -327,11 +383,11 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[lefs] >= lefhigh)
                     {
-                        if (colhight[lefs] - lefhigh <= 3)
+                        if (colhight[lefs] - lefhigh <= 2)
                             score += W.wide;
                         else
                         {
-                            score -= (colhight[lefs] - lefhigh - 3) * W.deltcol;
+                            score -= (colhight[lefs] - lefhigh - 2) * W.deltcol;
                         }
                         lefhigh = colhight[lefs];
                     }
@@ -348,11 +404,11 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[rigs] >= righigh)
                     {
-                        if (colhight[rigs] - righigh <= 3)  // 不能超过2个
+                        if (colhight[rigs] - righigh <= 2)  // 不能超过2个
                             score += W.wide;
                         else
                         {
-                            score -= (colhight[rigs] - righigh - 3) * W.deltcol;
+                            score -= (colhight[rigs] - righigh - 2) * W.deltcol;
                         }
                         righigh = colhight[rigs];
                     }
