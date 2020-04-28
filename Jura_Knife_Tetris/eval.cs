@@ -38,11 +38,12 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack = 700;
-        public int deephole = 400;
+        public int downstack = 200;
+        public int deephole = 1700;
         public int deephole2 = 200;
         public int deephole3 = 100;
         public int deltcol = 200;
+        public int safecost = 700;
 
 
     }
@@ -56,8 +57,9 @@ namespace Jura_Knife_Tetris
             // 评判场地 以及其他的各种状态
         }
 
+        // 安全距离增加扣分
 
-        private static int evalhole(tree node, int[] colhight, int h, ref int score)
+        public static int evalhole(tree node, int[] colhight, int h, ref int score)
         {
             if (h >= 27) return 0; // 或直接对堵洞判断
             bool canclear = true;
@@ -117,10 +119,11 @@ namespace Jura_Knife_Tetris
 
             for (int i = 0; i < 10; ++i)
             {
-                if (!node.Board.field[h, i]) // colh 检查！！
+                if (!node.Board.field[h, i]) // colh 检查！！ 检查算法
                 {
                     if (colhight[i] >= h)
                     {
+                        score -= W.safecost * safedis;
                         if (colhight[i] - h > (int)(1.5 * (safedis - h)))
                         {
                             score -= W.downstack * (colhight[i] - h - (int)(1.5 * (safedis - h)));

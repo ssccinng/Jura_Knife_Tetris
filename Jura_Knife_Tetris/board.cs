@@ -551,17 +551,17 @@ namespace Jura_Knife_Tetris
         {
             Console.WriteLine("\n+--------------------+");
             bool[,] minopp = new bool[40, 10];
-            if (printmino/* && !m.locked)*/)
-            {
-                for (int i = 0; i < m.height; ++i)
-                {
-                    for (int j = 0; j < m.weight; ++j)
-                    {
-                        if (m.minofield[i, j] != 0)
-                            minopp[i + m.minopos.x, j + m.minopos.y] = true;
-                    }
-                }
-            }
+            //if (printmino/* && !m.locked)*/)
+            //{
+            //    for (int i = 0; i < m.height; ++i)
+            //    {
+            //        for (int j = 0; j < m.weight; ++j)
+            //        {
+            //            if (m.minofield[i, j] != 0)
+            //                minopp[i + m.minopos.x, j + m.minopos.y] = true;
+            //        }
+            //    }
+            //}
 
             for (int i = 20; i >= 0; --i)
             {
@@ -583,17 +583,17 @@ namespace Jura_Knife_Tetris
                 }
                 Console.WriteLine("|");
             }
-            if (printmino && !m.locked)
-            {
-                for (int i = 0; i < m.height; ++i)
-                {
-                    for (int j = 0; j < m.weight; ++j)
-                    {
-                        if (m.minofield[i, j] != 0)
-                            field[i + m.minopos.x, j + m.minopos.y] = false;
-                    }
-                }
-            }
+            //if (printmino && !m.locked)
+            //{
+            //    for (int i = 0; i < m.height; ++i)
+            //    {
+            //        for (int j = 0; j < m.weight; ++j)
+            //        {
+            //            if (m.minofield[i, j] != 0)
+            //                field[i + m.minopos.x, j + m.minopos.y] = false;
+            //        }
+            //    }
+            //}
 
             Console.WriteLine("+--------------------+\n");
         }

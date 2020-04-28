@@ -56,6 +56,9 @@ namespace Jura_Knife_Tetris
         public int garbageadd = 0;
         public int clearrow = 0;
         public int pieceidx = 0;
+
+        //是否要在子节点分数高时才能到这里
+
         public bool holdT
         {
             get

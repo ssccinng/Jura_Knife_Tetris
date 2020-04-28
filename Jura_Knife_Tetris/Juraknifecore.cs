@@ -120,9 +120,9 @@ namespace Jura_Knife_Tetris
         {
             boardtree = new tree();
             board F = new board(new mino_gene(), new TopGarbage(), 5);
-            boardtree.Board = Board.clone();
-            //for (int i = 0; i < 5; ++i) F.add_garbage(1);
-            //boardtree.Board = F.tosimple();
+            //boardtree.Board = Board.clone();
+            for (int i = 0; i < 10; ++i) F.add_garbage(1);
+            boardtree.Board = F.tosimple();
             //boardtree.ad
             nodequeue.Add(boardtree);
 
