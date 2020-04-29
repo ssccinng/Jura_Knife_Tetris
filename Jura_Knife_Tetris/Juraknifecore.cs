@@ -156,8 +156,8 @@ namespace Jura_Knife_Tetris
             boardtree = new tree();
             board F = new board(new mino_gene(), new TopGarbage(), 5);
             boardtree.Board = Board.clone();
-            for (int i = 0; i < 15; ++i) F.add_garbage(1);
-            boardtree.Board = F.tosimple();
+            //for (int i = 0; i < 15; ++i) F.add_garbage(1);
+            //boardtree.Board = F.tosimple();
             //boardtree.ad
             //nodequeue.Add(boardtree);
 
@@ -188,7 +188,7 @@ namespace Jura_Knife_Tetris
                 }
                     );
                 // 全重置 haishinodequeue
-                for (int j = 0, cnt = 0;j <  nodequeue.Count && cnt < 10; ++j) // 剪枝思考
+                for (int j = 0, cnt = 0;j <  nodequeue.Count && cnt < 20; ++j) // 剪枝思考
                 {
                     // cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && 
                     //if (cnt > 10)
@@ -222,71 +222,11 @@ namespace Jura_Knife_Tetris
                         return o;
                     });
 
-                    //for (int i = 0; i < node.treenode.Count; ++i) // 剪枝有待商议
-                    //{
-                    //    nextpiece.Add(node.treenode[i]);
-                    //}
-
-                    //node.treenode.Sort((a, b) =>
-                    //{
-                    //    var o = b.score - a.score;
-                    //    return o;
-                    //});
-
                 }
-                //nodequeue = nextpiece;
-                //if (nextquene.Count != 0) // 之后改成广搜
-                //{
-                //    nextquene.Dequeue();
-                //    for (int i = 0; i < node.treenode.Count / 10; ++i)
-                //    {
-                //        extend_node(node.treenode[i]);
-                //    }
-                //}
             }
 
-            //foreach (tree Chird in node.treenode)
-            //{
-
-            //    //evalresult nodeval = eval.evalnode(node); // sort value
-            //    if (Chird.score)
-            //    {
-            //        //nodeval 
-            //        Chird.findalladd();
-            //        // 更新父节点分数
-            //    }
-            //}
         }
-        //public void extend_node(tree node)
-        //{
 
-
-        //    if (!node.isextend) node.findalladd(nextquene.Peek());
-        //    node.treenode.Sort((a, b) =>
-        //    {
-        //        var o = a.score - b.score;
-        //        return o;
-        //    });
-        //    if (nextquene.Count != 0) // 之后改成广搜
-        //    {
-        //        nextquene.Dequeue();
-        //        for (int i = 0; i < node.treenode.Count / 10; ++i)
-        //        {
-        //            extend_node(node.treenode[i]);
-        //        }
-        //    }
-
-        //foreach (tree Chird in node.treenode)
-        //{
-
-        //    //evalresult nodeval = eval.evalnode(node); // sort value
-        //    if (Chird.score)
-        //    {
-        //        //nodeval 
-        //        Chird.findalladd();
-        //        // 更新父节点分数
-        //    }
-        //}
     }
 
 }
