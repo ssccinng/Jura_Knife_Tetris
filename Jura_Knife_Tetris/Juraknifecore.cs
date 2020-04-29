@@ -12,7 +12,7 @@ namespace Jura_Knife_Tetris
 
         public simpboard Board = new board(null, null, 0).tosimple();
         public mino_gene minorule;
-
+        public int calcdepth = 0;
         public List<tree> nodequeue = new List<tree>();
 
         public tree boardtree;
@@ -38,19 +38,21 @@ namespace Jura_Knife_Tetris
             boardtree.treenode.Sort((a, b) =>
             {
                 var o = b.score - a.score;
+                var q = b.maxdepth - a.maxdepth;
+                if (q != 0) return q;
                 return o;
             });
 
-            int aa = nodecnt(boardtree);
+            int aa = nodedep(boardtree);
 
             for (int i = 1; i < boardtree.treenode.Count; ++i)
             {
                 freenode(boardtree.treenode[i]);
             }
-
+            aa = nodedep(boardtree);
             boardtree = boardtree.treenode[0]; // 节点不存在的问题
             boardtree.father = null;
-            aa = nodecnt(boardtree);
+            aa = nodedep(boardtree);
             System.GC.Collect();
             eval.evalfield(boardtree);
             // 重置nodequeue
@@ -83,13 +85,46 @@ namespace Jura_Knife_Tetris
             Board.combo = combo;
             boardtree = new tree();
         }
+        public void nodeadd(tree node)
+        {
+
+            if (node.depth == calcdepth) nodequeue.Add(node);
+
+            //if (node.treenode.Count == 0 && !node.useless && node.pieceidx < nextquene.Count && !node.isextend) nodequeue.Add(node);
+            //cnt += node.treenode.Count;
+            foreach (tree chird in node.treenode)
+            {
+                nodeadd(chird);
+
+            }
+        }
+
+        public int nodedep(tree node)
+        {
+            int cnt = 0;
+            if (!node.useless)
+            {
+                cnt = node.depth;
+                //cnt += node.treenode.Count;
+                foreach (tree chird in node.treenode)
+                {
+                    cnt = Math.Max(nodedep(chird), cnt);
+
+                }
+            }
+            return cnt;
+        }
+
+
 
         public int nodecnt(tree node)
         {
             int cnt = 0;
+            if (node.depth == calcdepth) cnt += 1;
+            //cnt += node.treenode.Count;
             foreach (tree chird in node.treenode)
             {
-                cnt += nodecnt(chird) + 1;
+                cnt += nodecnt(chird);
 
             }
             return cnt;
@@ -121,29 +156,51 @@ namespace Jura_Knife_Tetris
             boardtree = new tree();
             board F = new board(new mino_gene(), new TopGarbage(), 5);
             boardtree.Board = Board.clone();
-            //for (int i = 0; i < 10; ++i) F.add_garbage(1);
-            //boardtree.Board = F.tosimple();
+            for (int i = 0; i < 15; ++i) F.add_garbage(1);
+            boardtree.Board = F.tosimple();
             //boardtree.ad
-            nodequeue.Add(boardtree);
+            //nodequeue.Add(boardtree);
 
         }
         public void extend_node() // 前两层可能可以放宽要求
         {
-            while (nextquene.Count > nodequeue[0].pieceidx) // 能够保持combo的要继续计算
+            //
+            bool flag = true;
+            while (calcdepth < nextquene.Count - 1) // 能够保持combo的要继续计算 无hold 会少计算一片
             {
-
+                
+                nodequeue = new List<tree>();
+                nodeadd(boardtree);
+                calcdepth += 1;
+                flag = false;
                 List<tree> nextpiece = new List<tree>();
+                
+                int limit = 5;
+                
+                int qq = nodecnt(boardtree); // 会浪费时间吗
+                limit = Math.Min(nodequeue.Count, 6);
                 nodequeue.Sort((a, b) =>
                 {
                     var o = b.score - a.score;
+                    var q = b.maxdepth - a.maxdepth;
+                    if (q != 0) return q;
                     return o;
                 }
                     );
-                int limit = 5;
-                limit = Math.Min(nodequeue.Count, 6);
-
-                for (int j = 0, cnt = 0; cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && j <  nodequeue.Count && cnt <= 10; ++j) // 剪枝思考
+                // 全重置 haishinodequeue
+                for (int j = 0, cnt = 0;j <  nodequeue.Count && cnt < 10; ++j) // 剪枝思考
                 {
+                    // cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && 
+                    //if (cnt > 10)
+                    //{
+                    //    //nodequeue[j].useless = true;
+                    //    continue;
+                    //}
+                    if (nextquene.Count <= nodequeue[j].pieceidx)
+                    {
+                        continue;
+                    }
+                    flag = true;
                     tree node = nodequeue[j];
                     if (node == null || node.useless)
                     {
@@ -160,15 +217,24 @@ namespace Jura_Knife_Tetris
                     node.treenode.Sort((a, b) =>
                     {
                         var o = b.score - a.score;
+                        var q = b.maxdepth - a.maxdepth;
+                        if (q != 0) return q;
                         return o;
                     });
 
-                    for (int i = 0; i < node.treenode.Count; ++i) // 剪枝有待商议
-                    {
-                        nextpiece.Add(node.treenode[i]);
-                    }
+                    //for (int i = 0; i < node.treenode.Count; ++i) // 剪枝有待商议
+                    //{
+                    //    nextpiece.Add(node.treenode[i]);
+                    //}
+
+                    //node.treenode.Sort((a, b) =>
+                    //{
+                    //    var o = b.score - a.score;
+                    //    return o;
+                    //});
+
                 }
-                nodequeue = nextpiece;
+                //nodequeue = nextpiece;
                 //if (nextquene.Count != 0) // 之后改成广搜
                 //{
                 //    nextquene.Dequeue();

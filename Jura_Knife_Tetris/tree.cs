@@ -97,16 +97,26 @@ namespace Jura_Knife_Tetris
         // 内有b2b combo (b2bclear考虑
 
         //public bool clearing = false;
-
+        public int maxdepth = 0;
 
         public mino finmino = null;
-        
+        public int depth = 0;
         public int Tspinslot = 0;
         
         public bool ishold = false;
         public int bestnodeindex; // 估计不用
         
 
+
+        public void updatefather()
+        {
+            if (father != null)
+            {
+                father.score = Math.Max(father.score, score);
+                father.maxdepth = Math.Max(father.maxdepth, maxdepth);
+                father.updatefather();
+            }
+        }
 
         public bool findnextsol()
         {
@@ -161,10 +171,6 @@ namespace Jura_Knife_Tetris
         //}
 
 
-        public void updatefather ()
-        {
-
-        }
 
         public void findalladd(Juraknifecore bot)
         {
@@ -185,8 +191,11 @@ namespace Jura_Knife_Tetris
                 chird.father = this;
                 chird.holdpiece = holdpiece;
                 chird.pieceidx = chirdidx;
+                chird.depth = depth + 1;
+                chird.maxdepth = chird.depth;
                 // 回传父节点
                 chird.score = eval.evalfield(chird);
+                chird.updatefather(); // check update
                 treenode.Add(chird);
             }
 
@@ -213,7 +222,9 @@ namespace Jura_Knife_Tetris
                         chird.holdpiece = nowpiece;
                         chird.father = this;
                         chird.pieceidx = nextnext;
-
+                        chird.depth = depth + 1;
+                        chird.maxdepth = chird.depth;
+                        chird.updatefather();
                         // 回传父节点
                         treenode.Add(chird);
                     }
@@ -241,7 +252,9 @@ namespace Jura_Knife_Tetris
                     chird.holdpiece = temp; // oops
                     chird.pieceidx = chirdidx;
                     chird.father = this;
-
+                    chird.depth = depth + 1;
+                    chird.maxdepth = chird.depth;
+                    chird.updatefather();
                     // 回传父节点
                     treenode.Add(chird);
                 }

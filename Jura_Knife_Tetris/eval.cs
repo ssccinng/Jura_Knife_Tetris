@@ -38,12 +38,12 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack =700;
-        public int deephole = 200;
-        public int deephole2 = 200;
+        public int downstack =2000;
+        public int deephole = 1500;
+        public int deephole2 = 1000;
         public int deephole3 = 100;
         public int deltcol = 200;
-        public int safecost = 1000;
+        public int safecost = 3000;
 
 
     }
@@ -159,7 +159,11 @@ namespace Jura_Knife_Tetris
             //minhigh 位置
             //// 每列给权重
             int score = 0;
-
+            //if (node.Board.clearrow == 4) score += 10000; // 维持一深洞加分
+            //else if (node.Board.clearrow > 0)
+            //{
+            //    score -= 2000 * node.Board.clearrow;
+            //}
             int[] colhight = node.Board.updatecol();
             int height = Math.Max(Math.Max(colhight[3], colhight[4]), Math.Max(colhight[5], colhight[6]));
 

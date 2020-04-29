@@ -359,6 +359,7 @@ namespace Jura_Knife_Tetris
         public mino holdpiece = null;
         public int[] column_height = new int[10];
         public int garbage_cnt = 0;
+        public int clearrow = 0;
 
         //public bool oddeven
         //{
@@ -470,7 +471,7 @@ namespace Jura_Knife_Tetris
                 index2++;
             }
 
-            return cntclear;
+            return clearrow = cntclear;
         }
         public void clear_row(int row)
         {
