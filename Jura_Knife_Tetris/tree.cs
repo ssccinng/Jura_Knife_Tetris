@@ -25,6 +25,9 @@ namespace Jura_Knife_Tetris
         public int garbageadd = 0;
         public int clearrow = 0;
         public int pieceidx = 0;
+        public int afttspinscore = 0;
+
+        public bool inplan = true;
         // 预测块会到来的顺序
 
         //是否要在子节点分数高时才能到这里
@@ -149,6 +152,7 @@ namespace Jura_Knife_Tetris
                 return;
             this.nowpiece = bot.nextquene[pieceidx];
             isextend = true;
+            inplan = false;
             Board.piece = defaultop.demino.getmino(nowpiece);
             Board.piece.setpos(19, 3);
             List<mino> allpos = seacher.findallplace(Board);
@@ -165,8 +169,34 @@ namespace Jura_Knife_Tetris
                 chird.pieceidx = chirdidx;
                 chird.depth = depth + 1;
                 chird.maxdepth = chird.depth;
-                // 回传父节点
+                chird.inplan = true;
                 chird.score = eval.evalfield(chird);
+                chird.score += eval.evalbattle(chird);
+                if (chird.holdT)
+                {
+                    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                    tree bestT;
+                    int minscore = chird.score;
+                    foreach (mino t in Alltslot)
+                    {
+                        tree Tchird = chird.clone();
+                        Tchird.Board.piece = t;
+                        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                        Tchird.score = eval.evalfield(Tchird);
+                        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+
+                        if (Tchird.score > minscore)
+                        {
+                            minscore = Tchird.score;
+                            bestT = Tchird;
+                        }
+                    }
+                    chird.score = minscore;
+
+                }
+                
+                // 回传父节点
+                
                 chird.updatefather(); // check update
                 treenode.Add(chird);
             }
@@ -189,13 +219,38 @@ namespace Jura_Knife_Tetris
                         chird.Board.piece = m;
                         lock_piece_calc(ref chird.Board);
                         chird.finmino = m;
-                        chird.score = eval.evalfield(chird);
+                        
                         chird.ishold = true;
                         chird.holdpiece = nowpiece;
                         chird.father = this;
                         chird.pieceidx = nextnext;
                         chird.depth = depth + 1;
                         chird.maxdepth = chird.depth;
+                        chird.inplan = true;
+                        chird.score = eval.evalfield(chird);
+                        chird.score += eval.evalbattle(chird);
+                        if (chird.holdT)
+                        {
+                            List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                            tree bestT;
+                            int minscore = chird.score;
+                            foreach (mino t in Alltslot)
+                            {
+                                tree Tchird = chird.clone();
+                                Tchird.Board.piece = t;
+                                Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                                Tchird.score = eval.evalfield(Tchird);
+                                Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+
+                                if (Tchird.score > minscore)
+                                {
+                                    minscore = Tchird.score;
+                                    bestT = Tchird;
+                                }
+                            }
+                            chird.score = minscore;
+
+                        }
                         chird.updatefather();
                         // 回传父节点
                         treenode.Add(chird);
@@ -219,13 +274,38 @@ namespace Jura_Knife_Tetris
                     chird.Board.piece = m;
                     lock_piece_calc(ref chird.Board);
                     chird.finmino = m;
-                    chird.score = eval.evalfield(chird);
+                    
                     chird.ishold = true;
                     chird.holdpiece = temp; // oops
                     chird.pieceidx = chirdidx;
                     chird.father = this;
                     chird.depth = depth + 1;
                     chird.maxdepth = chird.depth;
+                    chird.inplan = true;
+                    chird.score = eval.evalfield(chird);
+                    chird.score += eval.evalbattle(chird);
+                    if (chird.holdT)
+                    {
+                        List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                        tree bestT;
+                        int minscore = chird.score;
+                        foreach (mino t in Alltslot)
+                        {
+                            tree Tchird = chird.clone();
+                            Tchird.Board.piece = t;
+                            Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                            Tchird.score = eval.evalfield(Tchird);
+                            Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+
+                            if (Tchird.score > minscore)
+                            {
+                                minscore = Tchird.score;
+                                bestT = Tchird;
+                            }
+                        }
+                        chird.score = minscore;
+
+                    }
                     chird.updatefather();
                     // 回传父节点
                     treenode.Add(chird);

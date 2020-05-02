@@ -21,15 +21,29 @@ namespace Jura_Knife_Tetris
         public int stat;
         public int idx;
         public int[] path;
-        public mino_stat(pos minoopos, int stat)
+        public bool spinlast;
+        public mino_stat(pos minoopos, int stat, bool spinlast = false)
         {
             this.minoopos = minoopos;
             this.stat = stat;
+            this.spinlast = spinlast;
             idx = 0;
+            spinlast = false;
             path = new int[32];
 
 
         }
+
+        //public mino_stat(pos minoopos, int stat, )
+        //{
+        //    this.minoopos = minoopos;
+        //    this.stat = stat;
+        //    idx = 0;
+        //    spinlast = false;
+        //    path = new int[32];
+
+
+        //}
         //public mino_stat clone()
         //{
         //    mino_stat cp = new mino_stat();
@@ -39,11 +53,12 @@ namespace Jura_Knife_Tetris
         //    return cp;
 
         //}
-        public mino_stat(pos minoopos, int stat, int idx, int[] path_old, int move)
+        public mino_stat(pos minoopos, int stat, int idx, int[] path_old, int move, bool spinlast = false)
         {
             this.minoopos = minoopos.clone();
             this.stat = stat;
-            path = new int[32];
+            this.spinlast = spinlast;
+            path = new int[52];
             path[idx] = move;
             for (int i = 0; i < idx; ++i)
             {

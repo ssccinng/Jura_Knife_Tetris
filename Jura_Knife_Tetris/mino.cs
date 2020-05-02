@@ -259,6 +259,7 @@ namespace Jura_Knife_Tetris
             while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
             {
                 minopos.x -= 1;
+                spinlast = false;
                 dist += 1; 
             }
             return dist;

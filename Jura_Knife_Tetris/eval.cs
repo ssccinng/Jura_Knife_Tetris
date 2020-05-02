@@ -24,7 +24,7 @@ namespace Jura_Knife_Tetris
     class weights {
         public int[] height = { -120, -500, -2000 };
         public int[] clear = { 0, -500, -200, -400, 1700}; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = new int[4]; // mini 1 2 3
+        public int[] tspin = { 0, 100, 700, 200}; // mini 1 2 3
         public int wide = 100;
         public int b2b;
         public int b2b_clear;
@@ -32,8 +32,8 @@ namespace Jura_Knife_Tetris
         public int[] tslot = new int[4]; // mini 1 2 3
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目
-        public int holdT;
-        public int holdI;
+        public int holdT = 1000;
+        public int holdI = 400;
         public int fewcombo;
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
@@ -59,6 +59,11 @@ namespace Jura_Knife_Tetris
         }
 
         // 安全距离增加扣分
+
+        //public static int evalTmino()
+        //{
+
+        //}
 
         public static int evalhole(tree node, int[] colhight, int h, ref int score) // 造洞的分析 边缘空洞
         {
@@ -143,6 +148,26 @@ namespace Jura_Knife_Tetris
         //}
 
 
+        public static int evalbattle(tree node)
+        {
+            int score = 0;
+            score += W.movetime * node.Board.piece.path.idx;
+            
+            if (node.holdT)
+                score += W.holdT;
+            if (node.holdI)
+                score += W.holdI;
+            if (node.Board.piece.Tspin && node.Board.piece.name == "T")
+            {
+                score += W.tspin[node.Board.clearrow];
+            }
+            else
+            {
+                score += W.clear[node.Board.clearrow];
+            }
+            return score;
+        }
+
         public static int evalfield(tree node)
         {
             // height
@@ -156,8 +181,8 @@ namespace Jura_Knife_Tetris
             //minhigh 位置
             //// 每列给权重
             int score = 0;
-            score += W.clear[node.Board.clearrow];
-            score += W.movetime * node.finmino.path.idx;
+            
+            
 
 
             int[] colhight = node.Board.updatecol();
