@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class board
+    public class board
     {
         public int[,] field = new int[40, 10];
 
@@ -349,7 +349,7 @@ namespace Jura_Knife_Tetris
     }
 
 
-    class simpboard
+    public class simpboard
     {
         public bool[,] field = new bool[40, 10];
         public bool isb2b = false;
@@ -562,7 +562,7 @@ namespace Jura_Knife_Tetris
             //                minopp[i + m.minopos.x, j + m.minopos.y] = true;
             //        }
             //    }
-            //}
+            //} //maxtspin slot search
 
             for (int i = 20; i >= 0; --i)
             {

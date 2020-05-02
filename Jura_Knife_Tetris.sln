@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jura_Knife_Tetris", "Jura_Knife_Tetris\Jura_Knife_Tetris.csproj", "{0D241ADF-00E0-4AD9-AD97-C4ACBB824C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jura_Knife_Tetris", "Jura_Knife_Tetris\Jura_Knife_Tetris.csproj", "{0D241ADF-00E0-4AD9-AD97-C4ACBB824C9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "top_bot", "top_bot\top_bot.csproj", "{A172D45E-34CF-4F84-B51D-E2287005545A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0D241ADF-00E0-4AD9-AD97-C4ACBB824C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D241ADF-00E0-4AD9-AD97-C4ACBB824C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D241ADF-00E0-4AD9-AD97-C4ACBB824C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A172D45E-34CF-4F84-B51D-E2287005545A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A172D45E-34CF-4F84-B51D-E2287005545A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A172D45E-34CF-4F84-B51D-E2287005545A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A172D45E-34CF-4F84-B51D-E2287005545A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 
 namespace Jura_Knife_Tetris
 {
-    class mino
+    public class mino
     {
         public int[,] minofield;
         pos[,] kicktable;
@@ -15,6 +15,8 @@ namespace Jura_Knife_Tetris
 
         public bool Tspin;
         public bool mini;
+
+        public mino_stat path; //等下再改
 
         /*************
          *方法考虑移交给board 
@@ -102,9 +104,11 @@ namespace Jura_Knife_Tetris
 
         public void setstat(int stat)
         {
-            for (int i = 0; i < (stat + 4 - this.stat); ++i)
+            while (this.stat != stat)
+            //for (int i = 0; i < (stat + 4 - this.stat); ++i)
             {
                 right_roll();
+                this.stat = (this.stat + 1) % 4;
             }
             this.stat = stat;
         }
@@ -396,6 +400,7 @@ namespace Jura_Knife_Tetris
             cp.spinlast = this.spinlast;
             cp.height = this.height;
             cp.weight = this.weight;
+            cp.path = this.path;
             return cp;
         }
 

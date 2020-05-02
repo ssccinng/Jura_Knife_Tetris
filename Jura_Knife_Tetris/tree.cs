@@ -4,41 +4,10 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class tree//: IDisposable
+    public class tree//: IDisposable
     {
 
         private bool disposed = false;
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    //通知垃圾回收机制不再调用终结器（析构器）
-        //    GC.SuppressFinalize(this);
-        //}
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (disposed)
-        //    {
-        //        return;
-        //    }
-        //    if (disposing)
-        //    {
-        //        // 清理托管资源
-        //        if (treenode != null)
-        //        {
-        //            treenode.Dispose();
-        //            treenode = null;
-        //        }
-        //    }
-        //    // 清理非托管资源
-        //    if (nativeResource != IntPtr.Zero)
-        //    {
-        //        Marshal.FreeHGlobal(nativeResource);
-        //        nativeResource = IntPtr.Zero;
-        //    }
-        //    //让类型知道自己已经被释放
-        //    disposed = true;
-        //}
-        // 加入一个指向父节点的指针
         public int score = 0;
         // 如果能保持连击 分数就使用叶子节点最高的评价
         // 如果不行 需要根据场地高度判断适不适合
@@ -56,6 +25,7 @@ namespace Jura_Knife_Tetris
         public int garbageadd = 0;
         public int clearrow = 0;
         public int pieceidx = 0;
+        // 预测块会到来的顺序
 
         //是否要在子节点分数高时才能到这里
 
@@ -118,10 +88,11 @@ namespace Jura_Knife_Tetris
             }
         }
 
-        public bool findnextsol()
-        {
-            return false; // pass
-        }
+        //public bool findnextsol()
+        //{
+        //    for (; ; ) 
+        //    yield return false; // pass
+        //}
 
         public tree clone()
         {
@@ -189,6 +160,7 @@ namespace Jura_Knife_Tetris
                 lock_piece_calc(ref chird.Board);
                 chird.finmino = m;
                 chird.father = this;
+                chird.ishold = false;
                 chird.holdpiece = holdpiece;
                 chird.pieceidx = chirdidx;
                 chird.depth = depth + 1;

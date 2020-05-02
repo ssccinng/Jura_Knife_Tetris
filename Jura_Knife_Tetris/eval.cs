@@ -23,14 +23,14 @@ namespace Jura_Knife_Tetris
 
     class weights {
         public int[] height = { -120, -500, -2000 };
-        public int[] clear = { 0, -500, -200, -400, 700}; // 1 2 3 4 // combo时也许不一样
+        public int[] clear = { 0, -500, -200, -400, 1700}; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = new int[4]; // mini 1 2 3
         public int wide = 100;
         public int b2b;
         public int b2b_clear;
         public int wastedT;
         public int[] tslot = new int[4]; // mini 1 2 3
-        public int movetime; // 操作数
+        public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目
         public int holdT;
         public int holdI;
@@ -38,14 +38,14 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack =500;
-        public int deephole = 1700;
-        public int deephole2 = 3300;
+        public int downstack =600;
+        public int deephole = 1500;
+        public int deephole2 = 800;
         public int deephole3 = 100;
         public int deltcol = 200;
-        public int safecost = 300;
+        public int safecost = 1200;
         public int[] col_minhigh = { -10, -30, -20, 30, 50, 30, 30, -20, -30, -10 };
-
+        
 
     }
     static class eval
@@ -60,7 +60,7 @@ namespace Jura_Knife_Tetris
 
         // 安全距离增加扣分
 
-        public static int evalhole(tree node, int[] colhight, int h, ref int score)
+        public static int evalhole(tree node, int[] colhight, int h, ref int score) // 造洞的分析 边缘空洞
         {
             if (h >= 27) return 0; // 或直接对堵洞判断
             bool canclear = true;
@@ -114,7 +114,7 @@ namespace Jura_Knife_Tetris
                 safedis = 0;
             }
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 10; ++i) //洞的层数 需要增加
             {
                 if (!node.Board.field[h, i]) // colh 检查！！ 检查算法
                 {
@@ -123,7 +123,7 @@ namespace Jura_Knife_Tetris
                         score -= W.safecost * safedis;
                         if (colhight[i] - h > (int)(1.3 * (safedis - h)))
                         {
-                            score -= W.downstack * (colhight[i] - h - (int)(1.5 * (safedis - h)));
+                            score -= W.downstack * (colhight[i] - h - (int)(1.3 * (safedis - h)));
                         }
                     }
                 }
@@ -157,7 +157,7 @@ namespace Jura_Knife_Tetris
             //// 每列给权重
             int score = 0;
             score += W.clear[node.Board.clearrow];
-
+            score += W.movetime * node.finmino.path.idx;
 
 
             int[] colhight = node.Board.updatecol();
@@ -309,12 +309,13 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[lefs] >= lefhigh)
                     {
-                        if(idx - 1 == lefs)
+                        if (idx - 1 == lefs)
                         {
-                            score +=Math.Min(5, (colhight[lefs] - lefhigh)) * W.col_minhigh[idx]; // 可能用不一样的参数
+                            score += Math.Min(5, (colhight[lefs] - lefhigh)) * W.col_minhigh[idx]; // 可能用不一样的参数
 
                         }
-                        else if (colhight[lefs] - lefhigh <= 2)
+                        else
+                        if (colhight[lefs] - lefhigh <= 2)
                             score += W.wide;
                         else
                         {
@@ -340,7 +341,8 @@ namespace Jura_Knife_Tetris
                             score += Math.Min(5, (colhight[rigs] - righigh)) * W.col_minhigh[idx]; // 可能用不一样的参数
 
                         }
-                        else if (colhight[rigs] - righigh <= 2)  // 不能超过2个
+                        else
+                        if (colhight[rigs] - righigh <= 2)  // 不能超过2个
                             score += W.wide;
                         else
                         {

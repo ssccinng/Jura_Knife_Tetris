@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/top_bot/Topfit.cs
+/top_bot/Program.cs

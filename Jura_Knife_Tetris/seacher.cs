@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    static class seacher
+    public static class seacher
     {
         static public List<mino> findallplace(simpboard Board)
         {
@@ -78,7 +78,10 @@ namespace Jura_Knife_Tetris
                 //}
                 if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat]) {
                     visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                    allpos.Add(temp.clone());
+                    
+                    mino fi = temp.clone();
+                    fi.path = node;
+                    allpos.Add(fi);
                 }
 
 

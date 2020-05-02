@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class battle
+    public class battle
     {
         game p1, p2;
 

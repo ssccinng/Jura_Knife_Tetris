@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class Garbagegene
+    public class Garbagegene
     {
         public Random rand = new Random();
         //public int[,] garbagefield;
@@ -14,7 +14,7 @@ namespace Jura_Knife_Tetris
         public virtual int[,] Gene(Stack<int> garbage_queue) { return null; }
     }
 
-    class TopGarbage: Garbagegene
+    public class TopGarbage: Garbagegene
     {
 
         public override int[,] Gene(int garbage_cnt)

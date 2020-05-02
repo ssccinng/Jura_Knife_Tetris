@@ -4,16 +4,18 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    
-    class JK_Movec
+
+    public class JK_Movec
     {
         int [] movement = new int[32];
         int movecnt;
         bool hold;
         int[,] except_pos = new int[4, 2]; 
+
+        
     }
 
-    struct mino_stat
+    public class mino_stat
     {
         public pos minoopos;
         public int stat;
@@ -28,6 +30,15 @@ namespace Jura_Knife_Tetris
 
 
         }
+        //public mino_stat clone()
+        //{
+        //    mino_stat cp = new mino_stat();
+        //    cp.path = (int[])path.Clone();
+        //    cp.stat = stat;
+        //    cp.idx = idx;
+        //    return cp;
+
+        //}
         public mino_stat(pos minoopos, int stat, int idx, int[] path_old, int move)
         {
             this.minoopos = minoopos.clone();
@@ -44,7 +55,7 @@ namespace Jura_Knife_Tetris
         }
     }
 
-    class move
+    public class move
     {
         
         JK_Movec res = new JK_Movec();

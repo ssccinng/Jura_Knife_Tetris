@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class game
+    public  class game
     {
         public board Board;
         Stack<int> garbage_queue;

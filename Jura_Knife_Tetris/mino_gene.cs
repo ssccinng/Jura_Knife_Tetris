@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    class mino_gene
+    public class mino_gene
     {
         //public mino I = new mino(new int[,] {
         //    { 0, 0, 0, 0},
@@ -142,8 +142,8 @@ namespace Jura_Knife_Tetris
 
         public mino getmino(int id)
         {
-            string minoname = "IOTJLZS";
-
+            //string minoname = "IOTJLZS";
+            string minoname = "OITLJSZ";
             Type t = typeof(mino_gene);
             return (mino)t.GetMethod("get_mino_" + minoname[id]).Invoke(this, null);
         }
@@ -170,7 +170,20 @@ namespace Jura_Knife_Tetris
             piececnt++;
             return tabidx[6 - (piececnt - 1) % 7];
         }
+        public mino generandmino()
+        {
 
+            Minofun[] tab = {
+                    get_mino_I,
+                    get_mino_O,
+                    get_mino_T,
+                    get_mino_J,
+                    get_mino_L,
+                    get_mino_Z,
+                    get_mino_S
+                };
+            return tab[bag7.Next() % 7]();
+        }
         public mino genebag7mino()
         {
 
@@ -260,8 +273,10 @@ namespace Jura_Knife_Tetris
         public mino get_mino_O()
         {
             mino m = new mino(new int[,] {
-            { 1, 1},
-            { 1, 1},
+           { 0,0, 0,0},
+                { 0,1, 1,0},
+            { 0,1, 1,0},
+            { 0,0, 0,0},
             },
 
             new pos[,] {

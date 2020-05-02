@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Jura_Knife_Tetris
 {
-    static class search_tspin
+    public static class search_tspin
     {
         static public List<mino> findalltslot(simpboard Board)
         {
-            List<mino> allpos = new List<mino>();
+            List<mino> allpos = new List<mino>(); // 返回所有t的状态 
             bool[,,] visit = new bool[42, 12, 4];
             bool[,,] visit1 = new bool[42, 12, 4];
             Queue<mino_stat> minoque = new Queue<mino_stat>();

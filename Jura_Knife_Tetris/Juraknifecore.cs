@@ -5,7 +5,7 @@ using System.Text;
 namespace Jura_Knife_Tetris
 {
 
-    class Juraknifecore
+    public class Juraknifecore
     {
         public int engine;
 
@@ -188,7 +188,7 @@ namespace Jura_Knife_Tetris
                 }
                     );
                 // 全重置 haishinodequeue
-                for (int j = 0, cnt = 0;j <  nodequeue.Count && cnt < 20; ++j) // 剪枝思考
+                for (int j = 0, cnt = 0;j <  nodequeue.Count && cnt < 20; ++j) // 剪枝思考 深度和分数的符合思考
                 {
                     // cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && 
                     //if (cnt > 10)
