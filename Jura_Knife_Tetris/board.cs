@@ -150,7 +150,10 @@ namespace Jura_Knife_Tetris
                 copy_line(index2, i);
                 index2++;
             }
-
+            for (int i = 0; i < column_height.Length; ++i)
+            {
+                column_height[i] -= cntclear;
+            }
             return cntclear;
         }
         public void clear_row(int row)
@@ -471,6 +474,10 @@ namespace Jura_Knife_Tetris
                 index2++;
             }
 
+            for (int i = 0; i < column_height.Length; ++i)
+            {
+                column_height[i] -= cntclear;
+            }
             return clearrow = cntclear;
         }
         public void clear_row(int row)
@@ -536,12 +543,12 @@ namespace Jura_Knife_Tetris
         {
             for (int i = 0; i < 10; ++i)
             {
-                column_height[i] = -1;
-                for (int h = 27; h >= 0; --h)
+                column_height[i] = 0;
+                for (int h = 39; h >= 0; --h)
                 {
                     if (field[h, i])
                     {
-                        column_height[i] = h;
+                        column_height[i] = h + 1;
                         break;
                     }
                 }

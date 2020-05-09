@@ -255,12 +255,33 @@ namespace Jura_Knife_Tetris
 
         public int soft_drop_floor(ref board field)
         {
-            int dist = 0;
-            while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            int dist = 900;
+
+            for (int i = 0; i < height; i++)
             {
-                minopos.x -= 1;
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (minofield[j, i] != 0)
+                    {
+                        dist = Math.Min(dist, minopos.x - field.column_height[i + minopos.y] + j);
+                        break;
+                    }
+                }
+            }
+            if (dist < 0)
+            {
+                dist = 0;
+                while (check_mino_ok(ref field, minopos.x - dist - 1, minopos.y))
+                {
+                    dist++;
+                }
+            }
+
+            if (dist > 0)
+            ////while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            {
+                minopos.x -= dist;
                 spinlast = false;
-                dist += 1; 
             }
             return dist;
         }
@@ -369,6 +390,18 @@ namespace Jura_Knife_Tetris
         {
             if (!check_mino_ok(ref field, minopos)) return false;
             soft_drop_floor(ref field);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = weight - 1; j >= 0; --j)
+                {
+                    if (minofield[j, i] != 0)
+                    {
+                        field.column_height[i + minopos.y] = Math.Max(field.column_height[i + minopos.y], minopos.x + j + 1);
+                        break;
+                    }
+                }
+            }
             if (isTspin(ref field))
             {
                 Tspin = true;
@@ -402,6 +435,7 @@ namespace Jura_Knife_Tetris
             cp.height = this.height;
             cp.weight = this.weight;
             cp.path = this.path;
+
             return cp;
         }
 
@@ -441,11 +475,32 @@ namespace Jura_Knife_Tetris
 
         public int soft_drop_floor(ref simpboard field)
         {
-            int dist = 0;
-            while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            int dist = 900;
+
+            for (int i = 0; i < height; i++)
             {
-                minopos.x -= 1;
-                dist += 1;
+                for (int j = 0; j < weight; ++j)
+                {
+                    if (minofield[j, i] != 0)
+                    {
+                        dist = Math.Min(dist, minopos.x - field.column_height[i + minopos.y] + j);
+                        break;
+                    }
+                }
+            }
+            if (dist < 0)
+            {
+                dist = 0;
+                while (check_mino_ok(ref field, minopos.x - dist - 1, minopos.y))
+                {
+                    dist++;
+                }
+            }
+
+            if (dist > 0)
+            ////while (check_mino_ok(ref field, minopos.x - 1, minopos.y))
+            {
+                minopos.x -= dist;
                 spinlast = false;
             }
             return dist;
@@ -615,6 +670,19 @@ namespace Jura_Knife_Tetris
         {
             if (!check_mino_ok(ref field, minopos)) return false;
             soft_drop_floor(ref field);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = weight - 1; j >= 0; --j)
+                {
+                    if (minofield[j, i] != 0)
+                    {
+                        field.column_height[i + minopos.y] = Math.Max(field.column_height[i + minopos.y], minopos.x + j + 1);
+                        break;
+                    }
+                }
+            }
+
             if (isTspin(ref field))
             {
                 Tspin = true;

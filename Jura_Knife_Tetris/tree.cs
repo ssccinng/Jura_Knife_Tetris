@@ -171,44 +171,44 @@ namespace Jura_Knife_Tetris
                 chird.maxdepth = chird.depth;
                 chird.inplan = true;
                 chird.score = eval.evalfield(chird);
-                chird.score += eval.evalbattle(chird);
-                if (chird.holdT)
-                {
-                    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-                    tree bestT;
-                    int minscore = chird.score;
-                    foreach (mino t in Alltslot)
-                    {
-                        tree Tchird = chird.clone();
-                        Tchird.Board.piece = t;
-                        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                        Tchird.score = eval.evalfield(Tchird);
-                        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                //chird.score += eval.evalbattle(chird);
+                //if (chird.holdT)
+                //{
+                //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                //    tree bestT;
+                //    int minscore = chird.score;
+                //    foreach (mino t in Alltslot)
+                //    {
+                //        tree Tchird = chird.clone();
+                //        Tchird.Board.piece = t;
+                //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                //        Tchird.score = eval.evalfield(Tchird);
+                //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
 
-                        if (Tchird.score > minscore)
-                        {
-                            minscore = Tchird.score;
-                            bestT = Tchird;
-                        }
-                    }
-                    chird.score = minscore;
+                //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
+                //        {
+                //            minscore = Tchird.score;
+                //            bestT = Tchird;
+                //        }
+                //    }
+                //    chird.score = minscore;
 
-                }
+                //}
                 
                 // 回传父节点
                 
-                chird.updatefather(); // check update
+                //chird.updatefather(); // check update
                 treenode.Add(chird);
             }
 
             if (holdpiece == -1)
             {
-                
+
                 int holdidx = pieceidx + 1, nextnext = pieceidx + 2;
 
                 if (holdidx < bot.nextquene.Count)
                 {
-                    
+
 
                     Board.piece = defaultop.demino.getmino(bot.nextquene[holdidx]);
                     Board.piece.setpos(19, 3);
@@ -219,7 +219,7 @@ namespace Jura_Knife_Tetris
                         chird.Board.piece = m;
                         lock_piece_calc(ref chird.Board);
                         chird.finmino = m;
-                        
+
                         chird.ishold = true;
                         chird.holdpiece = nowpiece;
                         chird.father = this;
@@ -228,30 +228,30 @@ namespace Jura_Knife_Tetris
                         chird.maxdepth = chird.depth;
                         chird.inplan = true;
                         chird.score = eval.evalfield(chird);
-                        chird.score += eval.evalbattle(chird);
-                        if (chird.holdT)
-                        {
-                            List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-                            tree bestT;
-                            int minscore = chird.score;
-                            foreach (mino t in Alltslot)
-                            {
-                                tree Tchird = chird.clone();
-                                Tchird.Board.piece = t;
-                                Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                                Tchird.score = eval.evalfield(Tchird);
-                                Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                        //chird.score += eval.evalbattle(chird);
+                        //if (chird.holdT)
+                        //{
+                        //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                        //    tree bestT;
+                        //    int minscore = chird.score;
+                        //    foreach (mino t in Alltslot)
+                        //    {
+                        //        tree Tchird = chird.clone();
+                        //        Tchird.Board.piece = t;
+                        //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                        //        Tchird.score = eval.evalfield(Tchird);
+                        //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
 
-                                if (Tchird.score > minscore)
-                                {
-                                    minscore = Tchird.score;
-                                    bestT = Tchird;
-                                }
-                            }
-                            chird.score = minscore;
+                        //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
+                        //        {
+                        //            minscore = Tchird.score;
+                        //            bestT = Tchird;
+                        //        }
+                        //    }
+                        //    chird.score = minscore;
 
-                        }
-                        chird.updatefather();
+                        //}
+                        //chird.updatefather();
                         // 回传父节点
                         treenode.Add(chird);
                     }
@@ -274,7 +274,7 @@ namespace Jura_Knife_Tetris
                     chird.Board.piece = m;
                     lock_piece_calc(ref chird.Board);
                     chird.finmino = m;
-                    
+
                     chird.ishold = true;
                     chird.holdpiece = temp; // oops
                     chird.pieceidx = chirdidx;
@@ -283,30 +283,30 @@ namespace Jura_Knife_Tetris
                     chird.maxdepth = chird.depth;
                     chird.inplan = true;
                     chird.score = eval.evalfield(chird);
-                    chird.score += eval.evalbattle(chird);
-                    if (chird.holdT)
-                    {
-                        List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-                        tree bestT;
-                        int minscore = chird.score;
-                        foreach (mino t in Alltslot)
-                        {
-                            tree Tchird = chird.clone();
-                            Tchird.Board.piece = t;
-                            Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                            Tchird.score = eval.evalfield(Tchird);
-                            Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                    //chird.score += eval.evalbattle(chird);
+                    //if (chird.holdT)
+                    //{
+                    //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                    //    tree bestT;
+                    //    int minscore = chird.score;
+                    //    foreach (mino t in Alltslot)
+                    //    {
+                    //        tree Tchird = chird.clone();
+                    //        Tchird.Board.piece = t;
+                    //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                    //        Tchird.score = eval.evalfield(Tchird);
+                    //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
 
-                            if (Tchird.score > minscore)
-                            {
-                                minscore = Tchird.score;
-                                bestT = Tchird;
-                            }
-                        }
-                        chird.score = minscore;
+                    //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
+                    //        {
+                    //            minscore = Tchird.score;
+                    //            bestT = Tchird;
+                    //        }
+                    //    }
+                    //    chird.score = minscore;
 
-                    }
-                    chird.updatefather();
+                    //}
+                    //chird.updatefather();
                     // 回传父节点
                     treenode.Add(chird);
                 }

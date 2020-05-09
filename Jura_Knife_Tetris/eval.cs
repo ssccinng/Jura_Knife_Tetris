@@ -23,35 +23,43 @@ namespace Jura_Knife_Tetris
 
     class weights {
         public int[] height = { -120, -500, -2000 };
-        public int[] clear = { 0, -500, -200, -400, 1700}; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = { 0, 100, 700, 200}; // mini 1 2 3
+        public int[] clear = { 0, -700, -300, -400, 1700}; // 1 2 3 4 // combo时也许不一样
+        public int[] tspin = { 0, 1100, 2800, 200}; // mini 1 2 3
         public int wide = 100;
         public int b2b;
         public int b2b_clear;
-        public int wastedT;
+        public int wastedT = -50000;
         public int[] tslot = new int[4]; // mini 1 2 3
         public int movetime = -3; // 操作数
-        public int tslotnum; // t坑数目
-        public int holdT = 1000;
-        public int holdI = 400;
+        public int tslotnum; // t坑数目jla
+        public int holdT = 400;
+        public int holdI = 200;
+        public int perfectclear = 9999;
+
         public int fewcombo;
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack =600;
-        public int deephole = 1500;
-        public int deephole2 = 800;
+        public int downstack =4000;
+        public int deephole = 1000;
+        public int deephole2 = 400;
         public int deephole3 = 100;
         public int deltcol = 200;
-        public int safecost = 1200;
+        public int safecost = 120000;
         public int[] col_minhigh = { -10, -30, -20, 30, 50, 30, 30, -20, -30, -10 };
         
 
     }
-    static class eval
+    static class eval // 平整 无洞 易挖 奇偶性
     {
 
         static weights W = new weights();
+
+
+        //public static int evaloddeve(tree node)
+        //{
+        //    int xie = 0;
+        //}
         public static evalresult evalnode(tree node)
         {
             return new evalresult(); // pass
@@ -87,7 +95,7 @@ namespace Jura_Knife_Tetris
                         {
                             nextsafedis = Math.Max(nextsafedis, downcnt + 1);
                             nextsafedis = Math.Max(nextsafedis, colhight[i] - h); // 这个safedis需不需要下传 不依托与上层传递时 挖开这层的最少消行数
-                            
+                            // 安全距离失误？
                         }
                         else
                         {
@@ -125,7 +133,7 @@ namespace Jura_Knife_Tetris
                 {
                     if (colhight[i] >= h)
                     {
-                        score -= W.safecost * safedis;
+                        score -= W.safecost /**  Math.Max(nextsafedis - safedis, 0)*/;
                         if (colhight[i] - h > (int)(1.3 * (safedis - h)))
                         {
                             score -= W.downstack * (colhight[i] - h - (int)(1.3 * (safedis - h)));
@@ -159,12 +167,25 @@ namespace Jura_Knife_Tetris
                 score += W.holdI;
             if (node.Board.piece.Tspin && node.Board.piece.name == "T")
             {
-                score += W.tspin[node.Board.clearrow];
+                if (node.Board.piece.mini)
+                {
+                    score += W.tspin[0];
+                }else
+                {
+                    score += W.tspin[node.Board.clearrow];
+                }
+                
             }
             else
             {
                 score += W.clear[node.Board.clearrow];
+                
             }
+            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
+            {
+                score += W.wastedT;
+            }
+            //score
             return score;
         }
 

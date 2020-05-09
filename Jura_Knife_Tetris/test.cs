@@ -14,7 +14,7 @@ namespace Jura_Knife_Tetris
             bot.boardtree.Board.console_print(false);
             mino_gene mino_Gene = new mino_gene();
             Random rand = new Random();
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < 0; ++i)
             {
                 //bot.add_next(rand.Next() % 7);
                 bot.add_next(mino_Gene.genebag7int());
@@ -65,7 +65,7 @@ namespace Jura_Knife_Tetris
                 {
                     defaultop.demino.getmino(root.holdpiece).console_print();
                 }
-                //char a1 = Console.ReadKey().KeyChar;
+               char a1 = Console.ReadKey().KeyChar;
 
                 //char a2 = Console.ReadKey().KeyChar;
                 //foreach (tree a in bot.boardtree.treenode)
