@@ -116,14 +116,15 @@ namespace Jura_Knife_Tetris
         public mino(int[,] minofield, pos[,] kicktable, int stat, pos minopos, string name)
         {
             this.minofield =(int[,]) minofield.Clone();
-            this.kicktable = kicktable;
-            this.stat = stat;
+            this.kicktable = kicktable;  
             this.minopos = minopos.clone();
             this.name = name;
             this.locked = false;
             this.spinlast = false;
             height = minofield.GetLength(0);
             weight = minofield.GetLength(1);
+            this.stat = stat;
+            setstat(stat);
         }
 
         //public mino Clone()
@@ -158,7 +159,7 @@ namespace Jura_Knife_Tetris
         //    }
         //    return true;
         //}
-        private bool check_mino_ok(ref board field, int x, int y)
+        public bool check_mino_ok(ref board field, int x, int y)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -173,7 +174,7 @@ namespace Jura_Knife_Tetris
             }
             return true;
         }
-        private bool check_mino_ok(ref board field, pos p)
+        public bool check_mino_ok(ref board field, pos p)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -189,7 +190,7 @@ namespace Jura_Knife_Tetris
             return true;
         }
 
-        private bool check_mino_ok(ref board field, int x, int y, int[,] minofield)
+        public bool check_mino_ok(ref board field, int x, int y, int[,] minofield)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -205,7 +206,7 @@ namespace Jura_Knife_Tetris
             return true;
         }
 
-        private bool check_mino_ok(ref board field, pos p, int[,] minofield)
+        public bool check_mino_ok(ref board field, pos p, int[,] minofield)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -435,7 +436,8 @@ namespace Jura_Knife_Tetris
             cp.height = this.height;
             cp.weight = this.weight;
             cp.path = this.path;
-
+            cp.minopos.x = this.minopos.x;
+            cp.minopos.y = this.minopos.y;
             return cp;
         }
 
@@ -605,7 +607,7 @@ namespace Jura_Knife_Tetris
             return kick_try;
         }
 
-        private bool check_mino_ok(ref simpboard field, int x, int y)
+        public bool check_mino_ok(ref simpboard field, int x, int y)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -620,7 +622,7 @@ namespace Jura_Knife_Tetris
             }
             return true;
         }
-        private bool check_mino_ok(ref simpboard field, pos p)
+        public bool check_mino_ok(ref simpboard field, pos p)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -635,7 +637,7 @@ namespace Jura_Knife_Tetris
             }
             return true;
         }
-        private bool check_mino_ok(ref simpboard field, int x, int y, int[,] minofield)
+        public bool check_mino_ok(ref simpboard field, int x, int y, int[,] minofield)
         {
             for (int i = 0; i < height; ++i)
             {
@@ -651,7 +653,7 @@ namespace Jura_Knife_Tetris
             return true;
         }
 
-        private bool check_mino_ok(ref simpboard field, pos p, int[,] minofield)
+        public bool check_mino_ok(ref simpboard field, pos p, int[,] minofield)
         {
             for (int i = 0; i < height; ++i)
             {

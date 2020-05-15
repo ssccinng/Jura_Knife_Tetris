@@ -8,7 +8,7 @@ namespace Jura_Knife_Tetris
     {
 
         private bool disposed = false;
-        public int score = 0;
+        public double score = 0;
         // 如果能保持连击 分数就使用叶子节点最高的评价
         // 如果不行 需要根据场地高度判断适不适合
 
@@ -26,6 +26,7 @@ namespace Jura_Knife_Tetris
         public int clearrow = 0;
         public int pieceidx = 0;
         public int afttspinscore = 0;
+        public evalresult res;
 
         public bool inplan = true;
         // 预测块会到来的顺序
@@ -170,7 +171,8 @@ namespace Jura_Knife_Tetris
                 chird.depth = depth + 1;
                 chird.maxdepth = chird.depth;
                 chird.inplan = true;
-                chird.score = eval.evalfield(chird);
+                chird.res = eval.evalfield(chird);
+                chird.score = chird.res.score;
                 //chird.score += eval.evalbattle(chird);
                 //if (chird.holdT)
                 //{
@@ -194,9 +196,9 @@ namespace Jura_Knife_Tetris
                 //    chird.score = minscore;
 
                 //}
-                
+
                 // 回传父节点
-                
+
                 //chird.updatefather(); // check update
                 treenode.Add(chird);
             }
@@ -227,7 +229,8 @@ namespace Jura_Knife_Tetris
                         chird.depth = depth + 1;
                         chird.maxdepth = chird.depth;
                         chird.inplan = true;
-                        chird.score = eval.evalfield(chird);
+                        chird.res = eval.evalfield(chird);
+                        chird.score = chird.res.score;
                         //chird.score += eval.evalbattle(chird);
                         //if (chird.holdT)
                         //{
@@ -282,7 +285,8 @@ namespace Jura_Knife_Tetris
                     chird.depth = depth + 1;
                     chird.maxdepth = chird.depth;
                     chird.inplan = true;
-                    chird.score = eval.evalfield(chird);
+                    chird.res = eval.evalfield(chird);
+                    chird.score = chird.res.score;
                     //chird.score += eval.evalbattle(chird);
                     //if (chird.holdT)
                     //{

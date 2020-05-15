@@ -43,29 +43,43 @@ namespace Jura_Knife_Tetris
                 //    //Console.WriteLine(chird.finmino.minopos.y);
                 //    //Console.WriteLine(chird.finmino.stat);
                 //    Console.WriteLine(chird.finmino.name);
-                //    int kk = 0;
-                //    eval.evalhole(chird, chird.Board.updatecol(), 0, ref kk);
-                //    Console.WriteLine(kk);
+                //    foreach (int a in chird.Board.column_height)
+                //    {
+                //        Console.Write(a);
+                //        Console.Write(" ");
+                //    }
+                //    Console.WriteLine("");
+                //    double kk = 0;
+                //    //eval.evalhole(chird, chird.Board.column_height, 0, ref kk);
+                //    chird.res.print();
                 //    //char a1 = Console.ReadKey().KeyChar;
                 //}
                 tree root = bot.requset_next_move();
                 
 
                 //eval.evalfield(root);
-                Console.Clear();
+                //Console.Clear();
                 //root.Board.console_print(true, root.finmino);
                 root.Board.console_print(false);
+                Console.WriteLine("resroot");
                 Console.WriteLine(root.score);
-                Console.WriteLine(bot.nodequeue.Count) ;
+                Console.WriteLine(bot.nodequeue.Count);
                 Console.WriteLine(root.pieceidx);
                 Console.WriteLine(root.Board.piece.name);
+                foreach(int a in root.Board.column_height)
+                {
+                    Console.Write(a);
+                    Console.Write(" ");
+                }
+                Console.WriteLine("");
+                root.res.print();
                 Console.WriteLine("-----------------------------------------------");
                 root.finmino.console_print();
                 if ( root.holdpiece != -1)
                 {
                     defaultop.demino.getmino(root.holdpiece).console_print();
                 }
-               char a1 = Console.ReadKey().KeyChar;
+               //char a1 = Console.ReadKey().KeyChar;
 
                 //char a2 = Console.ReadKey().KeyChar;
                 //foreach (tree a in bot.boardtree.treenode)

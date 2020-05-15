@@ -12,6 +12,10 @@ namespace Jura_Knife_Tetris
             bool[,,] visit = new bool[42, 12, 4];
             bool[,,] visit1 = new bool[42, 12, 4];
             Queue<mino_stat> minoque = new Queue<mino_stat>();
+            if (!Board.piece.check_mino_ok(ref Board, Board.piece.minopos))
+            {
+                return null;
+            }
             minoque.Enqueue(new mino_stat(Board.piece.minopos, Board.piece.stat));
             visit[Board.piece.minopos.x + 2, Board.piece.minopos.y + 2, Board.piece.stat] = true;
             mino_gene minogen = new mino_gene();

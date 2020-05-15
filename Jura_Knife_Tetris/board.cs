@@ -153,6 +153,10 @@ namespace Jura_Knife_Tetris
             for (int i = 0; i < column_height.Length; ++i)
             {
                 column_height[i] -= cntclear;
+                while (!checkfield(column_height[i] - 1, i))
+                {
+                    column_height[i]--;
+                }
             }
             return cntclear;
         }
@@ -326,7 +330,22 @@ namespace Jura_Knife_Tetris
             return true;
         }
 
+        //public board clone()
+        //{
+        //    board cp = new board();
 
+        //    cp.field = (int[,])field.Clone();
+        //    cp.isb2b = isb2b;
+        //    cp.combo = combo;
+        //    cp.column_height = (int[])column_height.Clone();
+        //    if (piece != null)
+        //        cp.piece = piece.clone();
+        //    if (holdpiece != null)
+        //        cp.holdpiece = holdpiece.clone();
+        //    cp.isdead = isdead;
+        //    cp.garbage_cnt = garbage_cnt;
+        //    return cp;
+        //}
         public simpboard tosimple()
         {
             simpboard sBoard = new simpboard();
@@ -477,6 +496,9 @@ namespace Jura_Knife_Tetris
             for (int i = 0; i < column_height.Length; ++i)
             {
                 column_height[i] -= cntclear;
+                while (!checkfield(column_height[i] - 1, i)) {
+                    column_height[i]--;
+                }
             }
             return clearrow = cntclear;
         }

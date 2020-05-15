@@ -122,6 +122,7 @@ namespace Jura_Knife_Tetris
                         //if (F.piece.mini && row == 1)
                         //    Console.WriteLine("mini");
                     }
+                    
                     char a = Console.ReadKey().KeyChar;
 
                     switch (a)

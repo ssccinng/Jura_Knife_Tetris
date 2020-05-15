@@ -40,7 +40,7 @@ namespace Jura_Knife_Tetris
                 var o = b.score - a.score;
                 var q = b.maxdepth - a.maxdepth;
                 if (q != 0) return q;
-                return o;
+                return (int)(o * 1);
             });
 
             int aa = nodedep(boardtree);
@@ -201,7 +201,7 @@ namespace Jura_Knife_Tetris
                     var o = b.score - a.score;
                     //var q = b.maxdepth - a.maxdepth;
                     //if (q != 0) return q;
-                    return o;
+                    return (int)(o * 1); ;
                 }
                     );
                 // 全重置 haishinodequeue
@@ -245,7 +245,7 @@ namespace Jura_Knife_Tetris
                         var o = b.score - a.score;
                         var q = b.maxdepth - a.maxdepth;
                         if (q != 0) return q;
-                        return o;
+                        return (int)(o * 1); ;
                     });
 
                 }
