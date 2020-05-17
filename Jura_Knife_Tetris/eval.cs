@@ -43,7 +43,7 @@ namespace Jura_Knife_Tetris
 
     class weights
     {
-        public int[] height = { -200, -500, -2000 };
+        public int[] height = { -200, -500, -2000, -3000 };
         public int[] clear = { 0, -700, -300, -400, 1700 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
         public int wide = -300;
@@ -115,8 +115,9 @@ namespace Jura_Knife_Tetris
             colh[0] = colh[colh.Length - 1] = 60;
             int height = Math.Max(Math.Max(colh[4], colh[5]), Math.Max(colh[6], colh[7]));
             // 高度评分
-            evalresult.height = height * W.height[0];
-            score += height * W.height[0];
+
+            evalresult.height = height * W.height[height / 7];
+            score += height * W.height[height / 7];
 
             // 场地最低点
             int minhigh = 40;
