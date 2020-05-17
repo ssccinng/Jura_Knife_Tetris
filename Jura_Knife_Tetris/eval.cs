@@ -46,7 +46,7 @@ namespace Jura_Knife_Tetris
         public int[] height = { -200, -500, -2000, -3000 };
         public int[] clear = { 0, -700, -300, -400, 1700 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
-        public int wide = -300;
+        public int wide = -500;
         public int b2b;
         public int b2b_clear;
         public int wastedT = -50000;
@@ -62,15 +62,15 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack = -1000;
+        public int downstack = -1200;
         public int deephole = -1000;
         public int deephole2 = 400;
         public int deephole3 = 100;
-        public int deltcol = -300;
-        public int safecost = -1500;
-        public int parity = -000;
-        public int dephigh = -1000;
-        public int linefull = -0;
+        public int deltcol = -500;
+        public int safecost = -1700;
+        public int parity = -500;
+        public int dephigh = -1500;
+        public int linefull = -5; // -5
         public int[] col_minhigh = { -20, -30, -40, 30, 50, 30, 30, -40, -30, -20 };
 
 
@@ -171,8 +171,8 @@ namespace Jura_Knife_Tetris
             foreach (int a in deepholequeue)
             {
                 //score += W.deephole * a; // 加入深洞底部厚度
-                score += W.deephole * a * 1;
-                evalresult.deephole += W.deephole * a * 1; // duojinzhicai
+                score += W.deephole * a * deepholequeue.Count;
+                evalresult.deephole += W.deephole * a * deepholequeue.Count; // duojinzhicai
             }
             deepholequeue.Clear();
 
