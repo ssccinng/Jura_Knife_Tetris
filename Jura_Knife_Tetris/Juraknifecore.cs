@@ -18,7 +18,10 @@ namespace Jura_Knife_Tetris
         public tree boardtree;
         //public Queue<int> nextquenesour = new Queue<int>();
         //public Queue<int> nextquene = new Queue<int>();
-        public List<int> nextquene = new List<int>();
+        //public List<int> nextquene = new List<int>();
+        public int[] nextqueue = new int[35];
+        public int nextcnt = 0;
+
         public int hold;
 
         public bool isdead
@@ -37,10 +40,10 @@ namespace Jura_Knife_Tetris
             //    return false;
             boardtree.treenode.Sort((a, b) =>
             {
-                var o = b.score - a.score;
+                var o = (b.score - a.score);
                 var q = b.maxdepth - a.maxdepth;
                 if (q != 0) return q;
-                return (int)(o * 1);
+                return (o * 1);
             });
 
             int aa = nodedep(boardtree);
@@ -102,7 +105,7 @@ namespace Jura_Knife_Tetris
         public void nodeadd(tree node)
         {
 
-            if (node.inplan && node.pieceidx < nextquene.Count ) nodequeue.Add(node);
+            if (node.inplan && node.pieceidx < nextcnt ) nodequeue.Add(node);
 
             //if (node.treenode.Count == 0 && !node.useless && node.pieceidx < nextquene.Count && !node.isextend) nodequeue.Add(node);
             //cnt += node.treenode.Count;
@@ -157,7 +160,8 @@ namespace Jura_Knife_Tetris
 
         public void add_next(int a)
         {
-            nextquene.Add(a);
+            //nextquene.Add(a);
+            nextqueue[nextcnt++ % 30] = a;
 
         }
 
@@ -198,7 +202,7 @@ namespace Jura_Knife_Tetris
                 limit = Math.Min(nodequeue.Count, 6);
                 nodequeue.Sort((a, b) =>
                 {
-                    var o = b.score - a.score;
+                    var o = (b.score - a.score);
                     //var q = b.maxdepth - a.maxdepth;
                     //if (q != 0) return q;
                     return (int)(o * 1); ;
@@ -216,7 +220,7 @@ namespace Jura_Knife_Tetris
 
                     
 
-                    if (nextquene.Count <= nodequeue[j].pieceidx || !nodequeue[j].inplan)
+                    if (nextcnt <= nodequeue[j].pieceidx || !nodequeue[j].inplan)
                     {
                         continue;
                     }
@@ -242,7 +246,7 @@ namespace Jura_Knife_Tetris
                     node.isextend = true;
                     node.treenode.Sort((a, b) =>
                     {
-                        var o = b.score - a.score;
+                        var o = (int)(b.score - a.score);
                         var q = b.maxdepth - a.maxdepth;
                         if (q != 0) return q;
                         return (int)(o * 1); ;

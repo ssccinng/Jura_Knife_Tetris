@@ -8,7 +8,7 @@ namespace Jura_Knife_Tetris
     {
 
         private bool disposed = false;
-        public double score = 0;
+        public int score = 0;
         // 如果能保持连击 分数就使用叶子节点最高的评价
         // 如果不行 需要根据场地高度判断适不适合
 
@@ -149,9 +149,9 @@ namespace Jura_Knife_Tetris
 
         public void findalladd(Juraknifecore bot)
         {
-            if (pieceidx >= bot.nextquene.Count)
+            if (pieceidx >= bot.nextcnt)
                 return;
-            this.nowpiece = bot.nextquene[pieceidx];
+            this.nowpiece = bot.nextqueue[pieceidx % 30];
             isextend = true;
             inplan = false;
             Board.piece = defaultop.demino.getmino(nowpiece);
@@ -172,7 +172,7 @@ namespace Jura_Knife_Tetris
                 chird.maxdepth = chird.depth;
                 chird.inplan = true;
                 chird.res = eval.evalfield(chird);
-                chird.score = chird.res.score;
+                chird.score = (int)chird.res.score;
                 //chird.score += eval.evalbattle(chird);
                 //if (chird.holdT)
                 //{
@@ -208,11 +208,11 @@ namespace Jura_Knife_Tetris
 
                 int holdidx = pieceidx + 1, nextnext = pieceidx + 2;
 
-                if (holdidx < bot.nextquene.Count)
+                if (holdidx < bot.nextcnt)
                 {
 
 
-                    Board.piece = defaultop.demino.getmino(bot.nextquene[holdidx]);
+                    Board.piece = defaultop.demino.getmino(bot.nextqueue[holdidx % 30]);
                     Board.piece.setpos(19, 3);
                     List<mino> allpos2 = seacher.findallplace(Board);
                     foreach (mino m in allpos2)
@@ -230,7 +230,7 @@ namespace Jura_Knife_Tetris
                         chird.maxdepth = chird.depth;
                         chird.inplan = true;
                         chird.res = eval.evalfield(chird);
-                        chird.score = chird.res.score;
+                        chird.score = (int)chird.res.score;
                         //chird.score += eval.evalbattle(chird);
                         //if (chird.holdT)
                         //{
@@ -286,7 +286,7 @@ namespace Jura_Knife_Tetris
                     chird.maxdepth = chird.depth;
                     chird.inplan = true;
                     chird.res = eval.evalfield(chird);
-                    chird.score = chird.res.score;
+                    chird.score = (int)chird.res.score;
                     //chird.score += eval.evalbattle(chird);
                     //if (chird.holdT)
                     //{

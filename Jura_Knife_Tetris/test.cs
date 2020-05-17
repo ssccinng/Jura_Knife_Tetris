@@ -34,26 +34,26 @@ namespace Jura_Knife_Tetris
                 bot.add_next(mino_Gene.genebag7int());
                 //bot.add_next(q);
                 bot.extend_node();
-
-                //foreach (tree chird in bot.boardtree.treenode)
-                //{
-                //    chird.Board.console_print(false);
-                //    Console.WriteLine(chird.score);
-                //    //Console.WriteLine(chird.finmino.minopos.x);
-                //    //Console.WriteLine(chird.finmino.minopos.y);
-                //    //Console.WriteLine(chird.finmino.stat);
-                //    Console.WriteLine(chird.finmino.name);
-                //    foreach (int a in chird.Board.column_height)
-                //    {
-                //        Console.Write(a);
-                //        Console.Write(" ");
-                //    }
-                //    Console.WriteLine("");
-                //    double kk = 0;
-                //    //eval.evalhole(chird, chird.Board.column_height, 0, ref kk);
-                //    chird.res.print();
-                //    //char a1 = Console.ReadKey().KeyChar;
-                //}
+                if (bot.boardtree.treenode[0].res.score < -30000)
+                foreach (tree chird in bot.boardtree.treenode)
+                {
+                    chird.Board.console_print(false);
+                    Console.WriteLine(chird.score);
+                    //Console.WriteLine(chird.finmino.minopos.x);
+                    //Console.WriteLine(chird.finmino.minopos.y);
+                    //Console.WriteLine(chird.finmino.stat);
+                    Console.WriteLine(chird.finmino.name);
+                    foreach (int a in chird.Board.column_height)
+                    {
+                        Console.Write(a);
+                        Console.Write(" ");
+                    }
+                    Console.WriteLine("");
+                    double kk = 0;
+                    //eval.evalhole(chird, chird.Board.column_height, 0, ref kk);
+                    chird.res.print();
+                    //char a1 = Console.ReadKey().KeyChar;
+                }
                 tree root = bot.requset_next_move();
                 
 
