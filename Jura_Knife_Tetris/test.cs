@@ -34,7 +34,7 @@ namespace Jura_Knife_Tetris
                 bot.add_next(mino_Gene.genebag7int());
                 //bot.add_next(q);
                 bot.extend_node();
-                if (bot.boardtree.treenode[0].res.score < -10000) {
+                if (bot.boardtree.treenode[0].res.score < -1000000) {
                     Console.WriteLine("ressearch");
                     foreach (tree chird in bot.boardtree.treenode)
 
@@ -63,13 +63,17 @@ namespace Jura_Knife_Tetris
                 //eval.evalfield(root);
                 //Console.Clear();
                 //root.Board.console_print(true, root.finmino);
-                if (root.pieceidx % 1000 == 0 || root.score < -10000){
+                if (root.pieceidx % 1000 == 0 || root.score < -1000000)
+                {
                     root.Board.console_print(false);
                     Console.WriteLine("resroot");
                     Console.WriteLine(root.score);
                     Console.WriteLine(bot.nodequeue.Count);
-                    Console.WriteLine(root.pieceidx); }
-                //Console.WriteLine(root.Board.piece.name);
+                    Console.WriteLine(root.pieceidx);
+                    Console.WriteLine(root.Board.piece.name);
+                    root.res.print();
+
+                }
                 //foreach(int a in root.Board.column_height)
                 //{
                 //    Console.Write(a);
