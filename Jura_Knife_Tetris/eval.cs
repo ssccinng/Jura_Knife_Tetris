@@ -251,72 +251,72 @@ namespace Jura_Knife_Tetris
             int parity = evalparity(node);
             //score += parity * W.parity;
 
-            //evalresult.hole += evalhole(node);
-            evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
+            evalresult.hole = evalhole(node);
+            //evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
             score += evalresult.hole;
             evalresult.score = score;
-            
-            
-            
+
+
+
 
             return evalresult;
         } //场地评分
 
-        public static double evalhole(tree node)
-        {
-            double score = 0;
-            int roof = 0;
-            foreach (int a in node.Board.column_height)
-            {
-                roof = Math.Max(a, roof);
-            }
-            int digrow = 0; // 上层被挖开的所需层数
-            double[] DIG = new double[node.Board.column_height.Length];
+        //public static double evalhole(tree node)
+        //{
+        //    double score = 0;
+        //    int roof = 0;
+        //    foreach (int a in node.Board.column_height)
+        //    {
+        //        roof = Math.Max(a, roof);
+        //    }
+        //    int digrow = 0; // 上层被挖开的所需层数
+        //    double[] DIG = new double[node.Board.column_height.Length];
 
-            int[] fulldig = new int[40];
+        //    int[] fulldig = new int[40];
 
-            for (int row = roof - 1; row >= 0; --row)
-            {
-                int nextdig = 0;// 该层被挖开的所需层数
-                for (int cell = 0; cell < node.Board.column_height.Length; ++cell)
-                {
-                    if (!node.Board.field[row, cell])
-                    {
-                        fulldig[row]++;
-                        //if (row + 1 < node.Board.column_height[cell])
-                        if (node.Board.field[row + 1, cell])
-                        {
-                            int temp = Math.Max(digrow, fulldig[row + 1] - fulldig[node.Board.column_height[cell]]);
-                            nextdig = Math.Max(temp, nextdig);
-                            score += temp * W.downstack;
-                        }
-                        else
-                        {
-                            if (DIG[cell] < 1000000) 
-                                DIG[cell] *= 5;
-                            score += DIG[cell] * W.downstack;
-                            
-                        }
-                    }
-                }
-                fulldig[row] += fulldig[row + 1];
-                for (int cell = 0; cell < node.Board.column_height.Length; ++cell)
-                {
-                    if (node.Board.field[row + 1, cell])
-                    {
-                        DIG[cell] = nextdig;
-                    }
+        //    for (int row = roof - 1; row >= 0; --row)
+        //    {
+        //        int nextdig = 0;// 该层被挖开的所需层数
+        //        for (int cell = 0; cell < node.Board.column_height.Length; ++cell)
+        //        {
+        //            if (!node.Board.field[row, cell])
+        //            {
+        //                fulldig[row]++;
+        //                //if (row + 1 < node.Board.column_height[cell])
+        //                if (node.Board.field[row + 1, cell])
+        //                {
+        //                    int temp = Math.Max(digrow, fulldig[row + 1] - fulldig[node.Board.column_height[cell]]);
+        //                    nextdig = Math.Max(temp, nextdig);
+        //                    score += temp * W.downstack;
+        //                }
+        //                else
+        //                {
+        //                    if (DIG[cell] < 1000000) 
+        //                        DIG[cell] *= 5;
+        //                    score += DIG[cell] * W.downstack;
 
-                }
+        //                }
+        //            }
+        //        }
+        //        fulldig[row] += fulldig[row + 1];
+        //        for (int cell = 0; cell < node.Board.column_height.Length; ++cell)
+        //        {
+        //            if (node.Board.field[row + 1, cell])
+        //            {
+        //                DIG[cell] = nextdig;
+        //            }
 
-                   digrow = nextdig;
+        //        }
 
-
-            }
+        //           digrow = nextdig;
 
 
-            return score;
-        } // 空洞（可挖性评分;
+        //    }
+
+
+        //    return score;
+        //} // 空洞（可挖性评分;
 
         public static evalresult evalnode(tree node)
         {
@@ -330,6 +330,87 @@ namespace Jura_Knife_Tetris
         //{
 
         //}
+
+
+
+        public static int evalhole(tree node)
+        {
+            int[] colhight = node.Board.column_height;
+            int roof = 0;
+            int score = 0;
+            for (int i = 0; i < colhight.Length; ++i)
+            {
+                roof = Math.Max(colhight[i], roof);
+            }
+            int nextsafedis = 0;
+            int safedis = 0; // 该行的安全堆叠层数基数 即上一次层的挖开数 + 1
+            for (int row = roof - 1; row >= 0; --row)
+            {
+                bool canclear = true;
+                safedis = nextsafedis;
+                int downcnt = safedis;
+                for (int i = 0; i < 10; ++i)
+                {
+                    if (!node.Board.field[row, i]) // colh
+                    {
+
+                        if (colhight[i] >= row + 1)
+                        {
+                            canclear = false; // 最好检测一下是否封闭
+                            if (node.Board.field[row + 1, i])
+                            {
+                                nextsafedis = Math.Max(nextsafedis, downcnt + 1);
+                                nextsafedis = Math.Max(nextsafedis, colhight[i] - row - 1); // 这个safedis需不需要下传 不依托与上层传递时 挖开这层的最少消行数
+                                                                                          // 安全距离失误？
+                            }
+                            else
+                            {
+                                // 与上一个洞连接 理应传递上一层洞的挖开数
+                                nextsafedis = Math.Max(nextsafedis, downcnt);
+                            }
+                        }
+
+                        //if (colhight[i] == h + 1) // 这东西有啥用
+                        //{
+                        //    // 露天
+                        //    holecnt++;
+                        //}
+                        //else if (colhight[i] >= h)
+                        //{
+                        //    canclear = false;
+                        //    holecnt++;
+                        //    // 依托于顶部
+                        //}
+                    }
+                }
+                // 空格数目
+                // 如果顶上也是洞 再减
+
+                if (canclear)
+                {
+                    nextsafedis = 0;
+                    safedis = 0;
+                }
+
+                for (int i = 0; i < 10; ++i) //洞的层数 需要增加
+                {
+                    if (!node.Board.field[row, i]) // colh 检查！！ 检查算法
+                    {
+                        if (colhight[i] >= row + 1)
+                        {
+                            score += W.safecost * safedis /**  Math.Max(nextsafedis - safedis, 0)*/;
+                            if (colhight[i] - row - 1 > (int)(1.3 * (safedis - row - 1)))
+                            {
+                                score += W.downstack * (colhight[i] - row - 1 - (int)(1.3 * (safedis - row - 1)));
+                            }
+                        }
+                    }
+                }
+
+            }
+            return score;
+        }
+
 
         public static int evalhole(tree node, int[] colhight, int h, ref int score) // 造洞的分析 边缘空洞
         {
