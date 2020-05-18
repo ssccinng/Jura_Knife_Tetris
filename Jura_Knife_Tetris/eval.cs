@@ -62,12 +62,12 @@ namespace Jura_Knife_Tetris
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
-        public int downstack = -1200;
+        public int downstack = -1300;
         public int deephole = -1000;
         public int deephole2 = 400;
         public int deephole3 = 100;
         public int deltcol = -500;
-        public int safecost = -1700;
+        public int safecost = -1000;
         public int parity = -500;
         public int dephigh = -1500;
         public int linefull = -5; // -5
@@ -351,6 +351,7 @@ namespace Jura_Knife_Tetris
             }
             int nextsafedis = 0;
             int safedis = 0; // 该行的安全堆叠层数基数 即上一次层的挖开数 + 1
+            // 加入dig
             int[] fulldig = new int[40];
             for (int row = roof - 1; row >= 0; --row)
             {

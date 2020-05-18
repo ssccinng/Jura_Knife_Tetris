@@ -157,8 +157,8 @@ namespace Jura_Knife_Tetris
             Board.piece = defaultop.demino.getmino(nowpiece);
             Board.piece.setpos(19, 3);
             List<mino> allpos = seacher.findallplace(Board);
-            if (allpos == null) { tree chird = clone(); chird.isdead = true; chird.inplan = false; chird.isextend = true; treenode.Add(chird); return; };
             int chirdidx = pieceidx + 1;
+            if (allpos == null) { tree chird = clone(); chird.isdead = true; chird.pieceidx = chirdidx; chird.inplan = false; chird.isextend = true; treenode.Add(chird); return; };
             foreach (mino m in allpos)
             {
                 tree chird = clone();
