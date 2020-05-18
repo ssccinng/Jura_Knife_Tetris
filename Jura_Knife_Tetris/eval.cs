@@ -46,7 +46,7 @@ namespace Jura_Knife_Tetris
         public int[] height = { -200, -500, -2000, -3000 };
         public int[] clear = { 0, -700, -300, -400, 1700 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
-        public int wide = -500;
+        public int wide = -300;
         public int b2b;
         public int b2b_clear;
         public int wastedT = -50000;
@@ -401,8 +401,8 @@ namespace Jura_Knife_Tetris
                 fulldig[row]+= fulldig[row + 1] ;
                 if (canclear)
                 {
-                    nextsafedis = 0;
-                    safedis = 0;
+                    nextsafedis = safedis;
+                    //safedis = 0;
                 }
 
                 for (int i = 0; i < 10; ++i) //洞的层数 需要增加
@@ -415,6 +415,10 @@ namespace Jura_Knife_Tetris
                             if (colhight[i] - row - 1 > (int)(1.3 * (safedis - row - 1)))
                             {
                                 score += W.downstack * (colhight[i] - row - 1 - (int)(1.3 * (safedis - row - 1)));
+                            }
+                            else if (colhight[i] - row - 1 < (int)((safedis - row - 1)))
+                            {
+                                score += W.downstack * ((int)((safedis - row - 1)) - colhight[i] + row + 1);
                             }
                         }
                     }

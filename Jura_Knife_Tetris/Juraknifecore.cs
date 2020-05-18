@@ -243,6 +243,7 @@ namespace Jura_Knife_Tetris
 
                     cnt++;
                     if (!node.isextend) node.findalladd(this);
+                    //if (node.isdead) return;
                     node.isextend = true;
                     node.treenode.Sort((a, b) =>
                     {

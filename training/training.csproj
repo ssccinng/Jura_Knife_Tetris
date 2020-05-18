@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Jura_Knife_Tetris\Jura_Knife_Tetris.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -26,7 +26,7 @@ namespace Jura_Knife_Tetris
             int t = 7;
 
             //int[] nextqq = { 3, 1, 6, 2, 0, 5, 2, 1, 4, 0, 1, 6, 5 };
-
+            Queue<tree> ans = new Queue<tree>();
             while (true)
             //foreach (int q in nextqq)
             {
@@ -34,32 +34,33 @@ namespace Jura_Knife_Tetris
                 bot.add_next(mino_Gene.genebag7int());
                 //bot.add_next(q);
                 bot.extend_node();
-                if (bot.boardtree.treenode[0].res.score < -1000000) {
-                    Console.WriteLine("ressearch");
-                    foreach (tree chird in bot.boardtree.treenode)
+                //if (bot.boardtree.treenode[0].res.score < -1000000) {
+                //    Console.WriteLine("ressearch");
+                //    foreach (tree chird in bot.boardtree.treenode)
 
-                {
-                    chird.Board.console_print(false);
-                    Console.WriteLine(chird.score);
-                    //Console.WriteLine(chird.finmino.minopos.x);
-                    //Console.WriteLine(chird.finmino.minopos.y);
-                    //Console.WriteLine(chird.finmino.stat);
-                    Console.WriteLine(chird.finmino.name);
-                    foreach (int a in chird.Board.column_height)
-                    {
-                        Console.Write(a);
-                        Console.Write(" ");
-                    }
-                    Console.WriteLine("");
-                    double kk = 0;
-                    //eval.evalhole(chird, chird.Board.column_height, 0, ref kk);
-                    chird.res.print();
-                    //char a1 = Console.ReadKey().KeyChar;
-                }
-                }
+                //{
+                //    chird.Board.console_print(false);
+                //    Console.WriteLine(chird.score);
+                //    //Console.WriteLine(chird.finmino.minopos.x);
+                //    //Console.WriteLine(chird.finmino.minopos.y);
+                //    //Console.WriteLine(chird.finmino.stat);
+                //    Console.WriteLine(chird.finmino.name);
+                //    foreach (int a in chird.Board.column_height)
+                //    {
+                //        Console.Write(a);
+                //        Console.Write(" ");
+                //    }
+                //    Console.WriteLine("");
+                //    double kk = 0;
+                //    //eval.evalhole(chird, chird.Board.column_height, 0, ref kk);
+                //    chird.res.print();
+                //    //char a1 = Console.ReadKey().KeyChar;
+                //}
+                //}
                 tree root = bot.requset_next_move();
-
-
+                if (root.isdead) break;
+                //ans.Enqueue(root);
+                //if (ans.Count > 200) ans.Dequeue();
                 //eval.evalfield(root);
                 //Console.Clear();
                 //root.Board.console_print(true, root.finmino);
@@ -87,7 +88,7 @@ namespace Jura_Knife_Tetris
                 //{
                 //    defaultop.demino.getmino(root.holdpiece).console_print();
                 //}
-               //char a1 = Console.ReadKey().KeyChar;
+                //char a1 = Console.ReadKey().KeyChar;
 
                 //char a2 = Console.ReadKey().KeyChar;
                 //foreach (tree a in bot.boardtree.treenode)
@@ -108,6 +109,17 @@ namespace Jura_Knife_Tetris
                 //    }
 
                 //}
+            }
+
+            foreach (tree root in ans)
+            {
+                root.Board.console_print(false);
+                Console.WriteLine("resroot");
+                Console.WriteLine(root.score);
+                Console.WriteLine(bot.nodequeue.Count);
+                Console.WriteLine(root.pieceidx);
+                Console.WriteLine(root.Board.piece.name);
+                root.res.print();
             }
         }
     }
