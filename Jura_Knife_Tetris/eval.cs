@@ -373,9 +373,9 @@ namespace Jura_Knife_Tetris
                             canclear = false; // 最好检测一下是否封闭
                             if (node.Board.field[row + 1, i])
                             {
-                                int temp = Math.Max(downcnt + 1, colhight[i] - row - 1);
+                                int temp = Math.Max(downcnt, colhight[i] - row - 1) + 1;
                                 //score += W.safecost * temp;
-                                score += W.linefull * (fulldig[row + 1] - fulldig[row + 1 + safedis]);
+                                score += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
                                 nextsafedis = Math.Max(nextsafedis, downcnt + 1);
                                 nextsafedis = Math.Max(nextsafedis, colhight[i] - row - 1); // 这个safedis需不需要下传 不依托与上层传递时 挖开这层的最少消行数
                                                                                           // 安全距离失误？
@@ -384,6 +384,8 @@ namespace Jura_Knife_Tetris
                             {
                                 // 与上一个洞连接 理应传递上一层洞的挖开数
                                 //score += W.safecost * safedis;
+                                int temp = Math.Max(downcnt, colhight[i] - row - 1) + 1;
+                                score += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
                                 nextsafedis = Math.Max(nextsafedis, downcnt);
                             }
                             
