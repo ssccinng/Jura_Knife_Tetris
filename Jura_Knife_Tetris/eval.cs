@@ -96,7 +96,10 @@ namespace Jura_Knife_Tetris
                     {
                         parity += 1;
                     }
-                    else
+                }
+                else
+                {
+                    if ((i & 1) == 1)
                     {
                         parity -= 1;
                     }
@@ -257,8 +260,8 @@ namespace Jura_Knife_Tetris
 
             // 奇偶性
 
-            //int parity = evalparity(node);
-            //score += parity * W.parity;
+            int parity = evalparity(node);
+            score += parity * W.parity;
 
             evalresult.hole = evalhole(node);
             //evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
