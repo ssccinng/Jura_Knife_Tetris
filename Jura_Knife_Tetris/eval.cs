@@ -14,6 +14,7 @@ namespace Jura_Knife_Tetris
         public bool clearinst;// 是否能立即消除
 
         public int deephole = 0;
+        public int parity = 0;
         public int wide = 0;
         public int Continuity = 0;
         public int hole = 0;
@@ -29,8 +30,9 @@ namespace Jura_Knife_Tetris
             Console.WriteLine("wide = {0}", wide);
             Console.WriteLine("Continuity = {0}", Continuity);
             Console.WriteLine("hole = {0}", hole);
-            Console.WriteLine("deephole = {0}", deephole);
+            Console.WriteLine("deephole = {0}", parity);
             Console.WriteLine("minidx = {0}", minidx);
+            Console.WriteLine("minhigh = {0}", minhigh);
             Console.WriteLine("minhigh = {0}", minhigh);
         }
         //public evalresult()
@@ -43,7 +45,7 @@ namespace Jura_Knife_Tetris
 
     class weights
     {
-        public int[] height = { -200, -500, -2000, -3000 };
+        public int[] height = { -200, -500, -2000, -5000, -9999 };
         public int[] clear = { 0, -700, -300, -400, 1700 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
         public int wide = -300;
@@ -67,7 +69,7 @@ namespace Jura_Knife_Tetris
         public int deephole2 = 400;
         public int deephole3 = 100;
         public int deltcol = -500;
-        public int safecost = -1000;
+        public int safecost = -1700;
         public int parity = -500;
         public int dephigh = -1500;
         public int linefull = -5; // -5
@@ -100,7 +102,7 @@ namespace Jura_Knife_Tetris
                     }
                 }
             }
-            return parity;
+            return Math.Abs(parity);
         }
 
         public static evalresult evalfield(tree node)

@@ -9,11 +9,11 @@ namespace Jura_Knife_Tetris
         
         public void run()
         {
-            //while (true)
+            while (true)
             {
                 Juraknifecore bot = new Juraknifecore();
                 bot.init();
-                bot.boardtree.Board.console_print(false);
+                //bot.boardtree.Board.console_print(false);
                 mino_gene mino_Gene = new mino_gene();
                 Random rand = new Random();
                 for (int i = 0; i < 0; ++i)
@@ -66,17 +66,22 @@ namespace Jura_Knife_Tetris
                     //eval.evalfield(root);
                     //Console.Clear();
                     //root.Board.console_print(true, root.finmino);
-                    if (root.pieceidx % 1000 == 0 || root.score < -1000000)
-                    {
-                        root.Board.console_print(false);
-                        Console.WriteLine("resroot");
-                        Console.WriteLine(root.score);
-                        Console.WriteLine(bot.nodequeue.Count);
-                        Console.WriteLine(root.pieceidx);
-                        Console.WriteLine(root.Board.piece.name);
-                        root.res.print();
+                    //if (root.pieceidx % 1000 == 0 || root.score < -1000000)
+                    //{
+                    //    root.Board.console_print(false);
+                    //    Console.WriteLine("resroot");
+                    //    Console.WriteLine(root.score);
+                    //    Console.WriteLine(bot.nodequeue.Count);
+                    //    Console.WriteLine(root.pieceidx);
+                    //    Console.WriteLine(root.Board.piece.name);
+                    //    root.res.print();
+                    //    foreach (int a in root.Board.column_height)
+                    //    {
+                    //        Console.Write(a);
+                    //        Console.Write(" ");
+                    //    }
 
-                    }
+                    //}
                     //foreach(int a in root.Board.column_height)
                     //{
                     //    Console.Write(a);
