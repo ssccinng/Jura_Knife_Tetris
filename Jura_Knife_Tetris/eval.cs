@@ -21,6 +21,9 @@ namespace Jura_Knife_Tetris
         public int height = 0;
         public int minidx = 0;
         public int minhigh = 0;
+        public int linefull = 0;
+        public int downstack = 0;
+        public int safe = 0;
 
 
         public void print()
@@ -30,10 +33,13 @@ namespace Jura_Knife_Tetris
             Console.WriteLine("wide = {0}", wide);
             Console.WriteLine("Continuity = {0}", Continuity);
             Console.WriteLine("hole = {0}", hole);
-            Console.WriteLine("deephole = {0}", parity);
+            Console.WriteLine("deephole = {0}", deephole);
             Console.WriteLine("minidx = {0}", minidx);
             Console.WriteLine("minhigh = {0}", minhigh);
-            Console.WriteLine("minhigh = {0}", minhigh);
+            Console.WriteLine("parity = {0}", parity);
+            Console.WriteLine("linefull = {0}", linefull);
+            Console.WriteLine("safe = {0}", safe);
+            Console.WriteLine("downstack = {0}", downstack);
         }
         //public evalresult()
         //{
@@ -69,7 +75,7 @@ namespace Jura_Knife_Tetris
         public int deephole2 = 400;
         public int deephole3 = 100;
         public int deltcol = -500;
-        public int safecost = -1700;
+        public int safecost = -1200;
         public int parity = -500;
         public int dephigh = -1500;
         public int linefull = -5; // -5
@@ -262,8 +268,8 @@ namespace Jura_Knife_Tetris
 
             int parity = evalparity(node);
             score += parity * W.parity;
-
-            evalresult.hole = evalhole(node);
+            evalresult.parity += parity * W.parity;
+            evalresult.hole = evalhole(node, ref evalresult);
             //evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
             score += evalresult.hole;
             evalresult.score = score;
@@ -345,7 +351,7 @@ namespace Jura_Knife_Tetris
 
 
 
-        public static int evalhole(tree node)
+        public static int evalhole(tree node, ref evalresult res)
         {
             int[] colhight = node.Board.column_height;
             int roof = 0;
@@ -376,6 +382,7 @@ namespace Jura_Knife_Tetris
                                 int temp = Math.Max(downcnt, colhight[i] - row - 1) + 1;
                                 //score += W.safecost * temp;
                                 score += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
+                                res.linefull += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
                                 nextsafedis = Math.Max(nextsafedis, downcnt + 1);
                                 nextsafedis = Math.Max(nextsafedis, colhight[i] - row - 1); // 这个safedis需不需要下传 不依托与上层传递时 挖开这层的最少消行数
                                                                                           // 安全距离失误？
@@ -384,8 +391,9 @@ namespace Jura_Knife_Tetris
                             {
                                 // 与上一个洞连接 理应传递上一层洞的挖开数
                                 //score += W.safecost * safedis;
-                                int temp = Math.Max(downcnt, colhight[i] - row - 1) + 1;
+                                int temp = Math.Max(downcnt - 1, colhight[i] - row - 1) + 1;
                                 score += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
+                                res.linefull += W.linefull * (fulldig[row + 1] - fulldig[row + temp]);
                                 nextsafedis = Math.Max(nextsafedis, downcnt);
                             }
                             
@@ -420,6 +428,7 @@ namespace Jura_Knife_Tetris
                         if (colhight[i] >= row + 1)
                         {
                             score += W.safecost * safedis /**  Math.Max(nextsafedis - safedis, 0)*/;
+                            res.safe += W.safecost * safedis; // 似乎有失误
                             if (colhight[i] - row - 1 > (int)(1.3 * (safedis - row - 1)))
                             {
                                 score += W.downstack * (colhight[i] - row - 1 - (int)(1.3 * (safedis - row - 1)));

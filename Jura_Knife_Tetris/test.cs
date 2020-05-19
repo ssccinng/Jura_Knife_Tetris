@@ -61,27 +61,27 @@ namespace Jura_Knife_Tetris
                     //}
                     tree root = bot.requset_next_move();
                     if (root.isdead) { Console.WriteLine(root.pieceidx); ; break; };
-                    //ans.Enqueue(root);
-                    //if (ans.Count > 200) ans.Dequeue();
+                    ans.Enqueue(root);
+                    if (ans.Count > 200) ans.Dequeue();
                     //eval.evalfield(root);
                     //Console.Clear();
                     //root.Board.console_print(true, root.finmino);
-                    //if (root.pieceidx % 1000 == 0 || root.score < -1000000)
-                    //{
-                    //    root.Board.console_print(false);
-                    //    Console.WriteLine("resroot");
-                    //    Console.WriteLine(root.score);
-                    //    Console.WriteLine(bot.nodequeue.Count);
-                    //    Console.WriteLine(root.pieceidx);
-                    //    Console.WriteLine(root.Board.piece.name);
-                    //    root.res.print();
-                    //    foreach (int a in root.Board.column_height)
-                    //    {
-                    //        Console.Write(a);
-                    //        Console.Write(" ");
-                    //    }
+                    if (root.pieceidx % 1000 == 0 || root.score < -1000000)
+                    {
+                        root.Board.console_print(false);
+                        Console.WriteLine("resroot");
+                        Console.WriteLine(root.score);
+                        Console.WriteLine(bot.nodequeue.Count);
+                        Console.WriteLine(root.pieceidx);
+                        Console.WriteLine(root.Board.piece.name);
+                        root.res.print();
+                        foreach (int a in root.Board.column_height)
+                        {
+                            Console.Write(a);
+                            Console.Write(" ");
+                        }
 
-                    //}
+                    }
                     //foreach(int a in root.Board.column_height)
                     //{
                     //    Console.Write(a);
@@ -118,16 +118,16 @@ namespace Jura_Knife_Tetris
                     //}
                 }
 
-                //foreach (tree root in ans)
-                //{
-                //    root.Board.console_print(false);
-                //    Console.WriteLine("resroot");
-                //    Console.WriteLine(root.score);
-                //    Console.WriteLine(bot.nodequeue.Count);
-                //    Console.WriteLine(root.pieceidx);
-                //    Console.WriteLine(root.Board.piece.name);
-                //    root.res.print();
-                //}
+                foreach (tree root in ans)
+                {
+                    root.Board.console_print(false);
+                    Console.WriteLine("resroot");
+                    Console.WriteLine(root.score);
+                    Console.WriteLine(bot.nodequeue.Count);
+                    Console.WriteLine(root.pieceidx);
+                    Console.WriteLine(root.Board.piece.name);
+                    root.res.print();
+                }
 
             }
         }
