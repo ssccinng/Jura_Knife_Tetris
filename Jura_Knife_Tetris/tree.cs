@@ -174,148 +174,162 @@ namespace Jura_Knife_Tetris
                 chird.inplan = true;
                 chird.res = eval.evalfield(chird);
                 chird.score = (int)chird.res.score;
-                //chird.score += eval.evalbattle(chird);
-                //if (chird.holdT)
-                //{
-                //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-                //    tree bestT;
-                //    int minscore = chird.score;
-                //    foreach (mino t in Alltslot)
-                //    {
-                //        tree Tchird = chird.clone();
-                //        Tchird.Board.piece = t;
-                //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                //        Tchird.score = eval.evalfield(Tchird);
-                //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                chird.score += eval.evalbattle(chird);
+                if (chird.holdT)
+                {
+                    tree Tchird1 = chird.clone();
+                    Tchird1.Board.piece = defaultop.demino.getmino(2);
+                    Tchird1.Board.piece.setpos(19, 3);
+                    List<mino> Alltslot = seacher.findallplace(Tchird1.Board); // 修改
 
-                //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
-                //        {
-                //            minscore = Tchird.score;
-                //            bestT = Tchird;
-                //        }
-                //    }
-                //    chird.score = minscore;
+                    //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                    tree bestT;
+                    int minscore = chird.score;
+                    
+                    foreach (mino t in Alltslot)
+                    {
+                        tree Tchird = chird.clone();
+                        Tchird.Board.piece = t;
+                        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                        Tchird.score = eval.evalfield(Tchird).score;
+                        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
 
-                //}
+                        if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
+                        {
+                            minscore = Tchird.score;
+                            bestT = Tchird;
+                        }
+                    }
+                    chird.score = minscore;
+
+                }
 
                 // 回传父节点
 
-                //chird.updatefather(); // check update
+                chird.updatefather(); // check update
                 treenode.Add(chird);
             }
 
-            //if (holdpiece == -1)
-            //{
+            if (holdpiece == -1)
+            {
 
-            //    int holdidx = pieceidx + 1, nextnext = pieceidx + 2;
+                int holdidx = pieceidx + 1, nextnext = pieceidx + 2;
 
-            //    if (holdidx < bot.nextcnt)
-            //    {
-
-
-            //        Board.piece = defaultop.demino.getmino(bot.nextqueue[holdidx % 30]);
-            //        Board.piece.setpos(19, 3);
-            //        List<mino> allpos2 = seacher.findallplace(Board);
-            //        foreach (mino m in allpos2)
-            //        {
-            //            tree chird = clone();
-            //            chird.Board.piece = m;
-            //            lock_piece_calc(ref chird.Board);
-            //            chird.finmino = m;
-
-            //            chird.ishold = true;
-            //            chird.holdpiece = nowpiece;
-            //            chird.father = this;
-            //            chird.pieceidx = nextnext;
-            //            chird.depth = depth + 1;
-            //            chird.maxdepth = chird.depth;
-            //            chird.inplan = true;
-            //            chird.res = eval.evalfield(chird);
-            //            chird.score = (int)chird.res.score;
-            //            //chird.score += eval.evalbattle(chird);
-            //            //if (chird.holdT)
-            //            //{
-            //            //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-            //            //    tree bestT;
-            //            //    int minscore = chird.score;
-            //            //    foreach (mino t in Alltslot)
-            //            //    {
-            //            //        tree Tchird = chird.clone();
-            //            //        Tchird.Board.piece = t;
-            //            //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-            //            //        Tchird.score = eval.evalfield(Tchird);
-            //            //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
-
-            //            //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
-            //            //        {
-            //            //            minscore = Tchird.score;
-            //            //            bestT = Tchird;
-            //            //        }
-            //            //    }
-            //            //    chird.score = minscore;
-
-            //            //}
-            //            //chird.updatefather();
-            //            // 回传父节点
-            //            treenode.Add(chird);
-            //        }
-            //        // 回传父节点
-            //    }
+                if (holdidx < bot.nextcnt)
+                {
 
 
-            //}
-            //else
-            //{
-            //    int temp = nowpiece;
-            //    nowpiece = holdpiece;
-            //    Board.piece = defaultop.demino.getmino(nowpiece);
-            //    Board.piece.setpos(19, 3);
-            //    List<mino> allpos1 = seacher.findallplace(Board);
-            //    // 先对相对有用的节点更新 
-            //    foreach (mino m in allpos1)
-            //    {
-            //        tree chird = clone();
-            //        chird.Board.piece = m;
-            //        lock_piece_calc(ref chird.Board);
-            //        chird.finmino = m;
+                    Board.piece = defaultop.demino.getmino(bot.nextqueue[holdidx % 30]);
+                    Board.piece.setpos(19, 3);
+                    List<mino> allpos2 = seacher.findallplace(Board);
+                    foreach (mino m in allpos2)
+                    {
+                        tree chird = clone();
+                        chird.Board.piece = m;
+                        lock_piece_calc(ref chird.Board);
+                        chird.finmino = m;
 
-            //        chird.ishold = true;
-            //        chird.holdpiece = temp; // oops
-            //        chird.pieceidx = chirdidx;
-            //        chird.father = this;
-            //        chird.depth = depth + 1;
-            //        chird.maxdepth = chird.depth;
-            //        chird.inplan = true;
-            //        chird.res = eval.evalfield(chird);
-            //        chird.score = (int)chird.res.score;
-            //        //chird.score += eval.evalbattle(chird);
-            //        //if (chird.holdT)
-            //        //{
-            //        //    List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
-            //        //    tree bestT;
-            //        //    int minscore = chird.score;
-            //        //    foreach (mino t in Alltslot)
-            //        //    {
-            //        //        tree Tchird = chird.clone();
-            //        //        Tchird.Board.piece = t;
-            //        //        Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-            //        //        Tchird.score = eval.evalfield(Tchird);
-            //        //        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                        chird.ishold = true;
+                        chird.holdpiece = nowpiece;
+                        chird.father = this;
+                        chird.pieceidx = nextnext;
+                        chird.depth = depth + 1;
+                        chird.maxdepth = chird.depth;
+                        chird.inplan = true;
+                        chird.res = eval.evalfield(chird);
+                        chird.score = (int)chird.res.score;
+                        chird.score += eval.evalbattle(chird);
+                        if (chird.holdT)
+                        {
+                            tree Tchird1 = chird.clone();
+                            Tchird1.Board.piece = defaultop.demino.getmino(2);
+                            Tchird1.Board.piece.setpos(19, 3);
+                            List<mino> Alltslot = seacher.findallplace(Tchird1.Board);
+                            //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                            tree bestT;
+                            int minscore = chird.score;
+                            foreach (mino t in Alltslot)
+                            {
+                                tree Tchird = chird.clone();
+                                Tchird.Board.piece = t;
+                                Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                                Tchird.score = eval.evalfield(Tchird).score;
+                                Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
 
-            //        //        if (Tchird.score > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
-            //        //        {
-            //        //            minscore = Tchird.score;
-            //        //            bestT = Tchird;
-            //        //        }
-            //        //    }
-            //        //    chird.score = minscore;
+                                if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
+                                {
+                                    minscore = Tchird.score;
+                                    bestT = Tchird;
+                                }
+                            }
+                            chird.score = minscore;
 
-            //        //}
-            //        //chird.updatefather();
-            //        // 回传父节点
-            //        treenode.Add(chird);
-            //    }
-            //}
+                        }
+                        chird.updatefather();
+                        // 回传父节点
+                        treenode.Add(chird);
+                    }
+                    // 回传父节点
+                }
+
+
+            }
+            else
+            {
+                int temp = nowpiece;
+                nowpiece = holdpiece;
+                Board.piece = defaultop.demino.getmino(nowpiece);
+                Board.piece.setpos(19, 3);
+                List<mino> allpos1 = seacher.findallplace(Board);
+                // 先对相对有用的节点更新 
+                foreach (mino m in allpos1)
+                {
+                    tree chird = clone();
+                    chird.Board.piece = m;
+                    lock_piece_calc(ref chird.Board);
+                    chird.finmino = m;
+
+                    chird.ishold = true;
+                    chird.holdpiece = temp; // oops
+                    chird.pieceidx = chirdidx;
+                    chird.father = this;
+                    chird.depth = depth + 1;
+                    chird.maxdepth = chird.depth;
+                    chird.inplan = true;
+                    chird.res = eval.evalfield(chird);
+                    chird.score = (int)chird.res.score;
+                    chird.score += eval.evalbattle(chird);
+                    if (chird.holdT)
+                    {
+                        tree Tchird1 = chird.clone();
+                        Tchird1.Board.piece = defaultop.demino.getmino(2);
+                        Tchird1.Board.piece.setpos(19, 3);
+                        List<mino> Alltslot = seacher.findallplace(Tchird1.Board);
+                        //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
+                        tree bestT;
+                        int minscore = chird.score;
+                        foreach (mino t in Alltslot)
+                        {
+                            tree Tchird = chird.clone();
+                            Tchird.Board.piece = t;
+                            Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
+                            Tchird.score = eval.evalfield(Tchird).score;
+                            Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+
+                            if (Tchird.score > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
+                            {
+                                minscore = Tchird.score;
+                                bestT = Tchird;
+                            }
+                        }
+                        chird.score = minscore;
+
+                    }
+                    chird.updatefather();
+                    // 回传父节点
+                    treenode.Add(chird);
+                }
+            }
 
 
         }

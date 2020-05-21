@@ -16,7 +16,7 @@ namespace Jura_Knife_Tetris
                 //bot.boardtree.Board.console_print(false);
                 mino_gene mino_Gene = new mino_gene();
                 Random rand = new Random();
-                for (int i = 0; i < 0; ++i)
+                for (int i = 0; i < 5; ++i)
                 {
                     //bot.add_next(rand.Next() % 7);
                     bot.add_next(mino_Gene.genebag7int());
@@ -61,12 +61,12 @@ namespace Jura_Knife_Tetris
                     //}
                     tree root = bot.requset_next_move();
                     if (root.isdead) { Console.WriteLine(root.pieceidx); ; break; };
-                    ans.Enqueue(root);
-                    if (ans.Count > 200) ans.Dequeue();
+                    //ans.Enqueue(root);
+                    //if (ans.Count > 200) ans.Dequeue();
                     //eval.evalfield(root);
-                    //Console.Clear();
+                    Console.Clear();
                     //root.Board.console_print(true, root.finmino);
-                    if (root.pieceidx % 1000 == 0 || root.score < -1000000)
+                    if (root.pieceidx % 1 == 0 || root.score < -1000000)
                     {
                         root.Board.console_print(false);
                         Console.WriteLine("resroot");

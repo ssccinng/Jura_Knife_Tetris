@@ -84,9 +84,12 @@ namespace Jura_Knife_Tetris
         public void reset_stat(bool[,] field, bool b2b, int combo)
         {
             Board.field = field;
+            Board.column_height = Board.updatecol();
+
             Board.isb2b = b2b;
             Board.combo = combo;
             boardtree = new tree();
+            boardtree.Board = Board.clone();
         }
         //public void nodeadd(tree node)
         //{
@@ -203,8 +206,8 @@ namespace Jura_Knife_Tetris
                 nodequeue.Sort((a, b) =>
                 {
                     var o = (b.score - a.score);
-                    //var q = b.maxdepth - a.maxdepth;
-                    //if (q != 0) return q;
+                    var q = b.maxdepth - a.maxdepth;
+                    if (q != 0) return q;
                     return (int)(o * 1); ;
                 }
                     );

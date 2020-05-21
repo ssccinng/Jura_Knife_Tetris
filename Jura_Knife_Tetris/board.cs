@@ -37,6 +37,7 @@ namespace Jura_Knife_Tetris
             this.field = field;
             this.isb2b = isb2b;
             this.combo = combo;
+            column_height = updatecol();
         }
 
         private bool check_mino_ok(int x, int y)
@@ -70,20 +71,22 @@ namespace Jura_Knife_Tetris
             return true;
         }
 
-        public void Spawn_piece()
+        public bool Spawn_piece()
         {
+            if (Next_queue.Count == 0) return false;
             piece = Next_queue.Dequeue();
-            piece.setpos(18, 3);
+            piece.setpos(19, 3);
             bool isok = check_mino_ok(piece.minopos);
             isdead = !isok;
-            gene_next_piece();
+            return true;
+            //gene_next_piece();
         }
 
         public bool isperfectclear
         {
             get
             {
-                foreach (int i in field)
+                foreach (int i in column_height)
                 {
                     if (i != 0) return false;
                 }
@@ -93,7 +96,7 @@ namespace Jura_Knife_Tetris
 
         //public Queue<int> garbage_sent;
 
-        private int[] updatecol()
+        public int[] updatecol()
         {
             for (int i = 0; i < 10; ++i)
             {
@@ -264,14 +267,20 @@ namespace Jura_Knife_Tetris
         {
             Next_queue.Enqueue(Minorule.genebag7mino());
         }
+
+        public void add_next_piece(int piece)
+        {
+            Next_queue.Enqueue(defaultop.demino.getmino(piece));
+        }
         public bool use_hold()
         {
             piece.reset();
             if (holdpiece == null)
             {
+                if (Next_queue.Count == 0) return false;
                 holdpiece = piece;
                 Spawn_piece();
-                gene_next_piece();
+                //gene_next_piece();
             }
             else
             {
@@ -288,6 +297,10 @@ namespace Jura_Knife_Tetris
             int[,] garbage = garbagerule.Gene(garbage_queue);
             int addgarbage_cnt = garbage.GetLength(0);
             if (addgarbage_cnt == 0) return false;
+            for (int i = 0; i < column_height.Length; ++ i)
+            {
+                column_height[i] += addgarbage_cnt;
+            }
             if (addgarbage_cnt >= 20)
             {
                 isdead = true;
@@ -312,10 +325,15 @@ namespace Jura_Knife_Tetris
 
             if (addgarbage_cnt == 0) return false;
             addgarbage_cnt = garbage.GetLength(0);
+            for (int i = 0; i < column_height.Length; ++i)
+            {
+                column_height[i] += addgarbage_cnt;
+            }
             if (addgarbage_cnt >= 20)
             {
                 isdead = true;
             }
+
             for (int i = 39; i >= addgarbage_cnt; --i)
             {
                 copy_line(i - addgarbage_cnt, i);

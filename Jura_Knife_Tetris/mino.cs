@@ -135,7 +135,7 @@ namespace Jura_Knife_Tetris
         public void reset()
         {
             setstat(0);
-            setpos(18,3);
+            setpos(19,3);
             spinlast = false;
             locked = false;
             Tspin = false;
@@ -258,13 +258,13 @@ namespace Jura_Knife_Tetris
         {
             int dist = 900;
 
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < weight; i++)
             {
-                for (int j = 0; j < weight; ++j)
+                for (int j = 0; j < height; ++j)
                 {
                     if (minofield[j, i] != 0)
                     {
-                        dist = Math.Min(dist, minopos.x - field.column_height[i + minopos.y] + j);
+                        dist = Math.Min(dist, minopos.x - field.column_height[i + minopos.y] + j );
                         break;
                     }
                 }
@@ -479,9 +479,9 @@ namespace Jura_Knife_Tetris
         {
             int dist = 900;
 
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < weight; i++)
             {
-                for (int j = 0; j < weight; ++j)
+                for (int j = 0; j < height; ++j)
                 {
                     if (minofield[j, i] != 0)
                     {

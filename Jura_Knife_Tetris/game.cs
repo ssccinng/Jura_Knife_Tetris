@@ -7,11 +7,13 @@ namespace Jura_Knife_Tetris
     public  class game
     {
         public board Board;
-        Stack<int> garbage_queue;
-        Stack<int> attacking;
+        public Stack<int> garbage_queue;
+        public Stack<int> attacking;
         rule gamerule;
-
+        public mino_gene Minorule;
         Juraknifecore bot;
+        public int atkcnt = 0;
+        public bool isdead = false;
 
         public int lock_piece_calc()
         {
@@ -45,7 +47,7 @@ namespace Jura_Knife_Tetris
             return atk;
         }
 
-        void deal_garbage()
+        public void deal_garbage()
         {
             int garbage = 0;
             foreach(int i in garbage_queue)
@@ -90,18 +92,74 @@ namespace Jura_Knife_Tetris
         }
 
 
-        public void Gamestart()
+        public void runmove(int move)
         {
-            board F = new board(new mino_gene(), new TopGarbage(), 5);
+            switch (move)
+            {
+                case 0: Board.piece.left_move(ref Board);break;
+                case 1: Board.piece.right_move(ref Board); break;
+                case 2: Board.piece.left_rotation(ref Board); break;
+                case 3: Board.piece.right_rotation(ref Board); break;
+                case 4: Board.piece.soft_drop_floor(ref Board); break;
+                case 5: atkcnt = lock_piece_calc(); break;
+                case 6: Board.use_hold(); break;
+                default:
+                    break;
+            }
+        }
+        public void runmove(tree move)
+        {
+            if (move.ishold)
+            {
+                runmove(6);
+            }
+            for (int i = 0; i < move.finmino.path.idx; ++i)
+            {
+                runmove(move.finmino.path.path[i]);
+            }
+            runmove(5);
+        }
+        public void bot_init()
+        {
+            bot = new Juraknifecore();
+            bot.init();
+            bot.add_next(Minorule.genebag7int());
+            bot.add_next(Minorule.genebag7int());
+            bot.add_next(Minorule.genebag7int());
+            bot.add_next(Minorule.genebag7int());
+            bot.add_next(Minorule.genebag7int());
+            bot.extend_node();
+        }
+
+        public void bot_run()
+        {
+            if (bot.isdead) { isdead = true;  return; }
+            tree root = bot.requset_next_move();
+            runmove(root);
+
+        }
+        board F;
+        public void init()
+        {
+            F = new board(new mino_gene(), new TopGarbage(), 0);
 
             Board = F;
             attacking = new Stack<int>();
             garbage_queue = new Stack<int>();
             gamerule = new rule(new int[] { 0, 1, 1, 2, 1 },
-            new int[] { 0, 2, 4, 6 }, new int[] {0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5 }, new int[] { 0, 0, 1, 2, 4 });
+            new int[] { 0, 2, 4, 6 }, new int[] { 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5 }, new int[] { 0, 0, 1, 2, 4 });
+            Minorule = new mino_gene();
+        }
+
+
+        public void Gamestart()
+        {
+            init();
             int atk = 0;
+            for (int i = 0; i < 5; ++i) F.add_next_piece(Minorule.genebag7int());
             while (!F.isdead)
             {
+                F.add_next_piece(Minorule.genebag7int());
                 F.Spawn_piece();
                 //b.setpos(18, 3);
                 //F.console_print(true, F.piece);

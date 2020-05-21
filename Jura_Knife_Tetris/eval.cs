@@ -24,6 +24,7 @@ namespace Jura_Knife_Tetris
         public int linefull = 0;
         public int downstack = 0;
         public int safe = 0;
+        public int[] safedis = new int[40];
 
 
         public void print()
@@ -40,6 +41,11 @@ namespace Jura_Knife_Tetris
             Console.WriteLine("linefull = {0}", linefull);
             Console.WriteLine("safe = {0}", safe);
             Console.WriteLine("downstack = {0}", downstack);
+            foreach (int a in safedis)
+            {
+                Console.Write("{0} ", a);
+            }
+            Console.WriteLine(" ");
         }
         //public evalresult()
         //{
@@ -52,7 +58,7 @@ namespace Jura_Knife_Tetris
     class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -9999 };
-        public int[] clear = { 0, -700, -300, -400, 1700 }; // 1 2 3 4 // combo时也许不一样
+        public int[] clear = { 0, -7000, 30000, -4000, -17000 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
         public int wide = -300;
         public int b2b;
@@ -83,7 +89,7 @@ namespace Jura_Knife_Tetris
 
 
     }
-    static class eval // 平整 无洞 易挖 奇偶性
+    public static class eval // 平整 无洞 易挖 奇偶性
     {
 
         static weights W = new weights();
@@ -351,7 +357,7 @@ namespace Jura_Knife_Tetris
 
 
 
-        public static int evalhole(tree node, ref evalresult res)
+        public static int evalhole(tree node, ref evalresult res) //问题很大。jpg 另外攻击意识修改
         {
             int[] colhight = node.Board.column_height;
             int roof = 0;
@@ -363,11 +369,14 @@ namespace Jura_Knife_Tetris
             int nextsafedis = 0;
             int safedis = 0; // 该行的安全堆叠层数基数 即上一次层的挖开数 + 1
             // 加入dig
+
+            int[] Dig = new int[10];
             int[] fulldig = new int[40];
             for (int row = roof - 1; row >= 0; --row)
             {
                 bool canclear = true;
                 safedis = nextsafedis;
+                res.safedis[row] = safedis;
                 int downcnt = safedis;
                 for (int i = 0; i < 10; ++i)
                 {
@@ -417,7 +426,7 @@ namespace Jura_Knife_Tetris
                 fulldig[row]+= fulldig[row + 1] ;
                 if (canclear)
                 {
-                    nextsafedis = safedis;
+                    nextsafedis = safedis ;
                     //safedis = 0;
                 }
 
@@ -429,9 +438,9 @@ namespace Jura_Knife_Tetris
                         {
                             score += W.safecost * safedis /**  Math.Max(nextsafedis - safedis, 0)*/;
                             res.safe += W.safecost * safedis; // 似乎有失误
-                            if (colhight[i] - row - 1 > (int)(1.3 * (safedis - row - 1)))
+                            if (colhight[i] - row - 1 > (int)(1.5 * (safedis - row - 1)))
                             {
-                                score += W.downstack * (colhight[i] - row - 1 - (int)(1.3 * (safedis - row - 1)));
+                                score += W.downstack * (colhight[i] - row - 1 - (int)(1.5 * (safedis - row - 1)));
                             }
                             else if (colhight[i] - row - 1 < (int)((safedis - row - 1)))
                             {
