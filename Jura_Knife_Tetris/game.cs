@@ -11,7 +11,7 @@ namespace Jura_Knife_Tetris
         public Stack<int> attacking;
         rule gamerule;
         public mino_gene Minorule;
-        Juraknifecore bot;
+        public Juraknifecore bot;
         public int atkcnt = 0;
         public bool isdead = false;
 
@@ -59,23 +59,23 @@ namespace Jura_Knife_Tetris
             {
                 atk += i;
             }
-
+            attacking.Clear();
             if (atk > garbage)
             {
                 garbage_queue.Clear();
-                while (garbage > attacking.Peek())
-                {
-                    garbage -= attacking.Pop();
-                    
-                }
-                if (garbage != 0)
-                    attacking.Push(attacking.Pop() - garbage);
+                //while (garbage > attacking.Peek())
+                //{
+                //    garbage -= attacking.Pop();
+
+                //}
+                //if (garbage != 0)
+                //    attacking.Push(attacking.Pop() - garbage);
 
 
             }
-            else
+            else if (garbage >atk)
             {
-                attacking.Clear();
+                
                 while (atk > garbage_queue.Peek())
                 {
                     atk -= garbage_queue.Pop();
@@ -84,10 +84,13 @@ namespace Jura_Knife_Tetris
                 if (atk != 0)
                     garbage_queue.Push(garbage_queue.Pop() - atk);
             }
-
+            else
+            {
+                garbage_queue.Clear();
+            }
             if (Board.combo > 0) return;
 
-            if (atk > 0) Board.add_garbage(atk);
+            if (garbage_queue.Count > 0) {  Board.add_garbage(garbage_queue); bot.reset_stat(Board); garbage_queue.Clear(); }
 
         }
 
@@ -121,13 +124,16 @@ namespace Jura_Knife_Tetris
         }
         public void bot_init()
         {
+            init();
             bot = new Juraknifecore();
+            //Minorule = new mino_gene();
             bot.init();
-            bot.add_next(Minorule.genebag7int());
-            bot.add_next(Minorule.genebag7int());
-            bot.add_next(Minorule.genebag7int());
-            bot.add_next(Minorule.genebag7int());
-            bot.add_next(Minorule.genebag7int());
+            for (int i = 0; i < 3; ++i)
+            {
+                int next = Minorule.genebag7int();
+                bot.add_next(next);
+                Board.add_next_piece(next);
+            }
             bot.extend_node();
         }
 
@@ -135,7 +141,12 @@ namespace Jura_Knife_Tetris
         {
             if (bot.isdead) { isdead = true;  return; }
             tree root = bot.requset_next_move();
+            Board.Spawn_piece();
             runmove(root);
+            int next = Minorule.genebag7int();
+            bot.add_next(next);
+            Board.add_next_piece(next);
+            bot.extend_node();
 
         }
         board F;
@@ -159,6 +170,7 @@ namespace Jura_Knife_Tetris
             for (int i = 0; i < 5; ++i) F.add_next_piece(Minorule.genebag7int());
             while (!F.isdead)
             {
+                //F.add_garbage(2);
                 F.add_next_piece(Minorule.genebag7int());
                 F.Spawn_piece();
                 //b.setpos(18, 3);

@@ -14,7 +14,7 @@ namespace Jura_Knife_Tetris
             Queue<mino_stat> minoque = new Queue<mino_stat>();
             if (!Board.piece.check_mino_ok(ref Board, Board.piece.minopos))
             {
-                return null;
+                return allpos;
             }
             minoque.Enqueue(new mino_stat(Board.piece.minopos, Board.piece.stat));
             visit[Board.piece.minopos.x + 2, Board.piece.minopos.y + 2, Board.piece.stat] = true;

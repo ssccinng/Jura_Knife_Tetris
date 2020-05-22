@@ -1,4 +1,5 @@
-﻿using System;
+﻿using optimizer;
+using System;
 
 namespace training
 {
@@ -6,7 +7,8 @@ namespace training
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            battle a = new battle();
+            a.start();
         }
     }
 }

@@ -297,10 +297,7 @@ namespace Jura_Knife_Tetris
             int[,] garbage = garbagerule.Gene(garbage_queue);
             int addgarbage_cnt = garbage.GetLength(0);
             if (addgarbage_cnt == 0) return false;
-            for (int i = 0; i < column_height.Length; ++ i)
-            {
-                column_height[i] += addgarbage_cnt;
-            }
+            
             if (addgarbage_cnt >= 20)
             {
                 isdead = true;
@@ -316,6 +313,14 @@ namespace Jura_Knife_Tetris
                     field[i, j] = garbage[i, j];
                 }
             }
+            for (int i = 0; i < column_height.Length; ++i)
+            {
+                column_height[i] += addgarbage_cnt;
+                while (!checkfield(column_height[i] - 1, i))
+                {
+                    column_height[i]--;
+                }
+            }
             return true;
         }
 
@@ -325,10 +330,7 @@ namespace Jura_Knife_Tetris
 
             if (addgarbage_cnt == 0) return false;
             addgarbage_cnt = garbage.GetLength(0);
-            for (int i = 0; i < column_height.Length; ++i)
-            {
-                column_height[i] += addgarbage_cnt;
-            }
+            
             if (addgarbage_cnt >= 20)
             {
                 isdead = true;
@@ -343,6 +345,14 @@ namespace Jura_Knife_Tetris
                 for (int j = 0; j < 10; ++j)
                 {
                     field[i, j] = garbage[i, j];
+                }
+            }
+            for (int i = 0; i < column_height.Length; ++i)
+            {
+                column_height[i] += addgarbage_cnt;
+                while (!checkfield(column_height[i] - 1, i))
+                {
+                    column_height[i]--;
                 }
             }
             return true;

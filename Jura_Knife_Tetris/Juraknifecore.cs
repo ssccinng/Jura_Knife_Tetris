@@ -14,7 +14,7 @@ namespace Jura_Knife_Tetris
         public mino_gene minorule;
         public int calcdepth = 0;
         public List<tree> nodequeue = new List<tree>();
-
+        // public eval evalweight;
         public tree boardtree;
         //public Queue<int> nextquenesour = new Queue<int>();
         //public Queue<int> nextquene = new Queue<int>();
@@ -78,7 +78,13 @@ namespace Jura_Knife_Tetris
 
         public void reset_stat(board a)
         {
+
             Board = a.tosimple();
+            tree temp = boardtree.clone();
+            temp.pieceidx = boardtree.pieceidx;
+            boardtree = temp;
+            boardtree.Board = Board.clone();
+            extend_node();
         }
 
         public void reset_stat(bool[,] field, bool b2b, int combo)
@@ -90,6 +96,7 @@ namespace Jura_Knife_Tetris
             Board.combo = combo;
             boardtree = new tree();
             boardtree.Board = Board.clone();
+            extend_node();
         }
         //public void nodeadd(tree node)
         //{

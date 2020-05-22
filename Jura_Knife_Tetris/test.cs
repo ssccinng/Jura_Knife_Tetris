@@ -82,6 +82,7 @@ namespace Jura_Knife_Tetris
                         }
 
                     }
+                    
                     //foreach(int a in root.Board.column_height)
                     //{
                     //    Console.Write(a);
@@ -95,7 +96,7 @@ namespace Jura_Knife_Tetris
                     //{
                     //    defaultop.demino.getmino(root.holdpiece).console_print();
                     //}
-                    //char a1 = Console.ReadKey().KeyChar;
+                    char a1 = Console.ReadKey().KeyChar;
 
                     //char a2 = Console.ReadKey().KeyChar;
                     //foreach (tree a in bot.boardtree.treenode)

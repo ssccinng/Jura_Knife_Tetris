@@ -10,10 +10,11 @@ namespace Jura_Knife_Tetris
             //game defaultgame = new game();
             //defaultgame.Gamestart();
 
-            test t = new test();
-            t.run();
+            //test t = new test();
+            //t.run();
 
-
+            ljhcs a = new ljhcs();
+            a.run();
 
 
             //Random rand = new Random();
