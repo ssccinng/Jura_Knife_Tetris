@@ -122,13 +122,16 @@ namespace Jura_Knife_Tetris
             }
             runmove(5);
         }
-        public void bot_init()
+        public void bot_init(weights w = null, int nextcnt = 3)
         {
             init();
-            bot = new Juraknifecore();
+            if (w== null)
+                bot = new Juraknifecore();
+            else
+                bot = new Juraknifecore(w);
             //Minorule = new mino_gene();
             bot.init();
-            for (int i = 0; i < 1; ++i)
+            for (int i = 0; i < nextcnt; ++i)
             {
                 int next = Minorule.genebag7int();
                 bot.add_next(next);
@@ -148,6 +151,11 @@ namespace Jura_Knife_Tetris
             bot.add_next(next);
             Board.add_next_piece(next);
             bot.extend_node();
+
+        }
+
+        public game ()
+        {
 
         }
         board F;

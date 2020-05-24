@@ -8,7 +8,7 @@ namespace optimizer
     class Genetic
     {
 
-        public void generate()
+        public static weights generate()
         {
             weights W = new weights();
             Random rnd = new Random();
@@ -46,9 +46,10 @@ namespace optimizer
             rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999),
             rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999),
             rnd.Next(-9999, 9999), rnd.Next(-9999, 9999) };
+            return W;
         }
 
-        public weights crossover(weights p1, weights p2)
+        public static weights crossover(weights p1, weights p2)
         {
             Random rnd = new Random();
             weights chird = new weights();
@@ -108,7 +109,7 @@ namespace optimizer
             return chird;
         }
 
-        public int crossover_gene(int p1,int p2)
+        public static int crossover_gene(int p1,int p2)
         {
             Random r = new Random();
             int rand = r.Next(0, 100);

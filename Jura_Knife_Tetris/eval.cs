@@ -58,7 +58,7 @@ namespace Jura_Knife_Tetris
     public class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -9999 };
-        public int[] clear = { 0, -7000, 30000, -4000, -17000 }; // 1 2 3 4 // combo时也许不一样
+        public int[] clear = { 0, -7000, 3000, 4000, 7000 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
         public int wide = -300;
         public int b2b;
@@ -200,7 +200,7 @@ namespace Jura_Knife_Tetris
             }
             deepholequeue.Clear();
 
-            // 凹形判定
+            // 凹形判定 // 单长洞考虑不扣
 
 
             int lefidx = minidx - 1, ritidx = minidx + 1;

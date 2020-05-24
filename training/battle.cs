@@ -8,11 +8,23 @@ namespace optimizer
     class battle
     {
         game p1, p2 ;
-        public void start()
+        weights w1,  w2;
+        public battle()
+        {
+            w1 = new weights();
+            w2 = new weights();
+        }
+        public battle(weights w1, weights w2)
+        {
+            this.w1 = w1;
+            this.w2 = w2;
+        }
+
+        public int start()
         {
             p1 = new game(); p2 = new game();
-            p1.bot_init();
-            p2.bot_init();
+            p1.bot_init(w1);
+            p2.bot_init(w2);
             while (!p1.isdead && !p2.isdead)
             {
                 p1.bot_run();
@@ -31,9 +43,42 @@ namespace optimizer
                 p2.deal_garbage();
                 print();
             }
-
+            if (p1.isdead)
+            {
+                return 2;
+            }
+            else
+            {
+                return 1;
+            }
 
         }
+        //public void start()
+        //{
+        //    p1 = new game(); p2 = new game();
+        //    p1.bot_init();
+        //    p2.bot_init();
+        //    while (!p1.isdead && !p2.isdead)
+        //    {
+        //        p1.bot_run();
+        //        p2.bot_run();
+        //        foreach (int g in p2.attacking)
+        //        {
+        //            p1.garbage_queue.Push(g);
+        //        }
+        //        foreach (int g in p1.attacking)
+        //        {
+        //            p2.garbage_queue.Push(g);
+        //        }
+        //        //p1.garbage_queue = p2.attacking;
+        //        //p2.garbage_queue = p1.attacking;
+        //        p1.deal_garbage();
+        //        p2.deal_garbage();
+        //        print();
+        //    }
+
+
+        //}
 
         public void print()
         {
