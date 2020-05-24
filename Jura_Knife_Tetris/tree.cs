@@ -172,9 +172,9 @@ namespace Jura_Knife_Tetris
                 chird.depth = depth + 1;
                 chird.maxdepth = chird.depth;
                 chird.inplan = true;
-                chird.res = eval.evalfield(chird);
+                chird.res = bot.evalweight.evalfield(chird);
                 chird.score = (int)chird.res.score;
-                chird.score += eval.evalbattle(chird);
+                chird.score += bot.evalweight.evalbattle(chird);
                 if (chird.holdT)
                 {
                     tree Tchird1 = chird.clone();
@@ -191,8 +191,8 @@ namespace Jura_Knife_Tetris
                         tree Tchird = chird.clone();
                         Tchird.Board.piece = t;
                         Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                        Tchird.score = eval.evalfield(Tchird).score;
-                        Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                        Tchird.score = bot.evalweight.evalfield(Tchird).score;
+                        Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
 
                         if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
                         {
@@ -236,9 +236,9 @@ namespace Jura_Knife_Tetris
                         chird.depth = depth + 1;
                         chird.maxdepth = chird.depth;
                         chird.inplan = true;
-                        chird.res = eval.evalfield(chird);
+                        chird.res = bot.evalweight.evalfield(chird);
                         chird.score = (int)chird.res.score;
-                        chird.score += eval.evalbattle(chird);
+                        chird.score += bot.evalweight.evalbattle(chird);
                         if (chird.holdT)
                         {
                             tree Tchird1 = chird.clone();
@@ -253,8 +253,8 @@ namespace Jura_Knife_Tetris
                                 tree Tchird = chird.clone();
                                 Tchird.Board.piece = t;
                                 Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                                Tchird.score = eval.evalfield(Tchird).score;
-                                Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                                Tchird.score = bot.evalweight.evalfield(Tchird).score;
+                                Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
 
                                 if (Tchird.score > minscore && Tchird.Board.piece.Tspin)
                                 {
@@ -296,9 +296,9 @@ namespace Jura_Knife_Tetris
                     chird.depth = depth + 1;
                     chird.maxdepth = chird.depth;
                     chird.inplan = true;
-                    chird.res = eval.evalfield(chird);
+                    chird.res = bot.evalweight.evalfield(chird);
                     chird.score = (int)chird.res.score;
-                    chird.score += eval.evalbattle(chird);
+                    chird.score += bot.evalweight.evalbattle(chird);
                     if (chird.holdT)
                     {
                         tree Tchird1 = chird.clone();
@@ -313,8 +313,8 @@ namespace Jura_Knife_Tetris
                             tree Tchird = chird.clone();
                             Tchird.Board.piece = t;
                             Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
-                            Tchird.score = eval.evalfield(Tchird).score;
-                            Tchird.score += eval.evalbattle(Tchird); // 是否要battle也加上
+                            Tchird.score = bot.evalweight.evalfield(Tchird).score;
+                            Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
 
                             if (Tchird.score > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
                             {

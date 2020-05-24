@@ -37,6 +37,7 @@ namespace optimizer
 
         public void print()
         {
+            Console.Clear();
             Console.WriteLine("\n+--------------------+                    +--------------------+");
             for (int j = 22; j >= 0; --j)
             {

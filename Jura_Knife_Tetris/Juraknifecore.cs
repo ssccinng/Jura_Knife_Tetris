@@ -14,13 +14,23 @@ namespace Jura_Knife_Tetris
         public mino_gene minorule;
         public int calcdepth = 0;
         public List<tree> nodequeue = new List<tree>();
-        // public eval evalweight;
+        public eval evalweight;
         public tree boardtree;
         //public Queue<int> nextquenesour = new Queue<int>();
         //public Queue<int> nextquene = new Queue<int>();
         //public List<int> nextquene = new List<int>();
         public int[] nextqueue = new int[35];
         public int nextcnt = 0;
+
+
+        public Juraknifecore(weights Weights)
+        {
+            evalweight = new eval( Weights);
+        }
+        public Juraknifecore()
+        {
+            evalweight = new eval();
+        }
 
         public int hold;
 
@@ -53,11 +63,16 @@ namespace Jura_Knife_Tetris
                 freenode(boardtree.treenode[i]);
             }
             aa = nodedep(boardtree);
+            if (boardtree.treenode.Count == 0)
+            {
+                Board.isdead = true;
+                return boardtree;
+            }
             boardtree = boardtree.treenode[0]; // 节点不存在的问题
             boardtree.father = null;
             aa = nodedep(boardtree);
             System.GC.Collect();
-            eval.evalfield(boardtree);
+            //eval.evalfield(boardtree);
             // 重置nodequeue
             return boardtree;
 

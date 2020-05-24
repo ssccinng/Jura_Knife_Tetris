@@ -55,7 +55,7 @@ namespace Jura_Knife_Tetris
     }
 
 
-    class weights
+    public class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -9999 };
         public int[] clear = { 0, -7000, 30000, -4000, -17000 }; // 1 2 3 4 // combo时也许不一样
@@ -81,7 +81,7 @@ namespace Jura_Knife_Tetris
         public int deephole2 = 400;
         public int deephole3 = 100;
         public int deltcol = -500;
-        public int safecost = -1200;
+        public int safecost = -1700;
         public int parity = -500;
         public int dephigh = -1500;
         public int linefull = -5; // -5
@@ -89,14 +89,21 @@ namespace Jura_Knife_Tetris
 
 
     }
-    public static class eval // 平整 无洞 易挖 奇偶性
+    public class eval // 平整 无洞 易挖 奇偶性
     {
 
-        static weights W = new weights();
+        weights W ;
 
+        public eval(weights Weights)
+        {
+            W = Weights;
+        }
+        public eval()
+        {
+            W = new weights();
+        }
 
-
-        public static int evalparity(tree node) // 表面奇偶性
+        public int evalparity(tree node) // 表面奇偶性
         {
             int parity = 0;
             for (int i = 0; i < node.Board.column_height.Length; ++i)
@@ -120,7 +127,7 @@ namespace Jura_Knife_Tetris
             return Math.Abs(parity);
         }
 
-        public static evalresult evalfield(tree node)
+        public evalresult evalfield(tree node)
         {
             int score = 0;
             evalresult evalresult = new evalresult();
@@ -342,7 +349,7 @@ namespace Jura_Knife_Tetris
         //    return score;
         //} // 空洞（可挖性评分;
 
-        public static evalresult evalnode(tree node)
+        public evalresult evalnode(tree node)
         {
             return new evalresult(); // pass
             // 评判场地 以及其他的各种状态
@@ -357,7 +364,7 @@ namespace Jura_Knife_Tetris
 
 
 
-        public static int evalhole(tree node, ref evalresult res) //问题很大。jpg 另外攻击意识修改
+        public int evalhole(tree node, ref evalresult res) //问题很大。jpg 另外攻击意识修改
         {
             int[] colhight = node.Board.column_height;
             int roof = 0;
@@ -426,7 +433,7 @@ namespace Jura_Knife_Tetris
                 fulldig[row]+= fulldig[row + 1] ;
                 if (canclear)
                 {
-                    nextsafedis = safedis ;
+                    nextsafedis = safedis + 1; // 思考
                     //safedis = 0;
                 }
 
@@ -455,7 +462,7 @@ namespace Jura_Knife_Tetris
         }
 
 
-        public static int evalhole(tree node, int[] colhight, int h, ref int score) // 造洞的分析 边缘空洞
+        public int evalhole(tree node, int[] colhight, int h, ref int score) // 造洞的分析 边缘空洞
         {
             if (h >= 27) return 0; // 或直接对堵洞判断
             bool canclear = true;
@@ -538,7 +545,7 @@ namespace Jura_Knife_Tetris
         //}
 
 
-        public static int evalbattle(tree node)
+        public int evalbattle(tree node)
         {
             int score = 0;
             score += W.movetime * node.Board.piece.path.idx;

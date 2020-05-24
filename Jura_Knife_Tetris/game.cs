@@ -128,7 +128,7 @@ namespace Jura_Knife_Tetris
             bot = new Juraknifecore();
             //Minorule = new mino_gene();
             bot.init();
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 1; ++i)
             {
                 int next = Minorule.genebag7int();
                 bot.add_next(next);
@@ -141,6 +141,7 @@ namespace Jura_Knife_Tetris
         {
             if (bot.isdead) { isdead = true;  return; }
             tree root = bot.requset_next_move();
+            if (root.isdead) { isdead = true; return; }
             Board.Spawn_piece();
             runmove(root);
             int next = Minorule.genebag7int();
