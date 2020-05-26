@@ -234,6 +234,7 @@ namespace Jura_Knife_Tetris
                 }
                     );
                 // 全重置 haishinodequeue
+                int lastscore = 498;
                 for (int j = 0, cnt = 0;j <  nodequeue.Count; ++j) // 剪枝思考 深度和分数的符合思考
                 {
                     // cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && 
@@ -250,11 +251,12 @@ namespace Jura_Knife_Tetris
                         continue;
                     }
                     nodequeue[j].inplan = false;
-                    if (cnt > 20)
+                    if (cnt > 20 || lastscore == nodequeue[j].res.score)
                     {
                         //nodequeue[j].inplan = false;
                         continue;
                     }
+                    lastscore = nodequeue[j].res.score;
                     flag = true;
                     tree node = nodequeue[j];
                     if (node == null || node.useless)

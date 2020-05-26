@@ -41,7 +41,7 @@ namespace optimizer
                 //p2.garbage_queue = p1.attacking;
                 p1.deal_garbage();
                 p2.deal_garbage();
-                print();
+                //print();
             }
             if (p1.isdead)
             {

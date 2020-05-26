@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Jura_Knife_Tetris
@@ -58,16 +59,16 @@ namespace Jura_Knife_Tetris
     public class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -9999 };
-        public int[] clear = { 0, -7000, 3000, 4000, 7000 }; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = { 0, 1100, 2800, 200 }; // mini 1 2 3
+        public int[] clear = { 0, -7000, -3000, -4000, 7000 }; // 1 2 3 4 // combo时也许不一样
+        public int[] tspin = { -1000, 100, 2800, 200 }; // mini 1 2 3
         public int wide = -300;
-        public int b2b;
-        public int b2b_clear;
-        public int wastedT = -50000;
+        public int b2b = 100;
+        public int b2b_clear = 100;
+        public int wastedT = -5000;
         public int[] tslot = new int[4]; // mini 1 2 3
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目jla
-        public int holdT = 400;
+        public int holdT = 4000;
         public int holdI = 200;
         public int perfectclear = 9999;
         public int bus = -30;
@@ -87,7 +88,39 @@ namespace Jura_Knife_Tetris
         public int linefull = -5; // -5
         public int[] col_minhigh = { -20, -30, -40, 30, 50, 30, 30, -40, -30, -20 };
 
+        public string ToString()
+        {
+            StringBuilder res = new StringBuilder();
+            res.AppendFormat("\n\n\nheight = {0}, {1}, {2}, {3}\n", height[0], height[1], height[2], height[3]);
+            res.AppendFormat("clear = {0}, {1}, {2}, {3}\n", clear[1], clear[2], clear[3], clear[4]);
+            res.AppendFormat("tspin = {0}, {1}, {2}, {3}\n", tspin[0], tspin[1], tspin[2], tspin[3]);
+            res.AppendFormat("wide = {0}\n", wide);
+            res.AppendFormat("b2b = {0}\n", b2b);
+            res.AppendFormat("b2b_clear = {0}\n", b2b_clear);
+            res.AppendFormat("wastedT = {0}\n", wastedT);
+            res.AppendFormat("movetime = {0}\n", movetime);
+            res.AppendFormat("holdT = {0}\n", holdT);
+            res.AppendFormat("holdI = {0}\n", holdI);
+            res.AppendFormat("perfectclear = {0}\n", perfectclear);
+            res.AppendFormat("bus = {0}\n", bus);
+            res.AppendFormat("bus_sq = {0}\n", bus_sq);
+            res.AppendFormat("fewcombo = {0}\n", fewcombo);
+            res.AppendFormat("lotcombo = {0}\n", lotcombo);
+            res.AppendFormat("maxdef = {0}\n", maxdef);
+            res.AppendFormat("attack = {0}\n", attack);
+            res.AppendFormat("downstack = {0}\n", downstack);
+            res.AppendFormat("deephole = {0}\n", deephole);
+            res.AppendFormat("deltcol = {0}\n", deltcol);
+            res.AppendFormat("safecost = {0}\n", safecost);
+            res.AppendFormat("parity = {0}\n", parity);
+            res.AppendFormat("dephigh = {0}\n", dephigh);
+            res.AppendFormat("linefull = {0}\n", linefull);
+            res.AppendFormat("col_minhigh = {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}\n\n\n",
+                col_minhigh[0], col_minhigh[1], col_minhigh[2], col_minhigh[3], col_minhigh[4], 
+                col_minhigh[5], col_minhigh[6], col_minhigh[7], col_minhigh[8], col_minhigh[9]);
+            return res.ToString();
 
+        }
     }
     public class eval // 平整 无洞 易挖 奇偶性
     {
@@ -554,6 +587,9 @@ namespace Jura_Knife_Tetris
                 score += W.holdT;
             if (node.holdI)
                 score += W.holdI;
+            if (node.Board.isperfectclear) score += W.perfectclear;
+            if (node.Board.isb2b) score += W.b2b;
+            if (node.Board.isb2bclear) score += W.b2b_clear;
             if (node.Board.piece.Tspin && node.Board.piece.name == "T")
             {
                 if (node.Board.piece.mini)
@@ -564,7 +600,7 @@ namespace Jura_Knife_Tetris
                 {
                     score += W.tspin[node.Board.clearrow];
                 }
-
+                
             }
             else
             {
@@ -575,6 +611,8 @@ namespace Jura_Knife_Tetris
             {
                 score += W.wastedT;
             }
+            
+
             //score
             return score;
         }

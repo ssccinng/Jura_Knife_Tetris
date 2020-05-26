@@ -117,6 +117,7 @@ namespace optimizer
             if (rand < 41) res = p1;
             else if (rand < 82) res = p2;
             else if (rand < 98) res = (p1 + p2) / 2;
+            else res = r.Next(-9999, 9999);
             if (res > 9999) return 9999;
             else if (res < -9999) return -9999;
             else return res;

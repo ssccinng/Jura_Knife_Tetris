@@ -385,7 +385,17 @@ namespace Jura_Knife_Tetris
             spinlast = true;
             return kick_try;
         }
-
+        public void spinstatupdate(ref board field)
+        {
+            if (isTspin(ref field))
+            {
+                Tspin = true;
+                if (ismin(ref field))
+                {
+                    mini = true;
+                }
+            }
+        }
 
         public bool mino_lock(ref board field)
         {
@@ -403,15 +413,9 @@ namespace Jura_Knife_Tetris
                     }
                 }
             }
-            if (isTspin(ref field))
-            {
-                Tspin = true;
-                if (ismin(ref field))
-                {
-                    mini = true;
-                }
-            }
-            
+            spinstatupdate(ref field);
+
+
             for (int i = 0; i < height; ++i)
             {
                 for (int j = 0; j < weight; ++j)
@@ -431,7 +435,7 @@ namespace Jura_Knife_Tetris
         public mino clone()
         {
             mino cp = new mino(minofield, kicktable,  stat, minopos, name);
-            cp.locked = this.locked;
+            cp.locked = this.locked; // spin需要更新吗
             cp.spinlast = this.spinlast;
             cp.height = this.height;
             cp.weight = this.weight;
@@ -668,6 +672,18 @@ namespace Jura_Knife_Tetris
             }
             return true;
         }
+        public void spinstatupdate(ref simpboard field)
+        {
+            if (isTspin(ref field))
+            {
+                Tspin = true;
+                if (ismin(ref field))
+                {
+                    mini = true;
+                }
+            }
+        }
+
         public bool mino_lock(ref simpboard field)
         {
             if (!check_mino_ok(ref field, minopos)) return false;
@@ -685,14 +701,7 @@ namespace Jura_Knife_Tetris
                 }
             }
 
-            if (isTspin(ref field))
-            {
-                Tspin = true;
-                if (ismin(ref field))
-                {
-                    mini = true;
-                }
-            }
+            spinstatupdate(ref field);
 
             for (int i = 0; i < height; ++i)
             {

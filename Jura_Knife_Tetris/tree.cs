@@ -26,7 +26,7 @@ namespace Jura_Knife_Tetris
         public int clearrow = 0;
         public int pieceidx = 0;
         public int afttspinscore = 0;
-        public evalresult res;
+        public evalresult res = new evalresult();
 
         public bool inplan = true;
         // 预测块会到来的顺序
@@ -175,13 +175,13 @@ namespace Jura_Knife_Tetris
                 chird.inplan = true;
                 chird.res = bot.evalweight.evalfield(chird);
                 chird.score = (int)chird.res.score;
-                chird.score += bot.evalweight.evalbattle(chird);
+                chird.score += bot.evalweight.evalbattle(chird); // 相同的不要反复判了
                 if (chird.holdT)
                 {
                     tree Tchird1 = chird.clone();
                     Tchird1.Board.piece = defaultop.demino.getmino(2);
                     Tchird1.Board.piece.setpos(19, 3);
-                    List<mino> Alltslot = seacher.findallplace(Tchird1.Board); // 修改
+                    List<mino> Alltslot = search_tspin.findalltslot(Tchird1.Board); // 修改
                     if (Alltslot.Count != 0)
                     {
                         //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
@@ -190,6 +190,7 @@ namespace Jura_Knife_Tetris
 
                         foreach (mino t in Alltslot)
                         {
+                            if (!t.Tspin) continue;
                             tree Tchird = chird.clone();
                             Tchird.Board.piece = t;
                             Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
@@ -246,7 +247,7 @@ namespace Jura_Knife_Tetris
                             tree Tchird1 = chird.clone();
                             Tchird1.Board.piece = defaultop.demino.getmino(2);
                             Tchird1.Board.piece.setpos(19, 3);
-                            List<mino> Alltslot = seacher.findallplace(Tchird1.Board);
+                            List<mino> Alltslot = search_tspin.findalltslot(Tchird1.Board);
                             //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
                             if (Alltslot.Count != 0)
                             {
@@ -254,6 +255,7 @@ namespace Jura_Knife_Tetris
                                 int minscore = chird.score;
                                 foreach (mino t in Alltslot)
                                 {
+                                    if (!t.Tspin) continue;
                                     tree Tchird = chird.clone();
                                     Tchird.Board.piece = t;
                                     Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);
@@ -305,10 +307,11 @@ namespace Jura_Knife_Tetris
                     chird.score += bot.evalweight.evalbattle(chird);
                     if (chird.holdT)
                     {
+
                         tree Tchird1 = chird.clone();
                         Tchird1.Board.piece = defaultop.demino.getmino(2);
                         Tchird1.Board.piece.setpos(19, 3);
-                        List<mino> Alltslot = seacher.findallplace(Tchird1.Board);
+                        List<mino> Alltslot = search_tspin.findalltslot(Tchird1.Board);
                         //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
                         if (Alltslot.Count != 0)
                         {
@@ -316,6 +319,7 @@ namespace Jura_Knife_Tetris
                             int minscore = chird.score;
                             foreach (mino t in Alltslot)
                             {
+                                if (!t.Tspin) continue; // 相同场地不要去 有些无用场地需要吗
                                 tree Tchird = chird.clone();
                                 Tchird.Board.piece = t;
                                 Tuple<int, int> res = lock_piece_calc(ref Tchird.Board);

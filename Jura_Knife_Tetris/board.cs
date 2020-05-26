@@ -11,6 +11,7 @@ namespace Jura_Knife_Tetris
         public int[] column_height = new int[10];
 
         public bool isb2b = false;
+        public bool isb2bclear = false;
         public bool isdead = false;
         public int combo = 0;
         public mino holdpiece = null;
@@ -131,6 +132,14 @@ namespace Jura_Knife_Tetris
             int index2 = 0;
             if (cntclear > 0)
             {
+                if (isb2b)
+                {
+                    isb2bclear = true;
+                }
+                else
+                {
+                    isb2bclear = false;
+                }
                 if (cntclear == 4 || piece.Tspin)
                 {
                     isb2b = true;
@@ -378,6 +387,7 @@ namespace Jura_Knife_Tetris
         {
             simpboard sBoard = new simpboard();
             sBoard.isb2b = isb2b;
+            sBoard.isb2bclear = isb2bclear;
             sBoard.combo = combo;
             if (piece != null)
                 sBoard.piece = piece.clone();
@@ -403,6 +413,7 @@ namespace Jura_Knife_Tetris
     {
         public bool[,] field = new bool[40, 10];
         public bool isb2b = false;
+        public bool isb2bclear = false;
         public bool isdead = false;
         public int combo = 0;
         public mino piece = null;
@@ -496,8 +507,14 @@ namespace Jura_Knife_Tetris
                 }
             }
             int index2 = 0;
+            isb2bclear = false;
             if (cntclear > 0)
             {
+                if (isb2b)
+                {
+                    isb2bclear = true;
+                }
+
                 if (cntclear == 4 || piece.Tspin)
                 {
                     isb2b = true;

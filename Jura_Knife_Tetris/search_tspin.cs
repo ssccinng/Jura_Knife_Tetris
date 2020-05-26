@@ -8,15 +8,18 @@ namespace Jura_Knife_Tetris
     {
         static public List<mino> findalltslot(simpboard Board)
         {
-            List<mino> allpos = new List<mino>(); // 返回所有t的状态 
-            bool[,,,] visit = new bool[42, 12, 4, 2];
-            bool[,,,] visit1 = new bool[42, 12, 4, 2];
+            List<mino> allpos = new List<mino>();
+            bool[,,] visit = new bool[42, 12, 4];
+            bool[,,] visit1 = new bool[42, 12, 4];
             Queue<mino_stat> minoque = new Queue<mino_stat>();
+            if (!Board.piece.check_mino_ok(ref Board, Board.piece.minopos))
+            {
+                return allpos;
+            }
             minoque.Enqueue(new mino_stat(Board.piece.minopos, Board.piece.stat));
-            visit[Board.piece.minopos.x + 2, Board.piece.minopos.y + 2, Board.piece.stat, 0] = true;
+            visit[Board.piece.minopos.x + 2, Board.piece.minopos.y + 2, Board.piece.stat] = true;
             mino_gene minogen = new mino_gene();
-            mino temp = defaultop.demino.getmino(2);
-            temp.setpos(19, 3);
+            mino temp = Board.piece.clone();
             while (minoque.Count != 0)
             {
                 mino_stat node = minoque.Dequeue();
@@ -26,11 +29,10 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.left_rotation(ref Board) != -1)
                 {
-                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 1])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 1] = true;
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 2, true));
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 2));
                     }
                 }
 
@@ -38,11 +40,10 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.right_rotation(ref Board) != -1)
                 {
-                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 1])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 1] = true;
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 3, true));
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 3));
                     }
                 }
 
@@ -51,9 +52,9 @@ namespace Jura_Knife_Tetris
 
                 if (temp.left_move(ref Board))
                 {
-                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 0));
                     }
                 }
@@ -61,9 +62,9 @@ namespace Jura_Knife_Tetris
                 temp.setstat(node.stat);
                 if (temp.right_move(ref Board))
                 {
-                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0])
+                    if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
-                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
+                        visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
                         minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 1));
                     }
                 }
@@ -71,29 +72,22 @@ namespace Jura_Knife_Tetris
                 temp.setpos(node.minoopos);
                 temp.setstat(node.stat);
 
-                int softdis = temp.soft_drop_floor(ref Board);
+                temp.soft_drop_floor(ref Board);
                 //{
-                if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0])
+                if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                 {
-                    visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
-                    //if (softdis == 0)
-                    //    minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4));
-                    //else
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4));
+                    visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
+                    minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4));
                 }
                 //}
-                if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] && node.spinlast)  // istspin spin状态多一维 先只搜spin
+                if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                 {
+                    visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
 
-                    visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 0] = true;
-                    if (node.spinlast && softdis == 0) { 
-                        visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat, 1] = true;
-
-                        mino fi = temp.clone();
-                        fi.path = node;
-                        fi.spinlast = node.spinlast;
-                        allpos.Add(fi);
-                    }
+                    mino fi = temp.clone();
+                    fi.spinstatupdate(ref Board);
+                    fi.path = node;
+                    allpos.Add(fi);
                 }
 
 
