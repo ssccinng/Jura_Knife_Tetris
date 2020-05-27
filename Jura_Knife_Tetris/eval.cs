@@ -59,21 +59,21 @@ namespace Jura_Knife_Tetris
     public class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -9999 };
-        public int[] clear = { 0, -7000, -3000, -4000, 7000 }; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = { -1000, 100, 2800, 200 }; // mini 1 2 3
+        public int[] clear = { 0, -0, -0, -0, 0 }; // 1 2 3 4 // combo时也许不一样
+        public int[] tspin = { -9000, 700, 1280, 400 }; // mini 1 2 3
         public int wide = -300;
-        public int b2b = 100;
-        public int b2b_clear = 100;
-        public int wastedT = -5000;
+        public int b2b = 1000;
+        public int b2b_clear = 1000;
+        public int wastedT = -0;
         public int[] tslot = new int[4]; // mini 1 2 3
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目jla
-        public int holdT = 4000;
+        public int holdT = 400;
         public int holdI = 200;
-        public int perfectclear = 9999;
+        public int perfectclear = 9999999;
         public int bus = -30;
         public int bus_sq = -100;
-        public int fewcombo;
+        public int fewcombo = 3000;
         public int lotcombo; // maybe combo table
         public int maxdef; // 最高防御垃圾行
         public int attack; // 攻击
@@ -581,13 +581,14 @@ namespace Jura_Knife_Tetris
         public int evalbattle(tree node)
         {
             int score = 0;
-            score += W.movetime * node.Board.piece.path.idx;
+            score += W.movetime * node.Board.piece.path.movetime;
 
             if (node.holdT)
                 score += W.holdT;
             if (node.holdI)
                 score += W.holdI;
-            if (node.Board.isperfectclear) score += W.perfectclear;
+            score += W.fewcombo * node.Board.combo;
+            if (node.Board.isperfectclear) score += W.perfectclear * 1000;
             if (node.Board.isb2b) score += W.b2b;
             if (node.Board.isb2bclear) score += W.b2b_clear;
             if (node.Board.piece.Tspin && node.Board.piece.name == "T")

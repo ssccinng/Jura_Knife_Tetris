@@ -51,8 +51,8 @@ namespace Jura_Knife_Tetris
             boardtree.treenode.Sort((a, b) =>
             {
                 var o = (b.score - a.score);
-                var q = b.maxdepth - a.maxdepth;
-                if (q != 0) return q;
+                //var q = b.maxdepth - a.maxdepth;
+                //if (q != 0) return q;
                 return (o * 1);
             });
 
@@ -70,7 +70,16 @@ namespace Jura_Knife_Tetris
             }
             boardtree = boardtree.treenode[0]; // 节点不存在的问题
             boardtree.father = null;
-            aa = nodedep(boardtree);
+            if(!boardtree.isextend)
+            {
+                boardtree.inplan = true;
+            }
+            else 
+            for (int i = 0; i < 5 && i < boardtree.treenode.Count; ++i)
+            {
+                if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
+            }
+                aa = nodedep(boardtree);
             System.GC.Collect();
             //eval.evalfield(boardtree);
             // 重置nodequeue
@@ -130,7 +139,7 @@ namespace Jura_Knife_Tetris
         public void nodeadd(tree node)
         {
 
-            if (node.inplan && node.pieceidx < nextcnt ) nodequeue.Add(node);
+            if (node.inplan && node.pieceidx < nextcnt ) nodequeue.Add(node); // 考虑遇到无用直接返回
 
             //if (node.treenode.Count == 0 && !node.useless && node.pieceidx < nextquene.Count && !node.isextend) nodequeue.Add(node);
             //cnt += node.treenode.Count;

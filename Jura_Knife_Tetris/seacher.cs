@@ -32,7 +32,7 @@ namespace Jura_Knife_Tetris
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 2));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 2, node.movetime));
                     }
                 }
 
@@ -43,7 +43,7 @@ namespace Jura_Knife_Tetris
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 3));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 3, node.movetime));
                     }
                 }
 
@@ -55,7 +55,7 @@ namespace Jura_Knife_Tetris
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 0));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 0, node.movetime));
                     }
                 }
                 temp.setpos(node.minoopos);
@@ -65,19 +65,19 @@ namespace Jura_Knife_Tetris
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 1));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 1, node.movetime));
                     }
                 }
 
                 temp.setpos(node.minoopos);
                 temp.setstat(node.stat);
 
-                temp.soft_drop_floor(ref Board);
+                int dis = temp.soft_drop_floor(ref Board);
                 //{
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4, node.movetime, repeat: dis));
                     }
                 //}
                 if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat]) {
