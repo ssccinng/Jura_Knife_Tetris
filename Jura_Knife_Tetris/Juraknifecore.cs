@@ -51,18 +51,18 @@ namespace Jura_Knife_Tetris
             boardtree.treenode.Sort((a, b) =>
             {
                 var o = (b.score - a.score);
-                //var q = b.maxdepth - a.maxdepth;
-                //if (q != 0) return q;
+                var q = b.maxdepth - a.maxdepth;
+                if (q != 0) return q;
                 return (o * 1);
             });
 
-            int aa = nodedep(boardtree);
+            //int aa = nodedep(boardtree);
 
             for (int i = 1; i < boardtree.treenode.Count; ++i)
             {
                 freenode(boardtree.treenode[i]);
             }
-            aa = nodedep(boardtree);
+            //aa = nodedep(boardtree);
             if (boardtree.treenode.Count == 0)
             {
                 Board.isdead = true;
@@ -72,14 +72,15 @@ namespace Jura_Knife_Tetris
             boardtree.father = null;
             if(!boardtree.isextend)
             {
+                Console.WriteLine("当前节点未扩展");
                 boardtree.inplan = true;
             }
             else 
-            for (int i = 0; i < 5 && i < boardtree.treenode.Count; ++i)
-            {
-                if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
-            }
-                aa = nodedep(boardtree);
+            //for (int i = 0; i < 5 && i < boardtree.treenode.Count; ++i)
+            //{
+            //    if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
+            //}
+             //   aa = nodedep(boardtree);
             System.GC.Collect();
             //eval.evalfield(boardtree);
             // 重置nodequeue
@@ -139,7 +140,7 @@ namespace Jura_Knife_Tetris
         public void nodeadd(tree node)
         {
 
-            if (node.inplan && node.pieceidx < nextcnt ) nodequeue.Add(node); // 考虑遇到无用直接返回
+            if (node.inplan && node.pieceidx < nextcnt && !node.isextend ) nodequeue.Add(node); // 考虑遇到无用直接返回
 
             //if (node.treenode.Count == 0 && !node.useless && node.pieceidx < nextquene.Count && !node.isextend) nodequeue.Add(node);
             //cnt += node.treenode.Count;
@@ -237,8 +238,8 @@ namespace Jura_Knife_Tetris
                 nodequeue.Sort((a, b) =>
                 {
                     var o = (b.score - a.score);
-                    var q = b.maxdepth - a.maxdepth;
-                    if (q != 0) return q;
+                    //var q = b.maxdepth - a.maxdepth;
+                    //if (q != 0) return q;
                     return (int)(o * 1); ;
                 }
                     );
@@ -260,7 +261,23 @@ namespace Jura_Knife_Tetris
                         continue;
                     }
                     nodequeue[j].inplan = false;
-                    if (cnt > 20 || lastscore == nodequeue[j].res.score)
+                    if (lastscore == nodequeue[j].res.score)
+                    {
+                        //bool tag = true;
+                        //for (int i = 0; i < 10; ++i)
+                        //{
+                        //    if (nodequeue[j - 1].Board.column_height[i] != nodequeue[j].Board.column_height[i] )
+                        //    {
+                        //        tag = false;
+                        //    }
+                        //}
+                        //if (tag) {
+                        nodequeue[j].score = -999999999;
+                        nodequeue[j].useless = true;
+                        //}
+
+                    }
+                    if (cnt > 20 /*|| lastscore == nodequeue[j].res.score*/)
                     {
                         //nodequeue[j].inplan = false;
                         continue;
@@ -284,8 +301,8 @@ namespace Jura_Knife_Tetris
                     node.treenode.Sort((a, b) =>
                     {
                         var o = (int)(b.score - a.score);
-                        var q = b.maxdepth - a.maxdepth;
-                        if (q != 0) return q;
+                        //var q = b.maxdepth - a.maxdepth;
+                        //if (q != 0) return q;
                         return (int)(o * 1); ;
                     });
 
