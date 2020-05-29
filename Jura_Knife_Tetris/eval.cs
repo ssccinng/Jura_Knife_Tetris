@@ -58,29 +58,31 @@ namespace Jura_Knife_Tetris
 
     public class weights
     {
-        public int[] height = { -200, -500, -2000, -5000, -9999 };
-        public int[] clear = { 0, -0, -0, -0, 0 }; // 1 2 3 4 // combo时也许不一样
+        public int[] height = { -200, -500, -2000, -5000, -99999 };
+        public int[] clear = { 0, -2000, -500, -700, 5000 }; // 1 2 3 4 // combo时也许不一样
         public int[] tspin = { -9000, 700, 1280, 400 }; // mini 1 2 3
         public int wide = -300;
         public int b2b = 1000;
         public int b2b_clear = 1000;
-        public int wastedT = -0;
-        public int[] tslot = new int[4]; // mini 1 2 3
+        public int wastedT = -1000;
+        public int[] tslot = {0,100, 900, 400 }; // mini 1 2 3
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目jla
         public int holdT = 400;
         public int holdI = 200;
-        public int perfectclear = 9999999;
+        public int perfectclear = 9999;
         public int bus = -30;
         public int bus_sq = -100;
-        public int fewcombo = 3000;
+        public int fewcombo = 500;
         public int lotcombo; // maybe combo table
-        public int maxdef; // 最高防御垃圾行
+        
         public int attack; // 攻击
         public int downstack = -1300;
         public int deephole = -1000;
-        public int deephole2 = 400;
-        public int deephole3 = 100;
+        public int atk = 400;
+        public int def = 500;
+        public int maxatk = 400;
+        public int maxdef = 10000; // 最高防御垃圾行
         public int deltcol = -500;
         public int safecost = -1700;
         public int parity = -500;
@@ -125,7 +127,7 @@ namespace Jura_Knife_Tetris
     public class eval // 平整 无洞 易挖 奇偶性
     {
 
-        weights W ;
+        public weights W ;
 
         public eval(weights Weights)
         {
@@ -576,20 +578,40 @@ namespace Jura_Knife_Tetris
 
         //    }
         //}
+        public int evalatkdef(tree node) // 哪些是直接继承 哪些需要处理
+        {
+            int score = 0;
+            score += node.attack * W.atk;
+            //score += node.def * W.def;
+            score += (node.maxattack - node.attack) * W.maxatk;
+            score += (node.maxdef - node.def) * W.maxdef;
+            return score;
+        }
 
+        public int evalmove(tree node) // 哪些是直接继承 哪些需要处理
+        {
+            int score = 0; 
+            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
+            {
+                score += W.wastedT;
+            }
+            if (node.holdT)
+                score += W.holdT;
+            if (node.holdI)
+                score += W.holdI;
+            if (node.Board.isb2b) score += W.b2b;
+            return score;
+        }
 
         public int evalbattle(tree node)
         {
             int score = 0;
             score += W.movetime * node.Board.piece.path.movetime;
 
-            if (node.holdT)
-                score += W.holdT;
-            if (node.holdI)
-                score += W.holdI;
-            score += W.fewcombo * node.Board.combo;
+            
+            score += W.fewcombo * node.Board.combo; 
             if (node.Board.isperfectclear) score += W.perfectclear * 1000;
-            if (node.Board.isb2b) score += W.b2b;
+            
             if (node.Board.isb2bclear) score += W.b2b_clear;
             if (node.Board.piece.Tspin && node.Board.piece.name == "T")
             {
@@ -608,10 +630,7 @@ namespace Jura_Knife_Tetris
                 score += W.clear[node.Board.clearrow];
 
             }
-            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
-            {
-                score += W.wastedT;
-            }
+            
             
 
             //score

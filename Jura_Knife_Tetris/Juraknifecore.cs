@@ -48,6 +48,11 @@ namespace Jura_Knife_Tetris
             // movereslut
             //if (boardtree.treenode.Count == 0)
             //    return false;
+
+            foreach(tree node in boardtree.treenode)
+            {
+                node.atkscore = evalweight.evalatkdef(node);
+            }
             boardtree.treenode.Sort((a, b) =>
             {
                 var o = (b.score - a.score);
@@ -55,7 +60,7 @@ namespace Jura_Knife_Tetris
                 if (q != 0) return q;
                 return (o * 1);
             });
-
+            // 用不同方式排序
             //int aa = nodedep(boardtree);
 
             for (int i = 1; i < boardtree.treenode.Count; ++i)
@@ -75,7 +80,7 @@ namespace Jura_Knife_Tetris
                 Console.WriteLine("当前节点未扩展");
                 boardtree.inplan = true;
             }
-            else 
+            //else 
             //for (int i = 0; i < 5 && i < boardtree.treenode.Count; ++i)
             //{
             //    if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
@@ -261,23 +266,23 @@ namespace Jura_Knife_Tetris
                         continue;
                     }
                     nodequeue[j].inplan = false;
-                    if (lastscore == nodequeue[j].res.score)
-                    {
-                        //bool tag = true;
-                        //for (int i = 0; i < 10; ++i)
-                        //{
-                        //    if (nodequeue[j - 1].Board.column_height[i] != nodequeue[j].Board.column_height[i] )
-                        //    {
-                        //        tag = false;
-                        //    }
-                        //}
-                        //if (tag) {
-                        nodequeue[j].score = -999999999;
-                        nodequeue[j].useless = true;
-                        //}
+                    //if (lastscore == nodequeue[j].res.score)
+                    //{
+                    //    //bool tag = true;
+                    //    //for (int i = 0; i < 10; ++i)
+                    //    //{
+                    //    //    if (nodequeue[j - 1].Board.column_height[i] != nodequeue[j].Board.column_height[i] )
+                    //    //    {
+                    //    //        tag = false;
+                    //    //    }
+                    //    //}
+                    //    //if (tag) {
+                    //    nodequeue[j].fieldscore = -9999999;
+                    //    nodequeue[j].useless = true;
+                    //    //}
 
-                    }
-                    if (cnt > 20 /*|| lastscore == nodequeue[j].res.score*/)
+                    //}
+                    if (cnt > 20 || lastscore == nodequeue[j].res.score)
                     {
                         //nodequeue[j].inplan = false;
                         continue;
