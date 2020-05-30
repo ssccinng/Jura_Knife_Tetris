@@ -132,7 +132,7 @@ namespace Jura_Knife_Tetris
 
                 if(father.Board.combo == Board.combo - 1)
                 {
-                    father.maxdef =Math.Max(  maxdef + father.def, father.maxdef);
+                    father.maxdef =Math.Max(  maxdef + father.def, father.maxdef); // 也许需要改
                 }
                 father.maxattack = Math.Max(maxattack + father.attack, father.maxattack);
                 father.updatefather();
@@ -241,7 +241,7 @@ namespace Jura_Knife_Tetris
                 chird.battlescore += bot.evalweight.evalbattle(chird); // 相同的不要反复判了
                 chird.movescore = bot.evalweight.evalmove(chird); // 相同的不要反复判了
                 chird.atkscore = bot.evalweight.evalatkdef(chird); // 相同的不要反复判了
-                if (true || chird.holdT || hasnextT(bot, chirdidx) )// 当前块是t的时候
+                if (true||  chird.holdT || hasnextT(bot, chirdidx) )// 当前块是t的时候
                 {
                     tree Tchird1 = chird.clone();
                     Tchird1.Board.piece = defaultop.demino.getmino(2);
@@ -334,7 +334,7 @@ namespace Jura_Knife_Tetris
                         chird.battlescore += bot.evalweight.evalbattle(chird); // 作为攻击回传
                         chird.movescore = bot.evalweight.evalmove(chird); // 相同的不要反复判了
                         chird.atkscore = bot.evalweight.evalatkdef(chird); // 相同的不要反复判了
-                        if (true|| chird.holdT || hasnextT(bot, nextnext))
+                        if (true || chird.holdT || hasnextT(bot, nextnext))
                         {
                             tree Tchird1 = chird.clone();
                             Tchird1.Board.piece = defaultop.demino.getmino(2);

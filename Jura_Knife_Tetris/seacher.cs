@@ -77,7 +77,7 @@ namespace Jura_Knife_Tetris
                     if (!visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat])
                     {
                         visit[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat] = true;
-                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, 4, node.movetime, repeat: dis));
+                        minoque.Enqueue(new mino_stat(temp.minopos, temp.stat, node.idx, node.path, -dis, node.movetime, repeat: dis));
                     }
                 //}
                 if (!visit1[temp.minopos.x + 2, temp.minopos.y + 2, temp.stat]) {

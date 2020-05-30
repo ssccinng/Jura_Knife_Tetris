@@ -75,14 +75,14 @@ namespace Jura_Knife_Tetris
         public int bus_sq = -100;
         public int fewcombo = 500;
         public int combo = 500; // maybe combo table
-        
+
         public int attack; // 攻击
         public int downstack = -1300;
         public int deephole = -1000;
-        public int atk = 400;
-        public int def = 500;
-        public int maxatk = 1000;
-        public int maxdef = 10000; // 最高防御垃圾行 // 还要有一个非keepcombo的
+        public int atk = 40;
+        public int def = 50;
+        public int maxatk = 10;
+        public int maxdef = 100; // 最高防御垃圾行 // 还要有一个非keepcombo的
         public int deltcol = -500;
         public int safecost = -1700;
         public int parity = -500;

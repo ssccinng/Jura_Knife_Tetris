@@ -82,9 +82,13 @@ namespace Jura_Knife_Tetris
                 boardtree.inplan = true;
             }
             //else 
-            //for (int i = 0; i < 10 && i < boardtree.treenode.Count; ++i)
+            int lastscore = 498;
+            //for (int i = 0, cnt = 0; cnt < 20 && i < boardtree.treenode.Count; ++i)
             //{
-            //    if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
+            //    if (lastscore == boardtree.treenode[i].res.score) continue;
+            //    cnt++;
+            //    if (!boardtree.treenode[i].isextend) { boardtree.treenode[i].inplan = true; }
+            //    lastscore = boardtree.treenode[i].res.score;
             //}
             //extend_node();
             //   aa = nodedep(boardtree);
@@ -285,7 +289,7 @@ namespace Jura_Knife_Tetris
                     //    //}
 
                     //}
-                    if (cnt > 20 || lastscore == nodequeue[j].res.score)
+                    if (cnt > 40 || lastscore == nodequeue[j].res.score)
                     {
                         //nodequeue[j].inplan = false;
                         continue;
