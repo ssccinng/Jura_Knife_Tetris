@@ -28,15 +28,22 @@ namespace Jura_Knife_Tetris
     {
 
         public bool isdead = true;
-        public int score { get {
+        public long score { get {
                 return fieldscore + battlescore + atkscore + movescore;
             
             } }
+        //public long scoreex
+        //{
+        //    get
+        //    {
+        //        return fieldscore + battlescore +a  + movescore;
 
-        public int fieldscore = 0;
-        public int battlescore = 0;
-        public int atkscore = 0;
-        public int movescore = 0;
+        //    }
+        //}
+        public long fieldscore = 0; // 场地评判， 应该是扩展标准
+        public long battlescore = 0; // 行为评判 应该是扩展标准
+        public long atkscore = 0; // 不应该被扩展评判？ 有些只能在筛选时评判
+        public long movescore = 0; // 场地状态评判 b2b等 独立
         // 如果能保持连击 分数就使用叶子节点最高的评价
         // 如果不行 需要根据场地高度判断适不适合
         public treestat Treestat = new treestat();
@@ -145,6 +152,7 @@ namespace Jura_Knife_Tetris
             cp.garbage = garbage; // 可能有抵消
             cp.attack = attack;
             cp.holdpiece = holdpiece;
+            cp.battlescore = battlescore;
             // attack 可能继承
             return cp;
         }
@@ -185,7 +193,14 @@ namespace Jura_Knife_Tetris
 
         //}
 
-
+            public bool hasnextT(Juraknifecore bot, int nowidx)
+        {
+            for (int i = nowidx, j = 0; i < bot.nextcnt && j < 5;++i, ++j )
+            {
+                if (bot.nextqueue[i % 30] == 2) return true;
+            }
+            return false;
+        }
 
         public void findalladd(Juraknifecore bot)
         {
@@ -204,8 +219,10 @@ namespace Jura_Knife_Tetris
             if (allpos == null) { tree chird = clone(); chird.isdead = true; chird.pieceidx = chirdidx; chird.inplan = false; chird.isextend = true; treenode.Add(chird); return; };
             foreach (mino m in allpos)
             {
+                // 场外死亡判断
                 tree chird = clone();
                 chird.Board.piece = m;
+
                 res = lock_piece_calc(ref chird.Board);
                 chird.attack = chird.maxattack = res.Item1;
                 chird.def = chird.maxdef = res.Item1 + res.Item2; // 已经消除了 还能叫防御吗
@@ -221,10 +238,10 @@ namespace Jura_Knife_Tetris
                 chird.inplan = true;
                 chird.res = bot.evalweight.evalfield(chird);
                 chird.fieldscore = (int)chird.res.score;
-                chird.battlescore = bot.evalweight.evalbattle(chird); // 相同的不要反复判了
+                chird.battlescore += bot.evalweight.evalbattle(chird); // 相同的不要反复判了
                 chird.movescore = bot.evalweight.evalmove(chird); // 相同的不要反复判了
                 chird.atkscore = bot.evalweight.evalatkdef(chird); // 相同的不要反复判了
-                if (chird.holdT) // 当前块是t的时候
+                if (true || chird.holdT || hasnextT(bot, chirdidx) )// 当前块是t的时候
                 {
                     tree Tchird1 = chird.clone();
                     Tchird1.Board.piece = defaultop.demino.getmino(2);
@@ -234,17 +251,20 @@ namespace Jura_Knife_Tetris
                     {
                         //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
                         tree bestT;
-                        int minscore = chird.score;
+                        long minscore = chird.score;
 
                         foreach (mino t in Alltslot)
                         {
                             if (!t.Tspin) continue;
                             tree Tchird = chird.clone();
                             Tchird.Board.piece = t;
+                            Tchird.finmino = t;
                             res = lock_piece_calc(ref Tchird.Board);
                             Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
                             if (!t.mini)
-                                Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                                Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2]*8;
+                            else
+                                Tchird.fieldscore += bot.evalweight.W.tslot[4];
                             //Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上 // 其他节点借用了这个t的分值？ 需不需要加入t坑评分
                             // 攻击也需要
                             if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin)
@@ -280,6 +300,16 @@ namespace Jura_Knife_Tetris
                     // todo T比较近的时候就可以开搜
                     // 优化
 
+                    // 多next看t
+                    // 为什么不喜欢堆防御
+
+                    // keepcombo的 def
+                    // 子节点也要前面的攻击 
+                    // 软降优化
+
+                    // 需要参与排序的有 自身场地状态 从根到该节点所打出的攻击总数 该点的攻击，该点开始保持连击打出的最大防御数 路径总数（？ 浪费t总数（这个不确定
+                    // 
+
                     Board.piece = defaultop.demino.getmino(bot.nextqueue[holdidx % 30]);
                     Board.piece.setpos(19, 3);
                     List<mino> allpos2 = seacher.findallplace(Board);
@@ -301,10 +331,10 @@ namespace Jura_Knife_Tetris
                         chird.inplan = true;
                         chird.res = bot.evalweight.evalfield(chird);
                         chird.fieldscore = (int)chird.res.score;
-                        chird.battlescore = bot.evalweight.evalbattle(chird); // 作为攻击回传
+                        chird.battlescore += bot.evalweight.evalbattle(chird); // 作为攻击回传
                         chird.movescore = bot.evalweight.evalmove(chird); // 相同的不要反复判了
                         chird.atkscore = bot.evalweight.evalatkdef(chird); // 相同的不要反复判了
-                        if (chird.holdT)
+                        if (true|| chird.holdT || hasnextT(bot, nextnext))
                         {
                             tree Tchird1 = chird.clone();
                             Tchird1.Board.piece = defaultop.demino.getmino(2);
@@ -314,17 +344,22 @@ namespace Jura_Knife_Tetris
                             if (Alltslot.Count != 0)
                             {
                                 tree bestT;
-                                int minscore = chird.score;
+                                long minscore = chird.score;
                                 foreach (mino t in Alltslot)
                                 {
                                     if (!t.Tspin) continue;
                                     tree Tchird = chird.clone();
                                     Tchird.Board.piece = t;
+                                    Tchird.finmino = t;
                                     res = lock_piece_calc(ref Tchird.Board); // 作为防御回传
+
                                     Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
+
                                     //Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
                                     if (!t.mini)
-                                        Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                                        Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2] * 8;
+                                    else
+                                        Tchird.fieldscore += bot.evalweight.W.tslot[4];
                                     if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin)
                                     {
                                         minscore = Tchird.fieldscore;
@@ -370,10 +405,10 @@ namespace Jura_Knife_Tetris
                     chird.inplan = true;
                     chird.res = bot.evalweight.evalfield(chird);
                     chird.fieldscore = (int)chird.res.score;
-                    chird.battlescore = bot.evalweight.evalbattle(chird);
+                    chird.battlescore += bot.evalweight.evalbattle(chird);
                     chird.movescore = bot.evalweight.evalmove(chird); // 相同的不要反复判了
                     chird.atkscore = bot.evalweight.evalatkdef(chird); // 相同的不要反复判了
-                    if (chird.holdT)
+                    if (true || chird.holdT || hasnextT(bot, chirdidx))
                     {
 
                         tree Tchird1 = chird.clone();
@@ -384,17 +419,20 @@ namespace Jura_Knife_Tetris
                         if (Alltslot.Count != 0)
                         {
                             tree bestT;
-                            int minscore = chird.score;
+                            long minscore = chird.score;
                             foreach (mino t in Alltslot)
                             {
                                 if (!t.Tspin) continue; // 相同场地不要去 有些无用场地需要吗
                                 tree Tchird = chird.clone();
                                 Tchird.Board.piece = t;
+                                Tchird.finmino = t;
                                 res = lock_piece_calc(ref Tchird.Board);
                                 Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
                                 //Tchird.battlescore += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
                                 if (!t.mini)
-                                    Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                                    Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2] * 8;
+                                else
+                                    Tchird.fieldscore += bot.evalweight.W.tslot[4];
                                 if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
                                 {
                                     minscore = Tchird.fieldscore;

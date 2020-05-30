@@ -55,10 +55,11 @@ namespace Jura_Knife_Tetris
             }
             boardtree.treenode.Sort((a, b) =>
             {
-                var o = (b.score - a.score);
+                long o = (b.score - a.score);
                 var q = b.maxdepth - a.maxdepth;
                 if (q != 0) return q;
-                return (o * 1);
+                if (o == 0) return 0;
+                return (o > 0 ? 1 : -1);
             });
             // 用不同方式排序
             //int aa = nodedep(boardtree);
@@ -81,11 +82,12 @@ namespace Jura_Knife_Tetris
                 boardtree.inplan = true;
             }
             //else 
-            //for (int i = 0; i < 5 && i < boardtree.treenode.Count; ++i)
+            //for (int i = 0; i < 10 && i < boardtree.treenode.Count; ++i)
             //{
             //    if (!boardtree.treenode[i].isextend) boardtree.treenode[i].inplan = true;
             //}
-             //   aa = nodedep(boardtree);
+            //extend_node();
+            //   aa = nodedep(boardtree);
             System.GC.Collect();
             //eval.evalfield(boardtree);
             // 重置nodequeue
@@ -242,10 +244,11 @@ namespace Jura_Knife_Tetris
                 limit = Math.Min(nodequeue.Count, 6);
                 nodequeue.Sort((a, b) =>
                 {
-                    var o = (b.score - a.score);
-                    //var q = b.maxdepth - a.maxdepth;
-                    //if (q != 0) return q;
-                    return (int)(o * 1); ;
+                    long o = (b.score - a.score);
+                    var q = b.maxdepth - a.maxdepth;
+                    if (q != 0) return q;
+                    if (o == 0) return 0;
+                    return (o > 0 ? 1 : -1);
                 }
                     );
                 // 全重置 haishinodequeue
@@ -305,10 +308,11 @@ namespace Jura_Knife_Tetris
                     node.isextend = true;
                     node.treenode.Sort((a, b) =>
                     {
-                        var o = (int)(b.score - a.score);
-                        //var q = b.maxdepth - a.maxdepth;
-                        //if (q != 0) return q;
-                        return (int)(o * 1); ;
+                        long o = (b.score - a.score);
+                        var q = b.maxdepth - a.maxdepth;
+                        if (q != 0) return q;
+                        if (o == 0) return 0;
+                        return (o > 0 ? 1 : -1);
                     });
 
                 }

@@ -59,30 +59,30 @@ namespace Jura_Knife_Tetris
     public class weights
     {
         public int[] height = { -200, -500, -2000, -5000, -99999 };
-        public int[] clear = { 0, -2000, -500, -700, 5000 }; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = { -9000, 700, 1280, 400 }; // mini 1 2 3
+        public int[] clear = { 0, -1000, -500, -700, 500 }; // 1 2 3 4 // combo时也许不一样
+        public int[] tspin = { -500, 700, 1280, 400 }; // mini 1 2 3
         public int wide = -300;
-        public int b2b = 1000;
-        public int b2b_clear = 1000;
-        public int wastedT = -1000;
-        public int[] tslot = {0,100, 900, 400 }; // mini 1 2 3
+        public int b2b = 2000;
+        public int b2b_clear = 2000;
+        public int wastedT = -9000;
+        public int[] tslot = {0,500, 900, 400 , -5000}; // mini 1 2 3 // 加个mini
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目jla
         public int holdT = 400;
         public int holdI = 200;
-        public int perfectclear = 9999;
+        public int perfectclear = 999;
         public int bus = -30;
         public int bus_sq = -100;
         public int fewcombo = 500;
-        public int lotcombo; // maybe combo table
+        public int combo = 500; // maybe combo table
         
         public int attack; // 攻击
         public int downstack = -1300;
         public int deephole = -1000;
         public int atk = 400;
         public int def = 500;
-        public int maxatk = 400;
-        public int maxdef = 10000; // 最高防御垃圾行
+        public int maxatk = 1000;
+        public int maxdef = 10000; // 最高防御垃圾行 // 还要有一个非keepcombo的
         public int deltcol = -500;
         public int safecost = -1700;
         public int parity = -500;
@@ -107,7 +107,7 @@ namespace Jura_Knife_Tetris
             res.AppendFormat("bus = {0}\n", bus);
             res.AppendFormat("bus_sq = {0}\n", bus_sq);
             res.AppendFormat("fewcombo = {0}\n", fewcombo);
-            res.AppendFormat("lotcombo = {0}\n", lotcombo);
+            res.AppendFormat("lotcombo = {0}\n", combo);
             res.AppendFormat("maxdef = {0}\n", maxdef);
             res.AppendFormat("attack = {0}\n", attack);
             res.AppendFormat("downstack = {0}\n", downstack);
@@ -166,6 +166,12 @@ namespace Jura_Knife_Tetris
         {
             int score = 0;
             evalresult evalresult = new evalresult();
+            if ( node.finmino.minopos.x >= 18)
+            {
+                node.isdead = true;
+                evalresult.score = -99999999;
+                return evalresult;
+            }
             int[] colh = new int[node.Board.column_height.Length + 2];
             for (int i = 0; i < node.Board.column_height.Length; ++i)
             {
@@ -582,7 +588,7 @@ namespace Jura_Knife_Tetris
         {
             int score = 0;
             score += node.attack * W.atk;
-            //score += node.def * W.def;
+            //score += node.def * W.def; // 在树中和取出是不一样的
             score += (node.maxattack - node.attack) * W.maxatk;
             score += (node.maxdef - node.def) * W.maxdef;
             return score;
@@ -590,11 +596,9 @@ namespace Jura_Knife_Tetris
 
         public int evalmove(tree node) // 哪些是直接继承 哪些需要处理
         {
-            int score = 0; 
-            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
-            {
-                score += W.wastedT;
-            }
+            int score = 0;
+            // 加一个combo
+            if (node.Board.combo > 0) score += W.combo;
             if (node.holdT)
                 score += W.holdT;
             if (node.holdI)
@@ -603,12 +607,15 @@ namespace Jura_Knife_Tetris
             return score;
         }
 
-        public int evalbattle(tree node)
+        public int evalbattle(tree node) // 相对值？ 需要向下累加
         {
             int score = 0;
             score += W.movetime * node.Board.piece.path.movetime;
 
-            
+            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
+            {
+                score += W.wastedT;
+            }
             score += W.fewcombo * node.Board.combo; 
             if (node.Board.isperfectclear) score += W.perfectclear * 1000;
             
