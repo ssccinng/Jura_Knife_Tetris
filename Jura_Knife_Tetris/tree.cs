@@ -127,7 +127,7 @@ namespace Jura_Knife_Tetris
             if (father != null)// youhua
             {
                 // 以最深处为基准
-                father.fieldscore = Math.Max(father.fieldscore, fieldscore);
+                father.fieldscore = Math.Max(father.fieldscore, fieldscore); // 场地要以最深的？？？
                 father.maxdepth = Math.Max(father.maxdepth, maxdepth);
 
                 if(father.Board.combo == Board.combo - 1)
@@ -251,20 +251,23 @@ namespace Jura_Knife_Tetris
                     {
                         //List<mino> Alltslot = search_tspin.findalltslot(chird.Board);
                         tree bestT;
-                        long minscore = chird.score;
+                        long minscore = chird.fieldscore;
 
-                        foreach (mino t in Alltslot)
+                        foreach (mino t in Alltslot) // 超过一个 干掉
                         {
                             if (!t.Tspin) continue;
                             tree Tchird = chird.clone();
                             Tchird.Board.piece = t;
                             Tchird.finmino = t;
                             res = lock_piece_calc(ref Tchird.Board);
-                            Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
-                            if (!t.mini)
-                                Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2]*8;
-                            else
-                                Tchird.fieldscore += bot.evalweight.W.tslot[4];
+                            
+                            if (!t.mini) {
+                                Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
+                                Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                            }
+                            else { 
+                                Tchird.fieldscore = chird.fieldscore + bot.evalweight.W.tslot[4];
+                            }
                             //Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上 // 其他节点借用了这个t的分值？ 需不需要加入t坑评分
                             // 攻击也需要
                             if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin)
@@ -307,6 +310,8 @@ namespace Jura_Knife_Tetris
                     // 子节点也要前面的攻击 
                     // 软降优化
 
+                    // 扩展被选中的节点的所有子节点
+
                     // 需要参与排序的有 自身场地状态 从根到该节点所打出的攻击总数 该点的攻击，该点开始保持连击打出的最大防御数 路径总数（？ 浪费t总数（这个不确定
                     // 
 
@@ -344,7 +349,7 @@ namespace Jura_Knife_Tetris
                             if (Alltslot.Count != 0)
                             {
                                 tree bestT;
-                                long minscore = chird.score;
+                                long minscore = chird.fieldscore;
                                 foreach (mino t in Alltslot)
                                 {
                                     if (!t.Tspin) continue;
@@ -357,9 +362,14 @@ namespace Jura_Knife_Tetris
 
                                     //Tchird.score += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
                                     if (!t.mini)
-                                        Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2] * 8;
+                                    {
+                                        Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
+                                        Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                                    }
                                     else
-                                        Tchird.fieldscore += bot.evalweight.W.tslot[4];
+                                    {
+                                        Tchird.fieldscore = chird.fieldscore + bot.evalweight.W.tslot[4];
+                                    }
                                     if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin)
                                     {
                                         minscore = Tchird.fieldscore;
@@ -419,7 +429,7 @@ namespace Jura_Knife_Tetris
                         if (Alltslot.Count != 0)
                         {
                             tree bestT;
-                            long minscore = chird.score;
+                            long minscore = chird.fieldscore;
                             foreach (mino t in Alltslot)
                             {
                                 if (!t.Tspin) continue; // 相同场地不要去 有些无用场地需要吗
@@ -430,9 +440,14 @@ namespace Jura_Knife_Tetris
                                 Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
                                 //Tchird.battlescore += bot.evalweight.evalbattle(Tchird); // 是否要battle也加上
                                 if (!t.mini)
-                                    Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2] * 8;
+                                {
+                                    Tchird.fieldscore = bot.evalweight.evalfield(Tchird).score;
+                                    Tchird.fieldscore += bot.evalweight.W.tslot[res.Item2];
+                                }
                                 else
-                                    Tchird.fieldscore += bot.evalweight.W.tslot[4];
+                                {
+                                    Tchird.fieldscore = chird.fieldscore + bot.evalweight.W.tslot[4];
+                                }
                                 if (Tchird.fieldscore > minscore && Tchird.Board.piece.Tspin) // 可以优化计算顺序
                                 {
                                     minscore = Tchird.fieldscore;

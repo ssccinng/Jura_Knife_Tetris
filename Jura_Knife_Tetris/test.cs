@@ -16,7 +16,7 @@ namespace Jura_Knife_Tetris
                 //bot.boardtree.Board.console_print(false);
                 mino_gene mino_Gene = new mino_gene();
                 Random rand = new Random();
-                for (int i = 0; i < 6; ++i)
+                for (int i = 0; i < 3; ++i)
                 {
                     //bot.add_next(rand.Next() % 7);
                     bot.add_next(mino_Gene.genebag7int());
@@ -48,7 +48,15 @@ namespace Jura_Knife_Tetris
                             Console.WriteLine("def = {0}", chird.def);
                             Console.WriteLine("maxdef = {0}", chird.maxdef);
                             Console.WriteLine("atkscore = {0}", chird.atkscore);
+                            Console.WriteLine("battlescore = {0}", chird.battlescore);
+                            Console.WriteLine("combo = {0}", chird.Board.combo);
+                            Console.WriteLine("clearrow = {0}", chird.Board.clearrow);
+                            Console.WriteLine("movetime = {0}", chird.finmino.path.movetime);
+                            Console.WriteLine("name = {0}", chird.finmino.name);
+                            Console.WriteLine("Tspin = {0}", chird.finmino.Tspin);
+                            Console.WriteLine("isb2bclear = {0}", chird.Board.isb2bclear);
 
+                            Console.WriteLine("nodebattlescore = {0}", bot.evalweight.evalbattle(chird));
                             Console.WriteLine(chird.score);
                             Console.WriteLine("maxdepth = {0}", chird.maxdepth);
                             //Console.WriteLine("scoreex = {0}", chird.scoreex);
@@ -90,7 +98,14 @@ namespace Jura_Knife_Tetris
                         Console.WriteLine("def = {0}", root.def);
                         Console.WriteLine("maxdef = {0}", root.maxdef);
                         Console.WriteLine("atkscore = {0}", root.atkscore);
-                        
+                        Console.WriteLine("battlescore = {0}", root.battlescore);
+                        Console.WriteLine("combo = {0}", root.Board.combo);
+                        Console.WriteLine("clearrow = {0}", root.Board.clearrow);
+                        Console.WriteLine("movetime = {0}", root.finmino.path.movetime);
+                        Console.WriteLine("name = {0}", root.finmino.name);
+                        Console.WriteLine("Tspin = {0}", root.finmino.Tspin);
+                        Console.WriteLine("isb2bclear = {0}", root.Board.isb2bclear);
+                        Console.WriteLine("nodebattlescore = {0}", bot.evalweight.evalbattle(root));
                         Console.WriteLine(root.score);
                         Console.WriteLine("maxdepth = {0}", root.maxdepth);
                         //Console.WriteLine("scoreex = {0}", root.scoreex);

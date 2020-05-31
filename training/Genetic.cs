@@ -17,11 +17,11 @@ namespace optimizer
             W.clear = new int[] { 0, rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999),
             rnd.Next(-9999, 9999) }; // 1 2 3 4 // combo时也许不一样
             W.tspin = new int[] { rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999) }; // mini 1 2 3
+            W.tslot = new int[] { rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999), rnd.Next(-9999, 9999) };
             W.wide = rnd.Next(-9999, 9999);
             W.b2b = rnd.Next(-9999, 9999);
             W.b2b_clear = rnd.Next(-9999, 9999);
             W.wastedT = rnd.Next(-9999, 9999);
-            W.tslot = new int[4]; // mini 1 2 3
             W.movetime = -3; // 操作数
                              //W. tslotnum; // t坑数目jla
             W.holdT = rnd.Next(-9999, 9999);
@@ -30,15 +30,17 @@ namespace optimizer
             W.bus = rnd.Next(-9999, 9999);
             W.bus_sq = rnd.Next(-9999, 9999);
             W.fewcombo = rnd.Next(-9999, 9999);
-            W.lotcombo = rnd.Next(-9999, 9999); // maybe combo table
+            W.combo = rnd.Next(-9999, 9999); // maybe combo table
             W.maxdef = rnd.Next(-9999, 9999); // 最高防御垃圾行
             W.attack = rnd.Next(-9999, 9999); // 攻击
             W.downstack = rnd.Next(-9999, 9999);
             W.deephole = rnd.Next(-9999, 9999);
-            W.deephole2 = rnd.Next(-9999, 9999);
-            W.deephole3 = rnd.Next(-9999, 9999);
-            W.deltcol = rnd.Next(-9999, 9999);
-            W.safecost = rnd.Next(-9999, 9999);
+            W.atk = rnd.Next(-9999, 9999);
+            W.def = rnd.Next(-9999, 9999);
+            W.atk = rnd.Next(-9999, 9999);
+            W.def = rnd.Next(-9999, 9999);
+            W.maxatk = rnd.Next(-9999, 9999);
+            W.maxdef = rnd.Next(-9999, 9999);
             W.parity = rnd.Next(-9999, 9999);
             W.dephigh = rnd.Next(-9999, 9999);
             W.linefull = rnd.Next(-9999, 9999); // -5
@@ -70,11 +72,17 @@ namespace optimizer
                 crossover_gene(p1.tspin[2], p2.tspin[2]),
                 crossover_gene(p1.tspin[3], p2.tspin[3])
                  }; // mini 1 2 3
+            chird.tslot = new int[] {
+                crossover_gene(p1.tslot[0], p2.tslot[0]),
+                crossover_gene(p1.tslot[1], p2.tslot[1]),
+                crossover_gene(p1.tslot[2], p2.tslot[2]),
+                crossover_gene(p1.tslot[3], p2.tslot[3]),
+                crossover_gene(p1.tslot[4], p2.tslot[4])
+                 }; // mini 1 2 3
             chird.wide = crossover_gene(p1.wide, p2.wide);
             chird.b2b = crossover_gene(p1.b2b, p2.b2b);
             chird.b2b_clear = crossover_gene(p1.b2b_clear, p2.b2b_clear);
             chird.wastedT = crossover_gene(p1.wastedT, p2.wastedT);
-            chird.tslot = new int[4]; // mini 1 2 3
             chird.movetime = -3; // 操作数
                              //chird. tslotnum; // t坑数目jla
             chird.holdT = crossover_gene(p1.holdT, p2.holdT);
@@ -83,13 +91,15 @@ namespace optimizer
             chird.bus = crossover_gene(p1.bus, p2.bus);
             chird.bus_sq = crossover_gene(p1.bus_sq, p2.bus_sq);
             chird.fewcombo = crossover_gene(p1.fewcombo, p2.fewcombo);
-            chird.lotcombo = crossover_gene(p1.lotcombo, p2.lotcombo); // maybe combo table
+            chird.combo = crossover_gene(p1.combo, p2.combo); // maybe combo table
             chird.maxdef = crossover_gene(p1.maxdef, p2.maxdef); // 最高防御垃圾行
             chird.attack = crossover_gene(p1.attack, p2.attack); // 攻击
             chird.downstack = crossover_gene(p1.downstack, p2.downstack);
             chird.deephole = crossover_gene(p1.deephole, p2.deephole);
-            chird.deephole2 = crossover_gene(p1.deephole2, p2.deephole2);
-            chird.deephole3 = crossover_gene(p1.deephole3, p2.deephole3);
+            chird.atk = crossover_gene(p1.atk, p2.atk);
+            chird.def = crossover_gene(p1.def, p2.def);
+            chird.maxatk = crossover_gene(p1.def, p2.def);
+            chird.maxdef = crossover_gene(p1.def, p2.def);
             chird.deltcol = crossover_gene(p1.deltcol, p2.deltcol);
             chird.safecost = crossover_gene(p1.safecost, p2.safecost);
             chird.parity = crossover_gene(p1.parity, p2.parity);

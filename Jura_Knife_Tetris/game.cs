@@ -103,11 +103,10 @@ namespace Jura_Knife_Tetris
                 case 1: Board.piece.right_move(ref Board); break;
                 case 2: Board.piece.left_rotation(ref Board); break;
                 case 3: Board.piece.right_rotation(ref Board); break;
-                case 4: Board.piece.soft_drop_floor(ref Board); break;
                 case 5: atkcnt = lock_piece_calc(); break;
                 case 6: Board.use_hold(); break;
                 default:
-                    break;
+                    Board.piece.soft_drop_floor(ref Board); break; 
             }
         }
         public void runmove(tree move)

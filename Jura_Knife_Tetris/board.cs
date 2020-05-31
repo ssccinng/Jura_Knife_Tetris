@@ -130,25 +130,23 @@ namespace Jura_Knife_Tetris
                 }
             }
             int index2 = 0;
+            isb2bclear = false;
             if (cntclear > 0)
             {
-                if (isb2b)
-                {
-                    isb2bclear = true;
-                }
-                else
-                {
-                    isb2bclear = false;
-                }
+                
                 if (cntclear == 4 || piece.Tspin)
                 {
+                    if (isb2b)
+                    {
+                        isb2bclear = true;
+                    }
                     isb2b = true;
                 }
                 else
                 {
                     isb2b = false;
                 }
-
+                
                 combo += 1;
             }
             else
@@ -510,13 +508,13 @@ namespace Jura_Knife_Tetris
             isb2bclear = false;
             if (cntclear > 0)
             {
-                if (isb2b)
-                {
-                    isb2bclear = true;
-                }
 
                 if (cntclear == 4 || piece.Tspin)
                 {
+                    if (isb2b)
+                    {
+                        isb2bclear = true;
+                    }
                     isb2b = true;
                 }
                 else

@@ -25,7 +25,7 @@ namespace Jura_Knife_Tetris
 
         public Juraknifecore(weights Weights)
         {
-            evalweight = new eval( Weights);
+            evalweight = new eval(Weights);
         }
         public Juraknifecore()
         {
@@ -49,7 +49,7 @@ namespace Jura_Knife_Tetris
             //if (boardtree.treenode.Count == 0)
             //    return false;
 
-            foreach(tree node in boardtree.treenode)
+            foreach (tree node in boardtree.treenode)
             {
                 node.atkscore = evalweight.evalatkdef(node);
             }
@@ -76,7 +76,7 @@ namespace Jura_Knife_Tetris
             }
             boardtree = boardtree.treenode[0]; // 节点不存在的问题
             boardtree.father = null;
-            if(!boardtree.isextend)
+            if (!boardtree.isextend)
             {
                 Console.WriteLine("当前节点未扩展");
                 boardtree.inplan = true;
@@ -151,7 +151,7 @@ namespace Jura_Knife_Tetris
         public void nodeadd(tree node)
         {
 
-            if (node.inplan && node.pieceidx < nextcnt && !node.isextend ) nodequeue.Add(node); // 考虑遇到无用直接返回
+            if (node.inplan && node.pieceidx < nextcnt && !node.isextend) nodequeue.Add(node); // 考虑遇到无用直接返回
 
             //if (node.treenode.Count == 0 && !node.useless && node.pieceidx < nextquene.Count && !node.isextend) nodequeue.Add(node);
             //cnt += node.treenode.Count;
@@ -233,17 +233,17 @@ namespace Jura_Knife_Tetris
             bool flag = true;
             //while (calcdepth < nextquene.Count - 1) // 能够保持combo的要继续计算 无hold 会少计算一片
             while (true) // 能够保持combo的要继续计算 无hold 会少计算一片
-                {
-                
+            {
+
                 nodequeue = new List<tree>();
                 nodeadd(boardtree);
                 if (nodequeue.Count == 0) break; // 异步时改为continue;
                 calcdepth += 1;
                 flag = false;
                 List<tree> nextpiece = new List<tree>();
-                
+
                 int limit = 5;
-                
+
                 int qq = nodecnt(boardtree); // 会浪费时间吗
                 limit = Math.Min(nodequeue.Count, 6);
                 nodequeue.Sort((a, b) =>
@@ -257,7 +257,9 @@ namespace Jura_Knife_Tetris
                     );
                 // 全重置 haishinodequeue
                 int lastscore = 498;
-                for (int j = 0, cnt = 0;j <  nodequeue.Count; ++j) // 剪枝思考 深度和分数的符合思考
+                HashSet<tree> nodefather = new HashSet<tree>();
+
+                for (int j = 0, cnt = 0; j < nodequeue.Count; ++j) // 剪枝思考 深度和分数的符合思考
                 {
                     // cnt < Math.Max(nodequeue.Count / 20 + 1, limit) && 
                     //if (cnt > 10)
@@ -266,13 +268,13 @@ namespace Jura_Knife_Tetris
                     //    continue;
                     //}
 
-                    
+
 
                     if (nextcnt <= nodequeue[j].pieceidx || !nodequeue[j].inplan)
                     {
                         continue;
                     }
-                    nodequeue[j].inplan = false;
+                    //nodequeue[j].inplan = false;
                     //if (lastscore == nodequeue[j].res.score)
                     //{
                     //    //bool tag = true;
@@ -289,11 +291,12 @@ namespace Jura_Knife_Tetris
                     //    //}
 
                     //}
-                    if (cnt > 40 || lastscore == nodequeue[j].res.score)
+                    if (cnt >= 6 )
                     {
                         //nodequeue[j].inplan = false;
-                        continue;
+                        break;
                     }
+                    if (lastscore == nodequeue[j].res.score) continue;
                     lastscore = nodequeue[j].res.score;
                     flag = true;
                     tree node = nodequeue[j];
@@ -305,12 +308,18 @@ namespace Jura_Knife_Tetris
                     }; // 等下打上无用标记
 
                     // 好节点后可跟2层无用节点
+                    if (nodequeue[j].father != null) { nodefather.Add(nodequeue[j].father); }
+
 
                     cnt++;
-                    if (!node.isextend) node.findalladd(this);
+
+                }
+                if (nodefather.Count == 0)
+                {
+                    if (!nodequeue[0].isextend) nodequeue[0].findalladd(this);
                     //if (node.isdead) return;
-                    node.isextend = true;
-                    node.treenode.Sort((a, b) =>
+                    nodequeue[0].isextend = true;
+                    nodequeue[0].treenode.Sort((a, b) =>
                     {
                         long o = (b.score - a.score);
                         var q = b.maxdepth - a.maxdepth;
@@ -318,8 +327,52 @@ namespace Jura_Knife_Tetris
                         if (o == 0) return 0;
                         return (o > 0 ? 1 : -1);
                     });
-
                 }
+                
+                foreach (tree father in nodefather)
+                {
+                    for (int j = 0, cnt = 0; j < father.treenode.Count; ++j)
+                    {
+                        if (nextcnt <= father.treenode[j].pieceidx || !father.treenode[j].inplan)
+                        {
+                            continue;
+                        }
+                        //father.treenode[j].inplan = false;
+
+                        if (cnt >= 6)
+                        {
+                            //nodequeue[j].inplan = false;
+                            break;
+                        }
+                        if (lastscore == father.treenode[j].res.score) continue;
+                        lastscore = father.treenode[j].res.score;
+                        flag = true;
+                        tree node = father.treenode[j];
+                        //if (node == null || node.useless)
+                        //{
+                        //    nodequeue[j] = null;
+                        //    continue;
+
+                        //};
+                        cnt++;
+                        if (!node.isextend) node.findalladd(this);
+                        //if (node.isdead) return;
+                        node.isextend = true;
+                        node.treenode.Sort((a, b) =>
+                        {
+                            long o = (b.score - a.score);
+                            var q = b.maxdepth - a.maxdepth;
+                            if (q != 0) return q;
+                            if (o == 0) return 0;
+                            return (o > 0 ? 1 : -1);
+                        });
+                    }
+                }
+                foreach(tree node in nodequeue)
+                {
+                    node.inplan = false;
+                }
+
             }
 
         }

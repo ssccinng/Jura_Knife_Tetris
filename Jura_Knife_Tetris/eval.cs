@@ -60,11 +60,11 @@ namespace Jura_Knife_Tetris
     {
         public int[] height = { -200, -500, -2000, -5000, -99999 };
         public int[] clear = { 0, -1000, -500, -700, 500 }; // 1 2 3 4 // combo时也许不一样
-        public int[] tspin = { -500, 700, 1280, 400 }; // mini 1 2 3
+        public int[] tspin = { -1000, 700, 1280, 400 }; // mini 1 2 3
         public int wide = -300;
         public int b2b = 2000;
         public int b2b_clear = 2000;
-        public int wastedT = -9000;
+        public int wastedT = -999999;
         public int[] tslot = {0,500, 900, 400 , -5000}; // mini 1 2 3 // 加个mini
         public int movetime = -3; // 操作数
         public int tslotnum; // t坑数目jla
@@ -73,18 +73,18 @@ namespace Jura_Knife_Tetris
         public int perfectclear = 999;
         public int bus = -30;
         public int bus_sq = -100;
-        public int fewcombo = 500;
-        public int combo = 500; // maybe combo table
+        public int fewcombo = 20;
+        public int combo = 200; // maybe combo table
 
         public int attack; // 攻击
         public int downstack = -1300;
         public int deephole = -1000;
         public int atk = 40;
         public int def = 50;
-        public int maxatk = 10;
+        public int maxatk = 100;
         public int maxdef = 100; // 最高防御垃圾行 // 还要有一个非keepcombo的
         public int deltcol = -500;
-        public int safecost = -1700;
+        public int safecost = -2000;
         public int parity = -500;
         public int dephigh = -1500;
         public int linefull = -5; // -5
@@ -224,7 +224,7 @@ namespace Jura_Knife_Tetris
 
                 if (left >= 2 && right >= 2) // 都大于5制裁
                 {
-                    //if (i != minidx)
+                    if (i != minidx || minhigh != 0)
                     {
                         //score += W.deephole * Math.Min(left, right);
                         //evalresult.deephole += W.deephole * Math.Min(left, right); // duojinzhicai
@@ -233,6 +233,7 @@ namespace Jura_Knife_Tetris
                 }
 
             }
+            
             foreach (int a in deepholequeue)
             {
                 //score += W.deephole * a; // 加入深洞底部厚度
@@ -323,8 +324,8 @@ namespace Jura_Knife_Tetris
             int parity = evalparity(node);
             score += parity * W.parity;
             evalresult.parity += parity * W.parity;
-            evalresult.hole = evalhole(node, ref evalresult);
-            //evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
+            //evalresult.hole = evalhole(node, ref evalresult);
+            evalhole(node, node.Board.column_height, 0, ref evalresult.hole);
             score += evalresult.hole;
             evalresult.score = score;
 
@@ -610,9 +611,9 @@ namespace Jura_Knife_Tetris
         public int evalbattle(tree node) // 相对值？ 需要向下累加
         {
             int score = 0;
-            score += W.movetime * node.Board.piece.path.movetime;
+            score += W.movetime * node.finmino.path.movetime;
 
-            if (node.Board.piece.name == "T" && (!node.Board.piece.Tspin || node.Board.clearrow == 0))
+            if (node.finmino.name == "T" && (!node.finmino.Tspin || node.Board.clearrow == 0))
             {
                 score += W.wastedT;
             }
@@ -620,7 +621,7 @@ namespace Jura_Knife_Tetris
             if (node.Board.isperfectclear) score += W.perfectclear * 1000;
             
             if (node.Board.isb2bclear) score += W.b2b_clear;
-            if (node.Board.piece.Tspin && node.Board.piece.name == "T")
+            if (node.finmino.Tspin && node.finmino.name == "T")
             {
                 if (node.Board.piece.mini)
                 {
